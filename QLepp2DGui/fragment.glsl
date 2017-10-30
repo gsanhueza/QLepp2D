@@ -23,5 +23,6 @@ void main() {
     // Ambient
     float Iamb = 0.2;
 
-    gl_FragColor = vec4(lightColSun * (Idiff + Ispec + Iamb), 1.0);
+//     gl_FragColor = vec4(lightColSun * (Idiff + Ispec + Iamb), 1.0);
+    gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 }

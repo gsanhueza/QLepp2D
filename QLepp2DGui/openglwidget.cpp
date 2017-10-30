@@ -125,7 +125,7 @@ void OpenGLWidget::paintGL()
     // Clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE); // Mesh
 
     m_world.setToIdentity();
 
@@ -152,7 +152,9 @@ void OpenGLWidget::paintGL()
     }
 
     // Draw triangulation
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 3); // Last argument = Number of vertices
+
+    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6); // Last argument = Number of vertices
 
     m_program->release();
 }
