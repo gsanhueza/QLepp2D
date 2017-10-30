@@ -27,12 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         about.cpp \
-        tutorial.cpp
+        tutorial.cpp \
+        openglwidget.cpp
 
 HEADERS += \
         mainwindow.h \
         about.h \
-        tutorial.h
+        tutorial.h \
+        openglwidget.h
 
 FORMS += \
         mainwindow.ui \

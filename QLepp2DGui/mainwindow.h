@@ -18,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void emitModel(const Model &m);
+
 private slots:
     void loadTriangulationClicked();
     void saveTriangulationClicked();
@@ -29,7 +32,7 @@ private:
     Tutorial *m_tutorial;
     About *m_about;
 
-    Model *m_model;
+    Model m_model;
     QString m_currentFileName;
 };
 
