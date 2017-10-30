@@ -59,9 +59,9 @@ void OpenGLWidget::initializeGL()
 void OpenGLWidget::generateGLProgram()
 {
     m_program = new QOpenGLShaderProgram;
-    // FIXME Use QRC instead of hard-coding the shader location
-    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, QString(":/vertex.glsl"));
-    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, QString(":/fragment.glsl"));
+    // QRC resource
+    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.glsl");
+    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("normal", 1);
     m_program->link();

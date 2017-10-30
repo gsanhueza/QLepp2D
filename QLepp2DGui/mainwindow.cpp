@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QFileDialog>
 
 #include "mainwindow.h"
@@ -11,10 +12,20 @@ MainWindow::MainWindow(QWidget *parent) :
     m_about(new About)
 {
     ui->setupUi(this);
+
+    int screenWidth = QApplication::desktop()->width();
+    int screenHeight = QApplication::desktop()->height();
+
+    int x = (screenWidth - this->width()) / 2;
+    int y = (screenHeight - this->height()) / 2;
+
+    this->move(x, y);
 }
 
 MainWindow::~MainWindow()
 {
+    delete m_tutorial;
+    delete m_about;
     delete ui;
 }
 
