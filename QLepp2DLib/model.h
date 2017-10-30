@@ -9,11 +9,13 @@ class Model
 public:
     Model();
     ~Model();
-    bool loadOFF(QString filepath) const;
-    bool saveOFF(QString filepath) const;
+    bool loadOFF(QString &filepath);
+    bool saveOFF(QString &filepath);
 
 private:
     OFFHandler *m_offhandler;
+    std::vector<float> m_vertices;
+    std::vector<int> m_indices;
 };
 
 #endif // MODEL_H

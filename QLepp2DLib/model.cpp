@@ -10,12 +10,12 @@ Model::~Model()
     delete m_offhandler;
 }
 
-bool Model::loadOFF(QString filepath) const
+bool Model::loadOFF(QString &filepath)
 {
-    return m_offhandler->loadOffFile(filepath);
+    return m_offhandler->loadOffFile(filepath, m_vertices, m_indices);
 }
 
-bool Model::saveOFF(QString filepath) const
+bool Model::saveOFF(QString &filepath)
 {
-    return m_offhandler->saveOffFile(filepath);
+    return m_offhandler->saveOffFile(filepath, m_vertices, m_indices);
 }
