@@ -9,8 +9,11 @@ class Model
 public:
     Model();
     ~Model();
+
     bool loadOFF(QString &filepath);
     bool saveOFF(QString &filepath);
+    std::vector<float> getVertices() const;
+    std::vector<int> getIndices() const;
 
 private:
     OFFHandler *m_offhandler;
