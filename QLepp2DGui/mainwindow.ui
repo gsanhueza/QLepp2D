@@ -51,9 +51,16 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="detectButton">
+        <property name="text">
+         <string>Detect</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="improveButton">
         <property name="text">
-         <string>Improve Triangulation</string>
+         <string>Improve</string>
         </property>
        </widget>
       </item>
@@ -72,7 +79,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>Fi&amp;le</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionLoadTriangulation"/>
     <addaction name="actionSaveTriangulation"/>
@@ -81,7 +88,7 @@
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>He&amp;lp</string>
     </property>
     <addaction name="actionTutorial"/>
     <addaction name="separator"/>
