@@ -60,8 +60,8 @@ void OpenGLWidget::generateGLProgram()
 {
     m_program = new QOpenGLShaderProgram;
     // FIXME Use QRC instead of hard-coding the shader location
-    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, QString("../QLepp2DGui/vertex.glsl"));
-    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, QString("../QLepp2DGui/fragment.glsl"));
+    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, QString(":/vertex.glsl"));
+    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, QString(":/fragment.glsl"));
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("normal", 1);
     m_program->link();
@@ -192,6 +192,14 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
         setZRotation(m_zRot + 8 * dx);
     }
     m_lastPos = event->pos();
+}
+
+void OpenGLWidget::wheelEvent(QWheelEvent *event)
+{
+    m_zCamPos += (event->delta()/120);
+    m_camera.setToIdentity();
+    m_camera.translate(-m_xCamPos, -m_yCamPos, m_zCamPos);
+    update();
 }
 
 static void qNormalizeAngle(int &angle)

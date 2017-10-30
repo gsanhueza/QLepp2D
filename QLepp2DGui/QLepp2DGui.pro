@@ -50,3 +50,6 @@ DEPENDPATH += $$PWD/../QLepp2DLib
 
 # Useful when not installing the app, but testing it in a local environment
 QMAKE_LFLAGS += -Wl,--rpath=$$OUT_PWD/../QLepp2DLib/
+
+RESOURCES += \
+    res/resources.qrc
