@@ -1,0 +1,12 @@
+#ifndef QLEPP2DLIB_GLOBAL_H
+#define QLEPP2DLIB_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(QLEPP2DLIB_LIBRARY)
+#  define QLEPP2DLIBSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define QLEPP2DLIBSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // QLEPP2DLIB_GLOBAL_H
