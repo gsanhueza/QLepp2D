@@ -1,7 +1,7 @@
 #ifndef OFFHANDLER_H
 #define OFFHANDLER_H
 
-#include <QUrl>
+#include <QString>
 #include "qlepp2dlib_global.h"
 
 class QLEPP2DLIBSHARED_EXPORT OFFHandler
@@ -9,8 +9,8 @@ class QLEPP2DLIBSHARED_EXPORT OFFHandler
 
 public:
     OFFHandler();
-    bool loadOffFile(QUrl filepath) const;
-    bool saveOffFile(QUrl filepath) const;
+    bool loadOffFile(QString filepath) const;
+    bool saveOffFile(QString filepath) const;
 };
 
 #endif // OFFHANDLER_H

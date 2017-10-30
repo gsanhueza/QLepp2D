@@ -10,12 +10,12 @@ Model::~Model()
     delete m_offhandler;
 }
 
-bool Model::loadOFF(QUrl filepath) const
+bool Model::loadOFF(QString filepath) const
 {
     return m_offhandler->loadOffFile(filepath);
 }
 
-bool Model::saveOFF(QUrl filepath) const
+bool Model::saveOFF(QString filepath) const
 {
     return m_offhandler->saveOffFile(filepath);
 }

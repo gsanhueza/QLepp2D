@@ -30,6 +30,7 @@ private:
     About *m_about;
 
     Model *m_model;
+    QString m_currentFileName;
 };
 
 #endif // MAINWINDOW_H

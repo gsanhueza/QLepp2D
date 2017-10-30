@@ -45,3 +45,6 @@ else:unix: LIBS += -L$$OUT_PWD/../QLepp2DLib/ -lQLepp2DLib
 
 INCLUDEPATH += $$PWD/../QLepp2DLib
 DEPENDPATH += $$PWD/../QLepp2DLib
+
+# Useful when not installing the app, but testing it in a local environment
+QMAKE_LFLAGS += -Wl,--rpath=$$OUT_PWD/../QLepp2DLib/
