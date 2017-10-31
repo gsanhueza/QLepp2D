@@ -20,7 +20,8 @@ public:
     std::vector<int>& getIndices();
     std::vector<Triangle>& getTriangles();
 
-    bool detectBadTriangles(int &angle);
+    bool detectBadTriangles(double &angle);
+    bool improveTriangulation();
 
 private:
     OFFHandler *m_offhandler;

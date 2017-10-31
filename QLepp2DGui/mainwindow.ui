@@ -63,6 +63,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="detectButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="toolTip">
          <string>Detects triangles with minimum angles less than the specified.</string>
         </property>
@@ -76,6 +79,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="improveButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="toolTip">
          <string>Improves the triangulation, using the detected bad triangles.</string>
         </property>
@@ -97,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>29</height>
+     <height>47</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

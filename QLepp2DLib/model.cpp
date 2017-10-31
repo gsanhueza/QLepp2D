@@ -35,7 +35,12 @@ std::vector<Triangle>& Model::getTriangles()
     return m_triangles;
 }
 
-bool Model::detectBadTriangles(int &angle)
+bool Model::detectBadTriangles(double &angle)
 {
     return m_openclhandler->detectBadTriangles(angle, m_triangles);
+}
+
+bool Model::improveTriangulation()
+{
+    return m_openclhandler->improveTriangulation(m_triangles);
 }

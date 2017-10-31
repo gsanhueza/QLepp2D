@@ -9,7 +9,8 @@ class OpenCLHandler
 public:
     OpenCLHandler();
 
-    bool detectBadTriangles(int &angle, std::vector<Triangle> &triangles);
+    bool detectBadTriangles(double &angle, std::vector<Triangle> &triangles);
+    bool improveTriangulation(std::vector<Triangle> &triangles);
 };
 
 #endif // OPENCLHANDLER_H

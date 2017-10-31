@@ -63,6 +63,8 @@ void MainWindow::loadTriangulationClicked()
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage("Loaded.");
+        ui->improveButton->setDisabled(true);
+        ui->detectButton->setEnabled(true);
         emit emitModel(*m_model);
     }
     else
@@ -118,13 +120,18 @@ void MainWindow::reloadViewClicked()
 void MainWindow::detectClicked()
 {
     qDebug() << "Detect button clicked";
-    qDebug() << ui->angleSpinBox->text();
-    int a = 0;
-    m_model->detectBadTriangles(a);
-    emit emitModel(*m_model);
+    double angle = ui->angleSpinBox->value();
+    qDebug() << angle;
+
+    if (m_model->detectBadTriangles(angle))
+    {
+        ui->improveButton->setEnabled(true);
+        emit emitModel(*m_model);
+    }
 }
 
 void MainWindow::improveClicked()
 {
+    m_model->improveTriangulation();
     qDebug() << "Improve button clicked";
 }
