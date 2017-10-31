@@ -67,10 +67,6 @@ private:
     int m_modelViewMatrixLoc;
     int m_projMatrixLoc;
 
-    int m_normalMatrixLoc;
-    int m_lightPosLoc;
-    int m_eyePosLoc;
-
     QMatrix4x4 m_proj;
     QMatrix4x4 m_camera;
     QMatrix4x4 m_world;
@@ -79,10 +75,6 @@ private:
     int m_xRot;
     int m_yRot;
     int m_zRot;
-
-    int m_xLight;
-    int m_yLight;
-    int m_zLight;
 
     float m_xCamPos;
     float m_yCamPos;

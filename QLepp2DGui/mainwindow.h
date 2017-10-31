@@ -18,6 +18,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void setModel(Model *model);
+
 signals:
     void emitModel(const Model &m);
 
@@ -32,7 +34,7 @@ private:
     Tutorial *m_tutorial;
     About *m_about;
 
-    Model m_model;
+    Model *m_model;
     QString m_currentFileName;
 };
 

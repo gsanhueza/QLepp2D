@@ -8,9 +8,6 @@ OpenGLWidget::OpenGLWidget(QWidget* parent)
       m_xRot(0),
       m_yRot(0),
       m_zRot(0),
-      m_xLight(0),
-      m_yLight(0),
-      m_zLight(30),
       m_xCamPos(0),
       m_yCamPos(0),
       m_zCamPos(-5),
@@ -37,9 +34,9 @@ void OpenGLWidget::setupVertexAttribs()
     m_vbo.bind();
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
     f->glEnableVertexAttribArray(0); // Vertex
-    f->glEnableVertexAttribArray(1); // Normal
+    f->glEnableVertexAttribArray(1); // Color
     // glVertexAttribPointer(GLuint index​, GLint size​, GLenum type​, GLboolean normalized​, GLsizei stride​, const GLvoid * pointer​);
-    // index = Vertex(0) or Normal(1), can be more if needed
+    // index = Vertex(0) or Color(1), can be more if needed
     // size = Coordinates(x, y, z) => 3
     // type = GL_FLOAT, as that's the type of each coordinate
     // normalized = false, as there's no need to normalize here
@@ -63,24 +60,18 @@ void OpenGLWidget::generateGLProgram()
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.glsl");
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
-    m_program->bindAttributeLocation("normal", 1);
+    m_program->bindAttributeLocation("color", 1);
     m_program->link();
 
     m_program->bind();
     m_modelViewMatrixLoc = m_program->uniformLocation("modelViewMatrix");
     m_projMatrixLoc = m_program->uniformLocation("projMatrix");
-    m_normalMatrixLoc = m_program->uniformLocation("normalMatrix");
-    m_lightPosLoc = m_program->uniformLocation("lightPos");
-    m_eyePosLoc = m_program->uniformLocation("eyePos");
 
     // Create a vertex array object. In OpenGL ES 2.0 and OpenGL 2.x
     // implementations this is optional and support may not be present
     // at all. Nonetheless the below code works in all cases and makes
     // sure there is a VAO when one is needed.
     m_vao.create();
-    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
-
-    // Here you can write fixed geometries, if you don't need to load them more than once.
 
     // Our camera has a initial position.
     m_camera.setToIdentity();
@@ -104,12 +95,12 @@ void OpenGLWidget::loadData()
         m_data.append(point);
     }
 
-    // Generate normals
+    // Generate color
     for (unsigned int i(0); i < m_model.getVertices().size() / 3; i++)
     {
         m_data.append(0.0);
-        m_data.append(0.0);
         m_data.append(1.0);
+        m_data.append(0.0);
     }
 
     // Allocate data into VBO
@@ -134,16 +125,10 @@ void OpenGLWidget::paintGL()
     m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
     m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
-    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
-
     // Bind data of shaders to program
     m_program->bind();
     m_program->setUniformValue(m_projMatrixLoc, m_proj);
     m_program->setUniformValue(m_modelViewMatrixLoc, m_camera * m_world);
-    QMatrix3x3 normalMatrix = (m_camera * m_world).normalMatrix();
-    m_program->setUniformValue(m_normalMatrixLoc, normalMatrix);
-    m_program->setUniformValue(m_lightPosLoc, QVector3D(m_xLight, m_yLight, m_zLight));
-    m_program->setUniformValue(m_eyePosLoc, QVector3D(m_xCamPos, m_yCamPos, m_zCamPos));
 
     // Load new data only on geometry or shader change
     if (not m_dataAlreadyLoaded)
@@ -152,8 +137,7 @@ void OpenGLWidget::paintGL()
     }
 
     // Draw triangulation
-
-    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6); // Last argument = Number of vertices
 
     m_program->release();

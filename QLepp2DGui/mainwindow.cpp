@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_tutorial(new Tutorial),
-    m_about(new About)
+    m_about(new About),
+    m_model(nullptr)
 {
     ui->setupUi(this);
 
@@ -29,10 +30,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::setModel(Model* model)
+{
+    m_model = model;
+}
+
 void MainWindow::loadTriangulationClicked()
 {
     QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), ".", tr("OFF Files (*.off)"));
-    if (m_model.loadOFF(filepath))
+    if (m_model->loadOFF(filepath))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(filepath);
@@ -40,7 +46,7 @@ void MainWindow::loadTriangulationClicked()
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage("Loaded.");
-        emit emitModel(m_model);
+        emit emitModel(*m_model);
     }
     else
     {
@@ -52,9 +58,17 @@ void MainWindow::loadTriangulationClicked()
 
 void MainWindow::saveTriangulationClicked()
 {
+    // Check that we can save something already loaded
+    if (m_currentFileName == "")
+    {
+        qWarning() << "Nothing to save.";
+        ui->statusBar->showMessage("Nothing to save.");
+        return;
+    }
+
     QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), m_currentFileName, tr("OFF Files (*.off)"));
 
-    if (not m_model.saveOFF(filepath))
+    if (not m_model->saveOFF(filepath))
     {
         qWarning() << "Could not save file" << filepath;
         ui->statusBar->showMessage("Unable to save.");

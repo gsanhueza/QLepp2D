@@ -1,17 +1,14 @@
 #version 120
 
 attribute vec3 vertex;
-attribute vec3 normal;
+attribute vec3 color;
 
-varying vec3 vert;
-varying vec3 vertNormal;
+varying vec3 f_color;
 
 uniform mat4 projMatrix;
 uniform mat4 modelViewMatrix;
-uniform mat3 normalMatrix;
 
 void main(){
-    vert = vertex;
-    vertNormal = normalMatrix * normal;
+    f_color = color;
     gl_Position = projMatrix * modelViewMatrix * vec4(vertex, 1.0);
 }

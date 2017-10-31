@@ -1,12 +1,15 @@
 #include <QApplication>
 #include "mainwindow.h"
+#include "model.h"
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    MainWindow w;
+    MainWindow window;
+    Model model;
+    window.setModel(&model);
 
-    w.show();
+    window.show();
 
     return app.exec();
 }
