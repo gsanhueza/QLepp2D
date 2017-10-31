@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Application centering
     int screenWidth = QApplication::desktop()->width();
     int screenHeight = QApplication::desktop()->height();
 
@@ -21,6 +22,19 @@ MainWindow::MainWindow(QWidget *parent) :
     int y = (screenHeight - this->height()) / 2;
 
     this->move(x, y);
+
+    // Toolbar actions
+    QAction *load = ui->mainToolBar->addAction(QIcon::fromTheme("document-open"), "Load Triangulation");
+    QAction *save = ui->mainToolBar->addAction(QIcon::fromTheme("document-save"), "Save Triangulation");
+    QAction *quit = ui->mainToolBar->addAction(QIcon::fromTheme("exit"), "Quit");
+
+    load->setStatusTip("Loads an OFF file containing a triangulation.");
+    save->setStatusTip("Saves your triangulation in an OFF file.");
+    quit->setStatusTip("Quits this application.");
+
+    connect(load, &QAction::triggered, this, &MainWindow::loadTriangulationClicked);
+    connect(save, &QAction::triggered, this, &MainWindow::saveTriangulationClicked);
+    connect(quit, &QAction::triggered, this, &MainWindow::close);
 }
 
 MainWindow::~MainWindow()
