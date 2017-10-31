@@ -29,10 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QAction *reload = ui->mainToolBar->addAction(QIcon::fromTheme("view-refresh"), "Reload View");
     QAction *quit = ui->mainToolBar->addAction(QIcon::fromTheme("exit"), "Quit");
 
-    load->setStatusTip("Loads an OFF file containing a triangulation.");
-    save->setStatusTip("Saves your triangulation in an OFF file.");
-    reload->setStatusTip("Reloads the view to an initial state. Does not modify the triangulation.");
-    quit->setStatusTip("Quits this application.");
+    load->setStatusTip(ui->actionLoadTriangulation->statusTip());
+    save->setStatusTip(ui->actionSaveTriangulation->statusTip());
+    reload->setStatusTip(ui->actionReloadView->statusTip());
+    quit->setStatusTip(ui->actionQuit->statusTip());
 
     connect(load, &QAction::triggered, this, &MainWindow::loadTriangulationClicked);
     connect(save, &QAction::triggered, this, &MainWindow::saveTriangulationClicked);
