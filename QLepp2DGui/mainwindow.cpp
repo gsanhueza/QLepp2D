@@ -24,10 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     this->move(x, y);
 
     // Toolbar actions
-    QAction *load = ui->mainToolBar->addAction(QIcon::fromTheme("document-open"), "Load Triangulation");
-    QAction *save = ui->mainToolBar->addAction(QIcon::fromTheme("document-save"), "Save Triangulation");
-    QAction *reload = ui->mainToolBar->addAction(QIcon::fromTheme("view-refresh"), "Reload View");
-    QAction *quit = ui->mainToolBar->addAction(QIcon::fromTheme("exit"), "Quit");
+    QAction *load = ui->mainToolBar->addAction(ui->actionLoadTriangulation->icon(), ui->actionLoadTriangulation->text());
+    QAction *save = ui->mainToolBar->addAction(ui->actionSaveTriangulation->icon(), ui->actionSaveTriangulation->text());
+    QAction *reload = ui->mainToolBar->addAction(ui->actionReloadView->icon(), ui->actionReloadView->text());
+    QAction *quit = ui->mainToolBar->addAction(ui->actionQuit->icon(), ui->actionQuit->text());
 
     load->setStatusTip(ui->actionLoadTriangulation->statusTip());
     save->setStatusTip(ui->actionSaveTriangulation->statusTip());
