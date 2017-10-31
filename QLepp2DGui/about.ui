@@ -14,12 +14,12 @@
     <height>480</height>
    </rect>
   </property>
-  <property name="windowIcon">
-   <iconset>
-    <normaloff>../resources/icon.png</normaloff>../resources/icon.png</iconset>
-  </property>
   <property name="windowTitle">
    <string>About</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res/resources.qrc">
+    <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -44,7 +44,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res/resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>closeButton</sender>
