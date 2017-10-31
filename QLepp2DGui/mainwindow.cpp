@@ -114,3 +114,17 @@ void MainWindow::reloadViewClicked()
     qDebug() << "Reload View button clicked";
     emit resetView();
 }
+
+void MainWindow::detectClicked()
+{
+    qDebug() << "Detect button clicked";
+    qDebug() << ui->angleSpinBox->text();
+    int a = 0;
+    m_model->detectBadTriangles(a);
+    emit emitModel(*m_model);
+}
+
+void MainWindow::improveClicked()
+{
+    qDebug() << "Improve button clicked";
+}

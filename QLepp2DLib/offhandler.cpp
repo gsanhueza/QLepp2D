@@ -73,6 +73,7 @@ bool OFFHandler::loadOffFile(QString &filepath, std::vector<Vertex> &vertices, s
             t.v1 = vertices.at(mappedIndices.at(1).toInt());
             t.v2 = vertices.at(mappedIndices.at(2).toInt());
             t.v3 = vertices.at(mappedIndices.at(3).toInt());
+            t.bad = 0;
             triangles.push_back(t);
         }
 

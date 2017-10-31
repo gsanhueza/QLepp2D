@@ -97,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>47</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -374,6 +374,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>detectButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>detectClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1140</x>
+     <y>674</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>improveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>improveClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1230</x>
+     <y>674</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>emitModel(Model)</signal>
@@ -383,5 +415,7 @@
   <slot>loadTutorialClicked()</slot>
   <slot>loadAboutClicked()</slot>
   <slot>reloadViewClicked()</slot>
+  <slot>detectClicked()</slot>
+  <slot>improveClicked()</slot>
  </slots>
 </ui>

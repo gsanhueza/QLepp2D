@@ -30,6 +30,8 @@ private slots:
     void reloadViewClicked();
     void loadTutorialClicked();
     void loadAboutClicked();
+    void detectClicked();
+    void improveClicked();
 
 private:
     Ui::MainWindow *ui;

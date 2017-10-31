@@ -1,7 +1,8 @@
 #include "model.h"
 
 Model::Model()
-    : m_offhandler(new OFFHandler)
+    : m_offhandler(new OFFHandler),
+      m_openclhandler(new OpenCLHandler)
 {
 }
 
@@ -32,4 +33,9 @@ std::vector<int>& Model::getIndices()
 std::vector<Triangle>& Model::getTriangles()
 {
     return m_triangles;
+}
+
+bool Model::detectBadTriangles(int &angle)
+{
+    return m_openclhandler->detectBadTriangles(angle, m_triangles);
 }

@@ -43,7 +43,7 @@ void OpenGLWidget::setupVertexAttribs()
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(GL_FLOAT) * m_model.getVertices().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model.getTriangles().size()));
     m_vbo.release();
 }
 
@@ -90,18 +90,34 @@ void OpenGLWidget::loadData()
     m_data.clear();
 
     // Load geometry (vertices) from local file
-    for (Vertex point : m_model.getVertices())
+    for (Triangle t : m_model.getTriangles())
     {
-        m_data.append(point.x);
-        m_data.append(point.y);
-        m_data.append(point.z);
+        m_data.append(t.v1.x);
+        m_data.append(t.v1.y);
+        m_data.append(t.v1.z);
+
+        m_data.append(t.v2.x);
+        m_data.append(t.v2.y);
+        m_data.append(t.v2.z);
+
+        m_data.append(t.v3.x);
+        m_data.append(t.v3.y);
+        m_data.append(t.v3.z);
     }
 
     // Generate color
-    for (unsigned int i(0); i < m_model.getVertices().size(); i++)
+    for (Triangle t : m_model.getTriangles())
     {
+        m_data.append(t.bad);
+        m_data.append(!t.bad);
         m_data.append(0.0);
-        m_data.append(1.0);
+
+        m_data.append(t.bad);
+        m_data.append(!t.bad);
+        m_data.append(0.0);
+
+        m_data.append(t.bad);
+        m_data.append(!t.bad);
         m_data.append(0.0);
     }
 
