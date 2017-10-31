@@ -74,7 +74,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>29</height>
+     <height>47</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -107,21 +107,33 @@
    </attribute>
   </widget>
   <action name="actionLoadTriangulation">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>&amp;Load Triangulation</string>
    </property>
   </action>
   <action name="actionSaveTriangulation">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
    <property name="text">
     <string>&amp;Save Triangulation</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset theme="exit"/>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
   </action>
   <action name="actionTutorial">
+   <property name="icon">
+    <iconset theme="help"/>
+   </property>
    <property name="text">
     <string>&amp;Tutorial</string>
    </property>
@@ -130,6 +142,9 @@
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
    <property name="text">
     <string>&amp;About</string>
    </property>

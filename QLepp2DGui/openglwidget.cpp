@@ -57,8 +57,8 @@ void OpenGLWidget::generateGLProgram()
 {
     m_program = new QOpenGLShaderProgram;
     // QRC resource
-    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.glsl");
-    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragment.glsl");
+    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/vertex.glsl");
+    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("color", 1);
     m_program->link();
