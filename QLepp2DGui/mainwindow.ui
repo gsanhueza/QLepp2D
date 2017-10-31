@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="angleSpinBox"/>
+       <widget class="QDoubleSpinBox" name="angleSpinBox">
+        <property name="toolTip">
+         <string>Insert an angle in degrees to allow the application to detect those triangles with minimum angles less than this angle.</string>
+        </property>
+        <property name="statusTip">
+         <string>Insert an angle in degrees.</string>
+        </property>
+       </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -56,6 +63,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="detectButton">
+        <property name="toolTip">
+         <string>Detects triangles with minimum angles less than the specified.</string>
+        </property>
+        <property name="statusTip">
+         <string>Detects triangles with minimum angles less than the specified.</string>
+        </property>
         <property name="text">
          <string>Detect</string>
         </property>
@@ -63,6 +76,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="improveButton">
+        <property name="toolTip">
+         <string>Improves the triangulation, using the detected bad triangles.</string>
+        </property>
+        <property name="statusTip">
+         <string>Improves the triangulation, using the detected bad triangles.</string>
+        </property>
         <property name="text">
          <string>Improve</string>
         </property>
@@ -77,11 +96,14 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>29</height>
+     <width>1280</width>
+     <height>47</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
+    <property name="statusTip">
+     <string>Opens the File menu.</string>
+    </property>
     <property name="title">
      <string>&amp;File</string>
     </property>
@@ -91,8 +113,11 @@
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
+    <property name="statusTip">
+     <string>Opens the Help menu.</string>
+    </property>
     <property name="title">
-     <string>He&amp;lp</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionTutorial"/>
     <addaction name="separator"/>
@@ -118,6 +143,9 @@
    <property name="text">
     <string>&amp;Load Triangulation</string>
    </property>
+   <property name="statusTip">
+    <string>Loads an OFF file containing a triangulation.</string>
+   </property>
   </action>
   <action name="actionSaveTriangulation">
    <property name="icon">
@@ -127,6 +155,9 @@
    <property name="text">
     <string>&amp;Save Triangulation</string>
    </property>
+   <property name="statusTip">
+    <string>Saves your triangulation in an OFF file.</string>
+   </property>
   </action>
   <action name="actionQuit">
    <property name="icon">
@@ -135,6 +166,9 @@
    </property>
    <property name="text">
     <string>&amp;Quit</string>
+   </property>
+   <property name="statusTip">
+    <string>Quits this program.</string>
    </property>
   </action>
   <action name="actionTutorial">
@@ -148,6 +182,9 @@
    <property name="toolTip">
     <string>Tutorial</string>
    </property>
+   <property name="statusTip">
+    <string>Shows how to use this application.</string>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="icon">
@@ -156,6 +193,9 @@
    </property>
    <property name="text">
     <string>&amp;About</string>
+   </property>
+   <property name="statusTip">
+    <string>Shows an About window.</string>
    </property>
   </action>
  </widget>
