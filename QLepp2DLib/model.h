@@ -14,9 +14,9 @@ public:
 
     bool loadOFF(QString &filepath);
     bool saveOFF(QString &filepath);
-    std::vector<Vertex> getVertices() const;
-    std::vector<int> getIndices() const;
-    std::vector<Triangle> getTriangles() const;
+    std::vector<Vertex>& getVertices();
+    std::vector<int>& getIndices();
+    std::vector<Triangle>& getTriangles();
 
 private:
     OFFHandler *m_offhandler;

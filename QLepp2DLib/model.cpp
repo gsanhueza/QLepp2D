@@ -19,17 +19,17 @@ bool Model::saveOFF(QString &filepath)
     return m_offhandler->saveOffFile(filepath, m_vertices, m_indices);
 }
 
-std::vector<Vertex> Model::getVertices() const
+std::vector<Vertex>& Model::getVertices()
 {
     return m_vertices;
 }
 
-std::vector<int> Model::getIndices() const
+std::vector<int>& Model::getIndices()
 {
     return m_indices;
 }
 
-std::vector<Triangle> Model::getTriangles() const
+std::vector<Triangle>& Model::getTriangles()
 {
     return m_triangles;
 }
