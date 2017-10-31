@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <vector>
+#include "triangle.h"
+#include "vertex.h"
 #include "qlepp2dlib_global.h"
 
 class QLEPP2DLIBSHARED_EXPORT OFFHandler
@@ -10,8 +12,8 @@ class QLEPP2DLIBSHARED_EXPORT OFFHandler
 
 public:
     OFFHandler();
-    bool loadOffFile(QString &filepath, std::vector<float> &vertices, std::vector<int> &indices);
-    bool saveOffFile(QString &filepath, std::vector<float> &vertices, std::vector<int> &indices) const;
+    bool loadOffFile(QString &filepath, std::vector<Vertex> &vertices, std::vector<int> &indices, std::vector<Triangle> &triangles);
+    bool saveOffFile(QString &filepath, std::vector<Vertex> &vertices, std::vector<int> &indices) const;
 
 private:
     int m_numVertices;

@@ -41,9 +41,9 @@ void OpenGLWidget::setupVertexAttribs()
     // type = GL_FLOAT, as that's the type of each coordinate
     // normalized = false, as there's no need to normalize here
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
-    // pointer = where is the start of the data (in VVVNNN, 0 = start of vertices and GL_FLOAT * size(vertexArray) = start of color)
+    // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(sizeof(GL_FLOAT) * m_model.getVertices().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(GL_FLOAT) * m_model.getVertices().size()));
     m_vbo.release();
 }
 
@@ -90,13 +90,15 @@ void OpenGLWidget::loadData()
     m_data.clear();
 
     // Load geometry (vertices) from local file
-    for (float point : m_model.getVertices())
+    for (Vertex point : m_model.getVertices())
     {
-        m_data.append(point);
+        m_data.append(point.x);
+        m_data.append(point.y);
+        m_data.append(point.z);
     }
 
     // Generate color
-    for (unsigned int i(0); i < m_model.getVertices().size() / 3; i++)
+    for (unsigned int i(0); i < m_model.getVertices().size(); i++)
     {
         m_data.append(0.0);
         m_data.append(1.0);

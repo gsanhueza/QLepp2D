@@ -6,7 +6,7 @@ OFFHandler::OFFHandler()
 {
 }
 
-bool OFFHandler::loadOffFile(QString &filepath, std::vector<float> &vertices, std::vector<int> &indices)
+bool OFFHandler::loadOffFile(QString &filepath, std::vector<Vertex> &vertices, std::vector<int> &indices, std::vector<Triangle> &triangles)
 {
     qDebug() << "Loading OFF file from" << filepath << endl;
 
@@ -52,10 +52,11 @@ bool OFFHandler::loadOffFile(QString &filepath, std::vector<float> &vertices, st
             line = in.readLine();
             QStringList coordinates = line.split(" ", QString::SkipEmptyParts);
             // We push the coordinates (x, y, z)
-            for (int j(0); j < coordinates.size(); j++)
-            {
-                vertices.push_back(coordinates.at(j).toFloat());
-            }
+            Vertex v;
+            v.x = coordinates.at(0).toFloat();
+            v.y = coordinates.at(1).toFloat();
+            v.z = coordinates.at(2).toFloat();
+            vertices.push_back(v);
         }
 
         // Read faces data (indices)
@@ -64,10 +65,15 @@ bool OFFHandler::loadOffFile(QString &filepath, std::vector<float> &vertices, st
             line = in.readLine();
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
             // We check and skip the first one, because it marks the amount of indices, not the index itself.
-            for (int j(1); j <= mappedIndices.at(0).toInt(); j++)
-            {
-                indices.push_back(mappedIndices.at(j).toInt());
-            }
+            indices.push_back(mappedIndices.at(1).toInt());
+            indices.push_back(mappedIndices.at(2).toInt());
+            indices.push_back(mappedIndices.at(3).toInt());
+
+            Triangle t;
+            t.v1 = vertices.at(mappedIndices.at(1).toInt());
+            t.v2 = vertices.at(mappedIndices.at(2).toInt());
+            t.v3 = vertices.at(mappedIndices.at(3).toInt());
+            triangles.push_back(t);
         }
 
         inputFile.close();
@@ -76,11 +82,11 @@ bool OFFHandler::loadOffFile(QString &filepath, std::vector<float> &vertices, st
     return false;
 }
 
-bool OFFHandler::saveOffFile(QString &filepath, std::vector<float> &vertices, std::vector<int> &indices) const
+bool OFFHandler::saveOffFile(QString &filepath, std::vector<Vertex> &vertices, std::vector<int> &indices) const
 {
     qDebug() << "Saving OFF file to" << filepath << endl;
 
-    qWarning() << "(a, b, c) = " << m_numVertices << m_numFaces << m_numEdges;
+    qWarning() << "(V, F, E) = " << m_numVertices << m_numFaces << m_numEdges;
     qWarning() << "coordinatesPerVertex = " << vertices.size() / m_numVertices;
 
     QFile outputFile(filepath);
@@ -100,7 +106,9 @@ bool OFFHandler::saveOffFile(QString &filepath, std::vector<float> &vertices, st
             {
                 out << endl;
             }
-            out << vertices.at(i) << " ";
+            out << vertices.at(i).x << " ";
+            out << vertices.at(i).y << " ";
+            out << vertices.at(i).z;
         }
 
         // Write faces (indices)
@@ -110,9 +118,9 @@ bool OFFHandler::saveOffFile(QString &filepath, std::vector<float> &vertices, st
             if (i % verticesPerFace == 0)
             {
                 out << endl;
-                out << verticesPerFace << " ";
+                out << verticesPerFace;
             }
-            out << indices.at(i) << " ";
+            out << " " << indices.at(i);
         }
 
         outputFile.close();
