@@ -22,6 +22,7 @@ public:
 
 signals:
     void emitModel(const Model &m);
+    void resetView();
 
 private slots:
     void loadTriangulationClicked();

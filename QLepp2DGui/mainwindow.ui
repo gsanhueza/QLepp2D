@@ -97,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>29</height>
+     <height>47</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -219,7 +219,8 @@
   </action>
   <action name="actionReloadView">
    <property name="icon">
-    <iconset theme="view-refresh"/>
+    <iconset theme="view-refresh">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Reload View</string>
@@ -237,6 +238,7 @@
    <header>openglwidget.h</header>
    <slots>
     <slot>receiveModel(Model)</slot>
+    <slot>resetView()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -356,9 +358,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>resetView()</signal>
+   <receiver>openGLWidget</receiver>
+   <slot>resetView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>emitModel(Model)</signal>
+  <signal>resetView()</signal>
   <slot>loadTriangulationClicked()</slot>
   <slot>saveTriangulationClicked()</slot>
   <slot>loadTutorialClicked()</slot>

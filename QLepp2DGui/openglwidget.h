@@ -41,6 +41,7 @@ public:
 
 public slots:
     void receiveModel(const Model &m);
+    void resetView();
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);

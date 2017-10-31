@@ -188,6 +188,14 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event)
     update();
 }
 
+void OpenGLWidget::resetView()
+{
+    m_xRot = m_yRot = m_zRot = 0;
+    m_camera.setToIdentity();
+    m_camera.translate(0, 0, -5);
+    update();
+}
+
 static void qNormalizeAngle(int &angle)
 {
     while (angle < 0)

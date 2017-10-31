@@ -112,4 +112,5 @@ void MainWindow::loadAboutClicked()
 void MainWindow::reloadViewClicked()
 {
     qDebug() << "Reload View button clicked";
+    emit resetView();
 }
