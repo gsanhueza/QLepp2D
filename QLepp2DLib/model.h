@@ -3,6 +3,8 @@
 
 #include <QString>
 #include "offhandler.h"
+#include "vertex.h"
+#include "triangle.h"
 
 class Model
 {
@@ -12,12 +14,14 @@ public:
 
     bool loadOFF(QString &filepath);
     bool saveOFF(QString &filepath);
-    std::vector<float> getVertices() const;
+    std::vector<Vertex> getVertices() const;
     std::vector<int> getIndices() const;
+    std::vector<Triangle> getTriangles() const;
 
 private:
     OFFHandler *m_offhandler;
-    std::vector<float> m_vertices;
+    std::vector<Vertex> m_vertices;
+    std::vector<Triangle> m_triangles;
     std::vector<int> m_indices;
 };
 

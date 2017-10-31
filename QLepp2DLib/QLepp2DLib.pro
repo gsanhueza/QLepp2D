@@ -29,7 +29,10 @@ SOURCES += \
 HEADERS += \
         offhandler.h \
         qlepp2dlib_global.h \ 
-    model.h
+    model.h \
+    triangle.h \
+    vertex.h \
+    edge.h
 
 unix {
     target.path = /usr/lib
