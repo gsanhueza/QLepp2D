@@ -26,6 +26,7 @@ signals:
 private slots:
     void loadTriangulationClicked();
     void saveTriangulationClicked();
+    void reloadViewClicked();
     void loadTutorialClicked();
     void loadAboutClicked();
 
