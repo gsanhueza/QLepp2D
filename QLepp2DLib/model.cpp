@@ -7,7 +7,6 @@ Model::Model()
 
 Model::~Model()
 {
-    delete m_offhandler;
 }
 
 bool Model::loadOFF(QString &filepath)

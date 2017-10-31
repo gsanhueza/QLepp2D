@@ -40,8 +40,8 @@ void OpenGLWidget::setupVertexAttribs()
     // size = Coordinates(x, y, z) => 3
     // type = GL_FLOAT, as that's the type of each coordinate
     // normalized = false, as there's no need to normalize here
-    // stride = 0, which implies that vertices are side-to-side (VVVNNN)
-    // pointer = where is the start of the data (in VVVNNN, 0 = start of vertices and GL_FLOAT * size(vertexArray) = start of normals)
+    // stride = 0, which implies that vertices are side-to-side (VVVCCC)
+    // pointer = where is the start of the data (in VVVNNN, 0 = start of vertices and GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(sizeof(GL_FLOAT) * m_model.getVertices().size()));
     m_vbo.release();
