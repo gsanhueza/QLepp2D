@@ -4,9 +4,9 @@
 #include "vertex.h"
 
 typedef struct {
-    Vertex v1;
-    Vertex v2;
-    Vertex v3;
+    int i1;
+    int i2;
+    int i3;
     int bad;
 } Triangle;
 

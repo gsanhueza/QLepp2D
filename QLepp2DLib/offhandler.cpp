@@ -73,9 +73,9 @@ bool OFFHandler::loadOffFile(QString &filepath, OFFMetadata &metadata, std::vect
                 indices.push_back(mappedIndices.at(3).toInt());
 
                 Triangle t;
-                t.v1 = vertices.at(mappedIndices.at(1).toInt());
-                t.v2 = vertices.at(mappedIndices.at(2).toInt());
-                t.v3 = vertices.at(mappedIndices.at(3).toInt());
+                t.i1 = mappedIndices.at(1).toInt();
+                t.i2 = mappedIndices.at(2).toInt();
+                t.i3 = mappedIndices.at(3).toInt();
                 t.bad = 0;
                 triangles.push_back(t);
             }
