@@ -3,7 +3,7 @@
 
 #include <QString>
 #include "offhandler.h"
-#include "openclhandler.h"
+#include "abstractengine.h"
 #include "vertex.h"
 #include "triangle.h"
 
@@ -25,7 +25,7 @@ public:
 
 private:
     OFFHandler *m_offhandler;
-    OpenCLHandler *m_openclhandler;
+    AbstractEngine *m_engine;
     std::vector<Vertex> m_vertices;
     std::vector<Triangle> m_triangles;
     std::vector<int> m_indices;

@@ -87,9 +87,8 @@ bool OFFHandler::loadOffFile(QString &filepath, std::vector<Vertex> &vertices, s
 bool OFFHandler::saveOffFile(QString &filepath, std::vector<Vertex> &vertices, std::vector<int> &indices) const
 {
     qDebug() << "Saving OFF file to" << filepath << endl;
-
-    qWarning() << "(V, F, E) = " << m_numVertices << m_numFaces << m_numEdges;
-    qWarning() << "coordinatesPerVertex = " << vertices.size() / m_numVertices;
+    qDebug() << "(V, F, E) = " << m_numVertices << m_numFaces << m_numEdges;
+    qDebug() << "coordinatesPerVertex = " << vertices.size() / m_numVertices;
 
     QFile outputFile(filepath);
 

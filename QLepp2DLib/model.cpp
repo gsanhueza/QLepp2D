@@ -1,8 +1,9 @@
 #include "model.h"
+#include "cpuengine.h"
 
 Model::Model()
     : m_offhandler(new OFFHandler),
-      m_openclhandler(new OpenCLHandler)
+      m_engine(new CPUEngine)
 {
 }
 
@@ -37,10 +38,10 @@ std::vector<Triangle>& Model::getTriangles()
 
 bool Model::detectBadTriangles(double &angle)
 {
-    return m_openclhandler->detectBadTriangles(angle, m_triangles);
+    return m_engine->detectBadTriangles(angle, m_triangles);
 }
 
 bool Model::improveTriangulation()
 {
-    return m_openclhandler->improveTriangulation(m_triangles);
+    return m_engine->improveTriangulation(m_triangles);
 }

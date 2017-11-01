@@ -25,7 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         offhandler.cpp \
     model.cpp \
-    openclhandler.cpp
+    abstractengine.cpp \
+    cpuengine.cpp \
+    openclengine.cpp
 
 HEADERS += \
         offhandler.h \
@@ -34,7 +36,9 @@ HEADERS += \
     triangle.h \
     vertex.h \
     edge.h \
-    openclhandler.h
+    abstractengine.h \
+    cpuengine.h \
+    openclengine.h
 
 unix {
     target.path = /usr/lib
