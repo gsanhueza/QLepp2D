@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "openclengine.h"
 
 OpenCLEngine::OpenCLEngine()
@@ -12,7 +13,7 @@ bool OpenCLEngine::detectBadTriangles(double &angle, std::vector<Triangle> &tria
     return true;
 }
 
-bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles)
+bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles, OFFMetadata &metadata)
 {
     // TODO
     qDebug() << "OpenCLEngine::improveTriangulation";

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "offhandler.h"
+#include "offmetadata.h"
 #include "abstractengine.h"
 #include "vertex.h"
 #include "triangle.h"
@@ -25,6 +26,7 @@ public:
 
 private:
     OFFHandler *m_offhandler;
+    OFFMetadata m_offmetadata;
     AbstractEngine *m_engine;
     std::vector<Vertex> m_vertices;
     std::vector<Triangle> m_triangles;

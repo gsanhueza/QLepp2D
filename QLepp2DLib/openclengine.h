@@ -9,7 +9,7 @@ public:
     OpenCLEngine();
 
     virtual bool detectBadTriangles(double &angle, std::vector<Triangle> &triangles);
-    virtual bool improveTriangulation(std::vector<Triangle> &triangles);
+    virtual bool improveTriangulation(std::vector<Triangle> &triangles, OFFMetadata &metadata);
 };
 
 #endif // OPENCLENGINE_H

@@ -38,7 +38,8 @@ HEADERS += \
     edge.h \
     abstractengine.h \
     cpuengine.h \
-    openclengine.h
+    openclengine.h \
+    offmetadata.h
 
 unix {
     target.path = /usr/lib

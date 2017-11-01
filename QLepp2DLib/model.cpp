@@ -13,12 +13,12 @@ Model::~Model()
 
 bool Model::loadOFF(QString &filepath)
 {
-    return m_offhandler->loadOffFile(filepath, m_vertices, m_indices, m_triangles);
+    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_indices, m_triangles);
 }
 
 bool Model::saveOFF(QString &filepath)
 {
-    return m_offhandler->saveOffFile(filepath, m_vertices, m_indices);
+    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_indices);
 }
 
 std::vector<Vertex>& Model::getVertices()
@@ -43,5 +43,5 @@ bool Model::detectBadTriangles(double &angle)
 
 bool Model::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles);
+    return m_engine->improveTriangulation(m_triangles, m_offmetadata);
 }
