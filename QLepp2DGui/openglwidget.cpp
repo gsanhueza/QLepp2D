@@ -89,20 +89,22 @@ void OpenGLWidget::loadData()
     // Clear old geometry data from vector.
     m_data.clear();
 
-    // Load geometry (vertices) from local file
+    // Load vertices
+    std::vector<Vertex> vertices(m_model.getVertices());
+
     for (Triangle t : m_model.getTriangles())
     {
-        m_data.append(t.v1.x);
-        m_data.append(t.v1.y);
-        m_data.append(t.v1.z);
+        m_data.append(vertices.at(t.i1).x);
+        m_data.append(vertices.at(t.i1).y);
+        m_data.append(vertices.at(t.i1).z);
 
-        m_data.append(t.v2.x);
-        m_data.append(t.v2.y);
-        m_data.append(t.v2.z);
+        m_data.append(vertices.at(t.i2).x);
+        m_data.append(vertices.at(t.i2).y);
+        m_data.append(vertices.at(t.i2).z);
 
-        m_data.append(t.v3.x);
-        m_data.append(t.v3.y);
-        m_data.append(t.v3.z);
+        m_data.append(vertices.at(t.i3).x);
+        m_data.append(vertices.at(t.i3).y);
+        m_data.append(vertices.at(t.i3).z);
     }
 
     // Generate color
