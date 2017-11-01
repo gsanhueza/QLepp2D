@@ -13,10 +13,13 @@ bool CPUEngine::detectBadTriangles(double &angle, std::vector<Triangle> &triangl
     return true;
 }
 
-bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles)
+bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles, OFFMetadata &metadata)
 {
     // TODO
     qDebug() << "CPUEngine::improveTriangulation";
+    metadata.vertices = 1000;
+    metadata.indices = 1000;
+    metadata.edges = 1000;
     triangles.at(0).bad = 0;
     return true;
 }
