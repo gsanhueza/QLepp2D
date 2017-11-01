@@ -9,7 +9,7 @@ OpenCLHandler::OpenCLHandler()
 bool OpenCLHandler::detectBadTriangles(double &angle, std::vector<Triangle> &triangles)
 {
     // TODO
-    qWarning() << "OpenCLHandler: angle =" << angle;
+    qDebug() << "OpenCLHandler: angle =" << angle;
     triangles.at(0).bad = 1;
     return true;
 }
@@ -17,5 +17,6 @@ bool OpenCLHandler::detectBadTriangles(double &angle, std::vector<Triangle> &tri
 bool OpenCLHandler::improveTriangulation(std::vector<Triangle> &triangles)
 {
     // TODO
+    triangles.at(0).bad = 0;
     return true;
 }

@@ -126,12 +126,17 @@ void MainWindow::detectClicked()
     if (m_model->detectBadTriangles(angle))
     {
         ui->improveButton->setEnabled(true);
+        ui->statusBar->showMessage("Bad triangles have been detected. You can now proceed to improve them.");
         emit emitModel(*m_model);
     }
 }
 
 void MainWindow::improveClicked()
 {
-    m_model->improveTriangulation();
     qDebug() << "Improve button clicked";
+    if (m_model->improveTriangulation())
+    {
+        ui->statusBar->showMessage("Triangulation has been modified");
+        emit emitModel(*m_model);
+    }
 }

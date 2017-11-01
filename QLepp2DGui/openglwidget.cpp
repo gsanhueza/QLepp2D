@@ -73,7 +73,7 @@ void OpenGLWidget::generateGLProgram()
     // sure there is a VAO when one is needed.
     m_vao.create();
 
-    // Our camera has a initial position.
+    // Our camera has an initial position.
     m_camera.setToIdentity();
     m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
 
@@ -143,6 +143,9 @@ void OpenGLWidget::paintGL()
     m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
     m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
+    // Bind VAO
+    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
+
     // Bind data of shaders to program
     m_program->bind();
     m_program->setUniformValue(m_projMatrixLoc, m_proj);
@@ -170,9 +173,7 @@ void OpenGLWidget::resizeGL(int w, int h)
 void OpenGLWidget::receiveModel(const Model &m)
 {
     m_model = m;
-    m_program = nullptr;
     m_dataAlreadyLoaded = false;
-    generateGLProgram();
     update();
 }
 

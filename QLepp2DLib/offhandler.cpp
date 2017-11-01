@@ -28,6 +28,7 @@ bool OFFHandler::loadOffFile(QString &filepath, std::vector<Vertex> &vertices, s
         // Old data cleanup
         vertices.clear();
         indices.clear();
+        triangles.clear();
 
         // Skip comments
         do
