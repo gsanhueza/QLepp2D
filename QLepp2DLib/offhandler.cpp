@@ -13,83 +13,73 @@ bool OFFHandler::loadOffFile(QString &filepath, OFFMetadata &metadata, std::vect
 
     QFile inputFile(filepath);
 
-    try
+    if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        QTextStream in(&inputFile);
+
+        // Check if it's a real OFF file
+        QString line = in.readLine();
+        if (line.compare("OFF") != 0)
         {
-            QTextStream in(&inputFile);
-
-            // Check if it's a real OFF file
-            QString line = in.readLine();
-            if (line.compare("OFF") != 0)
-            {
-                qWarning("Not an OFF file");
-                throw std::exception();
-            }
-
-            // Old data cleanup
-            vertices.clear();
-            indices.clear();
-            triangles.clear();
-
-            // Skip comments
-            do
-            {
-                line = in.readLine();
-            } while (line.contains("#") or line.size() == 0);
-
-            // Read file metadata (vertices, faces, edges)
-            QStringList parsedmetadata = line.split(" ");
-
-            metadata.vertices = parsedmetadata.at(0).toInt();
-            metadata.indices = parsedmetadata.at(1).toInt();
-            metadata.edges = parsedmetadata.at(2).toInt();
-
-            qDebug() << "Number of vertices:" << metadata.vertices;
-            qDebug() << "Number of faces:" << metadata.indices;
-            qDebug() << "Number of edges:" << metadata.edges;
-
-            // Read vertices data
-            for (int i(0); i < metadata.vertices; i++)
-            {
-                line = in.readLine();
-                QStringList coordinates = line.split(" ", QString::SkipEmptyParts);
-                // We push the coordinates (x, y, z)
-                Vertex v;
-                v.x = coordinates.at(0).toFloat();
-                v.y = coordinates.at(1).toFloat();
-                v.z = coordinates.at(2).toFloat();
-                vertices.push_back(v);
-            }
-
-            // Read faces data (indices)
-            for (int i(0); i < metadata.indices; i++)
-            {
-                line = in.readLine();
-                QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
-                // We check and skip the first one, because it marks the amount of indices, not the index itself.
-                indices.push_back(mappedIndices.at(1).toInt());
-                indices.push_back(mappedIndices.at(2).toInt());
-                indices.push_back(mappedIndices.at(3).toInt());
-
-                Triangle t;
-                t.i1 = mappedIndices.at(1).toInt();
-                t.i2 = mappedIndices.at(2).toInt();
-                t.i3 = mappedIndices.at(3).toInt();
-                t.bad = 0;
-                triangles.push_back(t);
-            }
+            qCritical("Not an OFF file");
+            return false;
         }
-        inputFile.close();
-        return true;
-    }
-    catch (std::exception &e)
-    {
-        qWarning() << e.what();
 
-        inputFile.close();
-        return false;
+        // Old data cleanup
+        vertices.clear();
+        indices.clear();
+        triangles.clear();
+
+        // Skip comments
+        do
+        {
+            line = in.readLine();
+        } while (line.contains("#") or line.size() == 0);
+
+        // Read file metadata (vertices, faces, edges)
+        QStringList parsedmetadata = line.split(" ");
+
+        metadata.vertices = parsedmetadata.at(0).toInt();
+        metadata.indices = parsedmetadata.at(1).toInt();
+        metadata.edges = parsedmetadata.at(2).toInt();
+
+        qDebug() << "Number of vertices:" << metadata.vertices;
+        qDebug() << "Number of faces:" << metadata.indices;
+        qDebug() << "Number of edges:" << metadata.edges;
+
+        // Read vertices data
+        for (int i(0); i < metadata.vertices; i++)
+        {
+            line = in.readLine();
+            QStringList coordinates = line.split(" ", QString::SkipEmptyParts);
+            // We push the coordinates (x, y, z)
+            Vertex v;
+            v.x = coordinates.at(0).toFloat();
+            v.y = coordinates.at(1).toFloat();
+            v.z = coordinates.at(2).toFloat();
+            vertices.push_back(v);
+        }
+
+        // Read faces data (indices)
+        for (int i(0); i < metadata.indices; i++)
+        {
+            line = in.readLine();
+            QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
+            // We check and skip the first one, because it marks the amount of indices, not the index itself.
+            indices.push_back(mappedIndices.at(1).toInt());
+            indices.push_back(mappedIndices.at(2).toInt());
+            indices.push_back(mappedIndices.at(3).toInt());
+
+            Triangle t;
+            t.i1 = mappedIndices.at(1).toInt();
+            t.i2 = mappedIndices.at(2).toInt();
+            t.i3 = mappedIndices.at(3).toInt();
+            t.bad = 0;
+            triangles.push_back(t);
+        }
     }
+    inputFile.close();
+    return true;
 }
 
 bool OFFHandler::saveOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices) const
