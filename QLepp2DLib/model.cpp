@@ -38,10 +38,10 @@ std::vector<Triangle>& Model::getTriangles()
 
 bool Model::detectBadTriangles(double &angle)
 {
-    return m_engine->detectBadTriangles(angle, m_triangles);
+    return m_engine->detectBadTriangles(angle, m_triangles, m_vertices, m_indices);
 }
 
 bool Model::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_offmetadata);
+    return m_engine->improveTriangulation(m_triangles, m_vertices, m_indices, m_offmetadata);
 }

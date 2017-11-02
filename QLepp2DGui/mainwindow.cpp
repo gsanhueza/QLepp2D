@@ -136,7 +136,7 @@ void MainWindow::improveClicked()
     qDebug() << "Improve button clicked";
     if (m_model->improveTriangulation())
     {
-        ui->statusBar->showMessage("Triangulation has been modified");
+        ui->statusBar->showMessage("Triangulation has been modified.");
         emit emitModel(*m_model);
     }
 }
