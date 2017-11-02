@@ -4,7 +4,7 @@
 #include "vertex.h"
 
 typedef struct {
-    Vertex *a;
-    Vertex *b;
+    Vertex a;
+    Vertex b;
 } Edge;
 #endif // EDGE_H

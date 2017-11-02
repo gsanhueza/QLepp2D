@@ -5,7 +5,10 @@ OpenCLEngine::OpenCLEngine()
 {
 }
 
-bool OpenCLEngine::detectBadTriangles(double &angle, std::vector<Triangle> &triangles)
+bool OpenCLEngine::detectBadTriangles(  double &angle,
+                                        std::vector<Triangle> &triangles,
+                                        std::vector<Vertex> &vertices,
+                                        std::vector<int> &indices)
 {
     // TODO
     qDebug() << "OpenCLEngine::detectBadTriangles - angle =" << angle;
@@ -13,7 +16,10 @@ bool OpenCLEngine::detectBadTriangles(double &angle, std::vector<Triangle> &tria
     return true;
 }
 
-bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles, OFFMetadata &metadata)
+bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
+                                        std::vector<Vertex> &vertices,
+                                        std::vector<int> &indices,
+                                        OFFMetadata &metadata)
 {
     // TODO
     qDebug() << "OpenCLEngine::improveTriangulation";
