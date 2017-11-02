@@ -139,7 +139,7 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionReloadView"/>
+    <addaction name="actionResetView"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -226,16 +226,16 @@
     <string>Shows an About window.</string>
    </property>
   </action>
-  <action name="actionReloadView">
+  <action name="actionResetView">
    <property name="icon">
     <iconset theme="view-refresh">
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>&amp;Reload View</string>
+    <string>&amp;Reset View</string>
    </property>
    <property name="statusTip">
-    <string>Reloads the view to an initial state. Does not modify the triangulation.</string>
+    <string>Resets the view to an initial state. Does not modify the triangulation.</string>
    </property>
   </action>
  </widget>
@@ -336,10 +336,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionReloadView</sender>
+   <sender>actionResetView</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>reloadViewClicked()</slot>
+   <slot>resetViewClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -423,7 +423,7 @@
   <slot>saveTriangulationClicked()</slot>
   <slot>loadTutorialClicked()</slot>
   <slot>loadAboutClicked()</slot>
-  <slot>reloadViewClicked()</slot>
+  <slot>resetViewClicked()</slot>
   <slot>detectClicked()</slot>
   <slot>improveClicked()</slot>
  </slots>
