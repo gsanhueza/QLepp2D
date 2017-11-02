@@ -6,7 +6,12 @@ Model::Model()
     : m_offhandler(new OFFHandler),
       m_engine(new OpenCLEngine)
 {
+}
 
+Model::Model(AbstractEngine *engine)
+    : m_offhandler(new OFFHandler)
+{
+    m_engine = engine;
 }
 
 Model::~Model()

@@ -29,7 +29,7 @@ void OpenGLWidget::cleanup()
     doneCurrent();
 }
 
-void OpenGLWidget::setupVertexAttribs()
+void OpenGLWidget::setupVertexAttribs(QOpenGLBuffer &vbo)
 {
     m_vbo.bind();
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
@@ -89,10 +89,13 @@ void OpenGLWidget::loadData()
 
     // Setup our vertex buffer object.
     m_vbo.create();
+//     m_lbo.create();
+
     m_vbo.bind();
 
     // Clear old geometry data from vector.
     m_data.clear();
+    m_lines.clear();
 
     // Load vertices
     std::vector<Vertex> vertices(m_model->getVertices());
@@ -112,6 +115,9 @@ void OpenGLWidget::loadData()
         m_data.append(vertices.at(t.i3).z);
     }
 
+    // Load lines
+    m_lines = m_data;
+
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
@@ -128,11 +134,19 @@ void OpenGLWidget::loadData()
         m_data.append(0.0);
     }
 
+    // Generate line colors
+    for (unsigned int i(0); i < 9 * m_model->getTriangles().size(); i++)
+    {
+        m_lines.append(0.0);
+    }
+
     // Allocate data into VBO
     m_vbo.allocate(m_data.constData(), m_data.count() * sizeof(GLfloat));
+//     m_lbo.allocate(m_lines.constData(), m_lines.count() * sizeof(GLfloat));
 
     // Store the vertex attribute bindings for the program.
-    setupVertexAttribs();
+    setupVertexAttribs(m_vbo);
+//     setupVertexAttribs(m_lbo);
     m_dataAlreadyLoaded = true;
 }
 
@@ -141,7 +155,7 @@ void OpenGLWidget::paintGL()
     // Clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE); // Mesh
+    glDisable(GL_CULL_FACE); // Draw both sides
 
     m_world.setToIdentity();
 
@@ -165,8 +179,14 @@ void OpenGLWidget::paintGL()
     }
 
     // Draw triangulation
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6); // Last argument = Number of vertices
+    m_vbo.bind();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6);      // Last argument = Number of vertices
+
+    // Draw triangulation lines
+//     m_lbo.bind();
+//     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//     glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6); // Last argument = Number of vertices
 
     m_program->release();
 }
