@@ -57,7 +57,7 @@ bool CPUEngine::detectBadTriangles( double &angle,
         qDebug() << "angle_opp_b2:" << angle_opp_b2;
         qDebug() << "angle_opp_c2:" << angle_opp_c2;
         qDebug() << "rad_angle:" << rad_angle;
-        qDebug() << "Is bad: " << (rad_angle < angle_opp_a2 or rad_angle < angle_opp_b2 or rad_angle < angle_opp_c2);
+        qDebug() << "Is bad: " << (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
         qDebug() << "-------------------";
 
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
