@@ -19,6 +19,8 @@ public:
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
                                         OFFMetadata &metadata) = 0;
+
+    virtual void setup();
 };
 
 #endif // OPENCLHANDLER_H

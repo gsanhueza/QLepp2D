@@ -3,6 +3,7 @@
 
 OpenCLEngine::OpenCLEngine()
 {
+    setup();
 }
 
 bool OpenCLEngine::detectBadTriangles(  double &angle,
@@ -25,4 +26,9 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     qDebug() << "OpenCLEngine::improveTriangulation";
     triangles.at(0).bad = 0;
     return true;
+}
+
+void OpenCLEngine::setup()
+{
+    qDebug() << "Executing OpenCLEngine::setup";
 }

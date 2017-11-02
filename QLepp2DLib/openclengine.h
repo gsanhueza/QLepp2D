@@ -16,6 +16,7 @@ public:
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
                                         OFFMetadata &metadata);
+    virtual void setup();
 };
 
 #endif // OPENCLENGINE_H

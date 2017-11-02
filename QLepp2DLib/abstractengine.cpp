@@ -3,5 +3,8 @@
 
 AbstractEngine::AbstractEngine()
 {
-    qDebug() << "Inheriting from AbstractEngine::AbstractEngine";
+}
+
+void AbstractEngine::setup()
+{
 }

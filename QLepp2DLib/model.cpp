@@ -1,9 +1,10 @@
 #include "model.h"
 #include "cpuengine.h"
+#include "openclengine.h"
 
 Model::Model()
     : m_offhandler(new OFFHandler),
-      m_engine(new CPUEngine)
+      m_engine(new OpenCLEngine)
 {
 }
 
