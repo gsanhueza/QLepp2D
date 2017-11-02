@@ -57,14 +57,13 @@ protected:
 private:
     Model *m_model;
 
-    void setupVertexAttribs(QOpenGLBuffer &vbo);
+    void setupVertexAttribs();
     void generateGLProgram();
     void loadData();
     void cleanup();
 
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_vbo;
-    QOpenGLBuffer m_lbo;
     QOpenGLShaderProgram *m_program;
     int m_modelViewMatrixLoc;
     int m_projMatrixLoc;
@@ -83,7 +82,6 @@ private:
     float m_zCamPos;
 
     QVector<GLfloat> m_data;
-    QVector<GLfloat> m_lines;
     bool m_dataAlreadyLoaded;
 };
 #endif
