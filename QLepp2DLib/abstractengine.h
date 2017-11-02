@@ -20,6 +20,7 @@ public:
                                         std::vector<int> &indices,
                                         OFFMetadata &metadata) = 0;
 
+protected:
     virtual void setup();
 };
 

@@ -31,7 +31,7 @@ SOURCES += \
 
 HEADERS += \
         offhandler.h \
-        qlepp2dlib_global.h \ 
+        qlepp2dlib_global.h \
     model.h \
     triangle.h \
     vertex.h \
@@ -40,6 +40,8 @@ HEADERS += \
     cpuengine.h \
     openclengine.h \
     offmetadata.h
+
+LIBS += -lOpenCL
 
 unix {
     target.path = /usr/lib
