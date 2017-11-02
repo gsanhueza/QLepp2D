@@ -139,7 +139,7 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionReloadView"/>
+    <addaction name="actionResetView"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -226,16 +226,16 @@
     <string>Shows an About window.</string>
    </property>
   </action>
-  <action name="actionReloadView">
+  <action name="actionResetView">
    <property name="icon">
     <iconset theme="view-refresh">
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>&amp;Reload View</string>
+    <string>&amp;Reset View</string>
    </property>
    <property name="statusTip">
-    <string>Reloads the view to an initial state. Does not modify the triangulation.</string>
+    <string>Resets the view to an initial state. Does not modify the triangulation.</string>
    </property>
   </action>
  </widget>
@@ -246,7 +246,7 @@
    <extends>QOpenGLWidget</extends>
    <header>openglwidget.h</header>
    <slots>
-    <slot>receiveModel(Model)</slot>
+    <slot>receiveModel(Model*)</slot>
     <slot>resetView()</slot>
    </slots>
   </customwidget>
@@ -336,26 +336,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>MainWindow</sender>
-   <signal>emitModel(Model)</signal>
-   <receiver>openGLWidget</receiver>
-   <slot>receiveModel(Model)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>319</x>
-     <y>239</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>319</x>
-     <y>229</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionReloadView</sender>
+   <sender>actionResetView</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>reloadViewClicked()</slot>
+   <slot>resetViewClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -415,15 +399,31 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>emitModel(Model*)</signal>
+   <receiver>openGLWidget</receiver>
+   <slot>receiveModel(Model*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <signal>emitModel(Model)</signal>
+  <signal>emitModel(Model*)</signal>
   <signal>resetView()</signal>
   <slot>loadTriangulationClicked()</slot>
   <slot>saveTriangulationClicked()</slot>
   <slot>loadTutorialClicked()</slot>
   <slot>loadAboutClicked()</slot>
-  <slot>reloadViewClicked()</slot>
+  <slot>resetViewClicked()</slot>
   <slot>detectClicked()</slot>
   <slot>improveClicked()</slot>
  </slots>

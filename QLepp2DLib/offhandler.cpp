@@ -66,20 +66,22 @@ bool OFFHandler::loadOffFile(QString &filepath, OFFMetadata &metadata, std::vect
             line = in.readLine();
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
             // We check and skip the first one, because it marks the amount of indices, not the index itself.
-            indices.push_back(mappedIndices.at(1).toInt());
-            indices.push_back(mappedIndices.at(2).toInt());
-            indices.push_back(mappedIndices.at(3).toInt());
-
             Triangle t;
             t.i1 = mappedIndices.at(1).toInt();
             t.i2 = mappedIndices.at(2).toInt();
             t.i3 = mappedIndices.at(3).toInt();
             t.bad = 0;
             triangles.push_back(t);
+
+            indices.push_back(t.i1);
+            indices.push_back(t.i2);
+            indices.push_back(t.i3);
         }
+
+        inputFile.close();
+        return true;
     }
-    inputFile.close();
-    return true;
+    return false;
 }
 
 bool OFFHandler::saveOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices) const

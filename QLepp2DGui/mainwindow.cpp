@@ -26,17 +26,17 @@ MainWindow::MainWindow(QWidget *parent) :
     // Toolbar actions
     QAction *load = ui->mainToolBar->addAction(ui->actionLoadTriangulation->icon(), ui->actionLoadTriangulation->text());
     QAction *save = ui->mainToolBar->addAction(ui->actionSaveTriangulation->icon(), ui->actionSaveTriangulation->text());
-    QAction *reload = ui->mainToolBar->addAction(ui->actionReloadView->icon(), ui->actionReloadView->text());
+    QAction *reset = ui->mainToolBar->addAction(ui->actionResetView->icon(), ui->actionResetView->text());
     QAction *quit = ui->mainToolBar->addAction(ui->actionQuit->icon(), ui->actionQuit->text());
 
     load->setStatusTip(ui->actionLoadTriangulation->statusTip());
     save->setStatusTip(ui->actionSaveTriangulation->statusTip());
-    reload->setStatusTip(ui->actionReloadView->statusTip());
+    reset->setStatusTip(ui->actionResetView->statusTip());
     quit->setStatusTip(ui->actionQuit->statusTip());
 
     connect(load, &QAction::triggered, this, &MainWindow::loadTriangulationClicked);
     connect(save, &QAction::triggered, this, &MainWindow::saveTriangulationClicked);
-    connect(reload, &QAction::triggered, this, &MainWindow::reloadViewClicked);
+    connect(reset, &QAction::triggered, this, &MainWindow::resetViewClicked);
     connect(quit, &QAction::triggered, this, &MainWindow::close);
 }
 
@@ -47,7 +47,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setModel(Model* model)
+void MainWindow::setModel(Model *model)
 {
     m_model = model;
 }
@@ -65,7 +65,7 @@ void MainWindow::loadTriangulationClicked()
         ui->statusBar->showMessage("Loaded.");
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
-        emit emitModel(*m_model);
+        emit emitModel(m_model);
     }
     else
     {
@@ -111,9 +111,9 @@ void MainWindow::loadAboutClicked()
     m_about->show();
 }
 
-void MainWindow::reloadViewClicked()
+void MainWindow::resetViewClicked()
 {
-    qDebug() << "Reload View button clicked";
+    qDebug() << "Reset View button clicked";
     emit resetView();
 }
 
@@ -127,7 +127,7 @@ void MainWindow::detectClicked()
     {
         ui->improveButton->setEnabled(true);
         ui->statusBar->showMessage("Bad triangles have been detected. You can now proceed to improve them.");
-        emit emitModel(*m_model);
+        emit emitModel(m_model);
     }
 }
 
@@ -137,6 +137,6 @@ void MainWindow::improveClicked()
     if (m_model->improveTriangulation())
     {
         ui->statusBar->showMessage("Triangulation has been modified.");
-        emit emitModel(*m_model);
+        emit emitModel(m_model);
     }
 }
