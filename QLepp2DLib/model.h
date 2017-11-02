@@ -12,6 +12,7 @@ class Model
 {
 public:
     Model();
+    Model(AbstractEngine *engine);
     ~Model();
 
     bool loadOFF(QString &filepath);

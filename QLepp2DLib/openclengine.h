@@ -1,14 +1,14 @@
 #ifndef OPENCLENGINE_H
 #define OPENCLENGINE_H
 
-# define __CL_ENABLE_EXCEPTIONS
-# if defined(__APPLE__) || defined(__MACOSX)
-#   include <OpenCL/cl.cpp>
-# else
-#   include <CL/cl.hpp>
-# endif
+#define __CL_ENABLE_EXCEPTIONS
+#if defined(__APPLE__) || defined(__MACOSX)
+# include <OpenCL/cl.cpp>
+#else
+# include <CL/cl.hpp>
+#endif
 
-# include "abstractengine.h"
+#include "abstractengine.h"
 
 class OpenCLEngine : public AbstractEngine
 {
