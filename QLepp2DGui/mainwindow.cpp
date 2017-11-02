@@ -47,7 +47,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setModel(Model* model)
+void MainWindow::setModel(Model *model)
 {
     m_model = model;
 }
@@ -65,7 +65,7 @@ void MainWindow::loadTriangulationClicked()
         ui->statusBar->showMessage("Loaded.");
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
-        emit emitModel(*m_model);
+        emit emitModel(m_model);
     }
     else
     {
@@ -127,7 +127,7 @@ void MainWindow::detectClicked()
     {
         ui->improveButton->setEnabled(true);
         ui->statusBar->showMessage("Bad triangles have been detected. You can now proceed to improve them.");
-        emit emitModel(*m_model);
+        emit emitModel(m_model);
     }
 }
 
@@ -137,6 +137,6 @@ void MainWindow::improveClicked()
     if (m_model->improveTriangulation())
     {
         ui->statusBar->showMessage("Triangulation has been modified.");
-        emit emitModel(*m_model);
+        emit emitModel(m_model);
     }
 }

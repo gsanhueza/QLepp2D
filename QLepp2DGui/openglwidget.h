@@ -1,5 +1,6 @@
 /*
- * QShaderViewer is a geometry and shader visualization program.
+ * QLepp2D is a triangulation improver and visualization program that uses
+ * a Lepp-Delaunay algorithm.
  * Copyright (C) 2017  Gabriel Sanhueza <gabriel_8032@hotmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +26,6 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLWidget>
-#include <QMatrix4x4>
 #include <QMouseEvent>
 #include <QStringRef>
 
@@ -40,7 +40,7 @@ public:
     ~OpenGLWidget();
 
 public slots:
-    void receiveModel(const Model &m);
+    void receiveModel(Model *m);
     void resetView();
     void setXRotation(int angle);
     void setYRotation(int angle);
@@ -55,7 +55,7 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 
 private:
-    Model m_model;
+    Model *m_model;
 
     void setupVertexAttribs();
     void generateGLProgram();

@@ -21,7 +21,7 @@ public:
     void setModel(Model *model);
 
 signals:
-    void emitModel(const Model &m);
+    void emitModel(Model *m);
     void resetView();
 
 private slots:
