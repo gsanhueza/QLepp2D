@@ -112,46 +112,26 @@ void OpenGLWidget::loadData()
         m_data.append(vertices.at(t.i3).z);
     }
 
-    // DUPLICATE
-    for (Triangle t : m_model->getTriangles())
-    {
-        m_data.append(vertices.at(t.i1).x);
-        m_data.append(vertices.at(t.i1).y);
-        m_data.append(vertices.at(t.i1).z);
-
-        m_data.append(vertices.at(t.i2).x);
-        m_data.append(vertices.at(t.i2).y);
-        m_data.append(vertices.at(t.i2).z);
-
-        m_data.append(vertices.at(t.i3).x);
-        m_data.append(vertices.at(t.i3).y);
-        m_data.append(vertices.at(t.i3).z);
-    }
+    // DUPLICATE (Wireframe)
+    // Load vertices
+    m_data.append(m_data);
 
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
-        m_data.append(t.bad);
-        m_data.append(!t.bad);
-        m_data.append(0.0);
-
-        m_data.append(t.bad);
-        m_data.append(!t.bad);
-        m_data.append(0.0);
-
-        m_data.append(t.bad);
-        m_data.append(!t.bad);
-        m_data.append(0.0);
-    }
-
-    // DUPLICATE
-    // Generate color
-    for (Triangle t : m_model->getTriangles())
-    {
-        for (int i(0); i < 9; i++)
+        for (int i(0); i < 3; i++)
         {
+            m_data.append(t.bad);
+            m_data.append(!t.bad);
             m_data.append(0.0);
         }
+    }
+
+    // DUPLICATE (Black wireframe)
+    // Generate color
+    for (unsigned int i(0); i < 9 * m_model->getTriangles().size(); i++)
+    {
+        m_data.append(0.0);
     }
 
     // Allocate data into VBO
@@ -208,7 +188,7 @@ void OpenGLWidget::paintGL()
 void OpenGLWidget::resizeGL(int w, int h)
 {
     m_proj.setToIdentity();
-    m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 100.0f);
+    m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 10000.0f);
 }
 
 void OpenGLWidget::receiveModel(Model *m)
@@ -249,8 +229,10 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event)
 void OpenGLWidget::resetView()
 {
     m_xRot = m_yRot = m_zRot = 0;
+    m_xCamPos = m_yCamPos = 0;
+    m_zCamPos = -5;
     m_camera.setToIdentity();
-    m_camera.translate(0, 0, -5);
+    m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
     update();
 }
 
