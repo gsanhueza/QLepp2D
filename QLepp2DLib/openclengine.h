@@ -28,10 +28,11 @@ protected:
     virtual void setup();
 
 private:
-    std::vector<cl::Platform> platforms;
-    std::vector<cl::Device> devices;
-    cl::CommandQueue queue;
-    cl::Program program;
+    std::vector<cl::Platform> m_platforms;
+    std::vector<cl::Device> m_devices;
+    cl::Context m_context;
+    cl::CommandQueue m_queue;
+    cl::Program m_program;
 };
 
 #endif // OPENCLENGINE_H
