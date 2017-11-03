@@ -1,4 +1,3 @@
-#include <cmath>
 #include "openglwidget.h"
 
 OpenGLWidget::OpenGLWidget(QWidget* parent)
@@ -115,16 +114,16 @@ void OpenGLWidget::loadData()
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
-        m_data.append(t.bad);
-        m_data.append(!t.bad);
+        m_data.append(t.bad  * 0.9);
+        m_data.append(!t.bad * 0.9);
         m_data.append(0.0);
 
-        m_data.append(t.bad);
-        m_data.append(!t.bad);
+        m_data.append(t.bad  * 0.7);
+        m_data.append(!t.bad * 0.7);
         m_data.append(0.0);
 
-        m_data.append(t.bad);
-        m_data.append(!t.bad);
+        m_data.append(t.bad  * 0.5);
+        m_data.append(!t.bad * 0.5);
         m_data.append(0.0);
     }
 
@@ -141,7 +140,7 @@ void OpenGLWidget::paintGL()
     // Clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);                                // Mesh
+    glDisable(GL_CULL_FACE);                                // Both sides
 
     m_world.setToIdentity();
 
@@ -165,8 +164,7 @@ void OpenGLWidget::paintGL()
     }
 
     // Draw triangulation
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6);      // Last argument = Number of vertices
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6);     // Last argument = Number of vertices
 
     m_program->release();
 }
@@ -174,7 +172,7 @@ void OpenGLWidget::paintGL()
 void OpenGLWidget::resizeGL(int w, int h)
 {
     m_proj.setToIdentity();
-    m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 100.0f);
+    m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 10000.0f);
 }
 
 void OpenGLWidget::receiveModel(Model *m)
@@ -215,8 +213,10 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event)
 void OpenGLWidget::resetView()
 {
     m_xRot = m_yRot = m_zRot = 0;
+    m_xCamPos = m_yCamPos = 0;
+    m_zCamPos = -5;
     m_camera.setToIdentity();
-    m_camera.translate(0, 0, -5);
+    m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
     update();
 }
 
