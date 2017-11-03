@@ -43,7 +43,8 @@ void OpenGLWidget::setupVertexAttribs()
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(2 * 3 * sizeof(Vertex) * m_model->getTriangles().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
+    f->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(6 * sizeof(Vertex) * m_model->getTriangles().size()));
     m_vbo.release();
 }
 
@@ -61,6 +62,7 @@ void OpenGLWidget::generateGLProgram()
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("color", 1);
+    m_program->bindAttributeLocation("barycentric", 1);
     m_program->link();
 
     m_program->bind();
@@ -112,10 +114,6 @@ void OpenGLWidget::loadData()
         m_data.append(vertices.at(t.i3).z);
     }
 
-    // DUPLICATE (Wireframe)
-    // Load vertices
-    m_data.append(m_data);
-
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
@@ -127,11 +125,21 @@ void OpenGLWidget::loadData()
         }
     }
 
-    // DUPLICATE (Black wireframe)
-    // Generate color
-    for (unsigned int i(0); i < 9 * m_model->getTriangles().size(); i++)
+    // Generate barycentric coordinates
+    for (Triangle t : m_model->getTriangles())
     {
+        Q_UNUSED(t);
+        m_data.append(1.0);
         m_data.append(0.0);
+        m_data.append(0.0);
+
+        m_data.append(0.0);
+        m_data.append(1.0);
+        m_data.append(0.0);
+
+        m_data.append(0.0);
+        m_data.append(0.0);
+        m_data.append(1.0);
     }
 
     // Allocate data into VBO
@@ -171,16 +179,7 @@ void OpenGLWidget::paintGL()
     }
 
     // Draw triangulation
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    // Last argument = Number of vertices
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 12);
-
-    glEnable(GL_LINE_SMOOTH);
-    glLineWidth(10.0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // Last argument = Number of vertices
-    glDrawArrays(GL_LINES, m_data.count() / 12, m_data.count() / 12);
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 9);     // Last argument = Number of vertices
 
     m_program->release();
 }
