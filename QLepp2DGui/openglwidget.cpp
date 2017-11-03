@@ -44,7 +44,6 @@ void OpenGLWidget::setupVertexAttribs()
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(2 * 3 * sizeof(Vertex) * m_model->getTriangles().size()));
-    f->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(4 * 3 * sizeof(Vertex) * m_model->getTriangles().size()));
     m_vbo.release();
 }
 
@@ -62,7 +61,6 @@ void OpenGLWidget::generateGLProgram()
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("color", 1);
-    m_program->bindAttributeLocation("wireframe", 2);
     m_program->link();
 
     m_program->bind();
@@ -156,20 +154,6 @@ void OpenGLWidget::loadData()
         }
     }
 
-    // Wireframe
-    for (Triangle t : m_model->getTriangles())
-    {
-        for (int i(0); i < 9; i++)
-        {
-            m_data.append(0.0);
-        }
-        // DUPLICATE
-        for (int i(0); i < 9; i++)
-        {
-            m_data.append(1.0);
-        }
-    }
-
     // Allocate data into VBO
     m_vbo.allocate(m_data.constData(), m_data.count() * sizeof(GLfloat));
 
@@ -210,13 +194,13 @@ void OpenGLWidget::paintGL()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Last argument = Number of vertices
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 18);
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 12);
 
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(10.0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // Last argument = Number of vertices
-    glDrawArrays(GL_LINES, m_data.count() / 18, m_data.count() / 18);
+    glDrawArrays(GL_LINES, m_data.count() / 12, m_data.count() / 12);
 
     m_program->release();
 }

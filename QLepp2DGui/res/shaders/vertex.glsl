@@ -2,7 +2,6 @@
 
 attribute vec3 vertex;
 attribute vec3 color;
-attribute vec3 wireframe;
 
 varying vec3 f_color;
 
