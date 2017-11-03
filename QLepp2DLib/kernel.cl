@@ -11,7 +11,9 @@ typedef struct {
     int bad;
 } Triangle;
 
-kernel void detectBadTriangles(global Triangle *triangles, global Vertex *vertices)
+kernel void detect(global Triangle *triangles, global Vertex *vertices)
 {
+    // TODO Make OpenCL Kernel
     int idx = get_global_id(0);
+    triangles[idx].bad = 1;
 }
