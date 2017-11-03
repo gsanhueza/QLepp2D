@@ -114,17 +114,12 @@ void OpenGLWidget::loadData()
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
-        m_data.append(t.bad  * 0.9);
-        m_data.append(!t.bad * 0.9);
-        m_data.append(0.0);
-
-        m_data.append(t.bad  * 0.7);
-        m_data.append(!t.bad * 0.7);
-        m_data.append(0.0);
-
-        m_data.append(t.bad  * 0.5);
-        m_data.append(!t.bad * 0.5);
-        m_data.append(0.0);
+        for (int i(1); i <= 3; i++)
+        {
+            m_data.append( t.bad * 0.3 * i);
+            m_data.append(!t.bad * 0.3 * i);
+            m_data.append(0.0);
+        }
     }
 
     // Allocate data into VBO

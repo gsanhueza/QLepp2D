@@ -41,6 +41,8 @@ FORMS += \
         about.ui \
         tutorial.ui
 
+LIBS += -lOpenCL
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/release/ -lQLepp2DLib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/debug/ -lQLepp2DLib
 else:unix: LIBS += -L$$OUT_PWD/../QLepp2DLib/ -lQLepp2DLib
