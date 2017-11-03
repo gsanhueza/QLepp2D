@@ -43,7 +43,8 @@ void OpenGLWidget::setupVertexAttribs()
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(2 * 3 * sizeof(Vertex) * m_model->getTriangles().size()));
+    f->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(4 * 3 * sizeof(Vertex) * m_model->getTriangles().size()));
     m_vbo.release();
 }
 
@@ -61,6 +62,7 @@ void OpenGLWidget::generateGLProgram()
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("color", 1);
+    m_program->bindAttributeLocation("wireframe", 2);
     m_program->link();
 
     m_program->bind();
@@ -112,6 +114,22 @@ void OpenGLWidget::loadData()
         m_data.append(vertices.at(t.i3).z);
     }
 
+    // DUPLICATE
+    for (Triangle t : m_model->getTriangles())
+    {
+        m_data.append(vertices.at(t.i1).x);
+        m_data.append(vertices.at(t.i1).y);
+        m_data.append(vertices.at(t.i1).z);
+
+        m_data.append(vertices.at(t.i2).x);
+        m_data.append(vertices.at(t.i2).y);
+        m_data.append(vertices.at(t.i2).z);
+
+        m_data.append(vertices.at(t.i3).x);
+        m_data.append(vertices.at(t.i3).y);
+        m_data.append(vertices.at(t.i3).z);
+    }
+
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
@@ -128,6 +146,30 @@ void OpenGLWidget::loadData()
         m_data.append(0.0);
     }
 
+    // DUPLICATE
+    // Generate color
+    for (Triangle t : m_model->getTriangles())
+    {
+        for (int i(0); i < 9; i++)
+        {
+            m_data.append(0.0);
+        }
+    }
+
+    // Wireframe
+    for (Triangle t : m_model->getTriangles())
+    {
+        for (int i(0); i < 9; i++)
+        {
+            m_data.append(0.0);
+        }
+        // DUPLICATE
+        for (int i(0); i < 9; i++)
+        {
+            m_data.append(1.0);
+        }
+    }
+
     // Allocate data into VBO
     m_vbo.allocate(m_data.constData(), m_data.count() * sizeof(GLfloat));
 
@@ -141,7 +183,7 @@ void OpenGLWidget::paintGL()
     // Clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);                                // Mesh
+    glDisable(GL_CULL_FACE);                                // Both sides
 
     m_world.setToIdentity();
 
@@ -166,7 +208,15 @@ void OpenGLWidget::paintGL()
 
     // Draw triangulation
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6);      // Last argument = Number of vertices
+
+    // Last argument = Number of vertices
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 18);
+
+    glEnable(GL_LINE_SMOOTH);
+    glLineWidth(10.0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // Last argument = Number of vertices
+    glDrawArrays(GL_LINES, m_data.count() / 18, m_data.count() / 18);
 
     m_program->release();
 }
