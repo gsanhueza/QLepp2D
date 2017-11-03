@@ -1,4 +1,3 @@
-#include <cmath>
 #include "openglwidget.h"
 
 OpenGLWidget::OpenGLWidget(QWidget* parent)
@@ -44,7 +43,6 @@ void OpenGLWidget::setupVertexAttribs()
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
-    f->glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(6 * sizeof(Vertex) * m_model->getTriangles().size()));
     m_vbo.release();
 }
 
@@ -62,7 +60,6 @@ void OpenGLWidget::generateGLProgram()
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragment.glsl");
     m_program->bindAttributeLocation("vertex", 0);
     m_program->bindAttributeLocation("color", 1);
-    m_program->bindAttributeLocation("barycentric", 1);
     m_program->link();
 
     m_program->bind();
@@ -117,29 +114,17 @@ void OpenGLWidget::loadData()
     // Generate color
     for (Triangle t : m_model->getTriangles())
     {
-        for (int i(0); i < 3; i++)
-        {
-            m_data.append(t.bad);
-            m_data.append(!t.bad);
-            m_data.append(0.0);
-        }
-    }
-
-    // Generate barycentric coordinates
-    for (Triangle t : m_model->getTriangles())
-    {
-        Q_UNUSED(t);
-        m_data.append(1.0);
-        m_data.append(0.0);
+        m_data.append(t.bad  * 0.9);
+        m_data.append(!t.bad * 0.9);
         m_data.append(0.0);
 
-        m_data.append(0.0);
-        m_data.append(1.0);
+        m_data.append(t.bad  * 0.7);
+        m_data.append(!t.bad * 0.7);
         m_data.append(0.0);
 
+        m_data.append(t.bad  * 0.5);
+        m_data.append(!t.bad * 0.5);
         m_data.append(0.0);
-        m_data.append(0.0);
-        m_data.append(1.0);
     }
 
     // Allocate data into VBO
@@ -179,7 +164,7 @@ void OpenGLWidget::paintGL()
     }
 
     // Draw triangulation
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 9);     // Last argument = Number of vertices
+    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6);     // Last argument = Number of vertices
 
     m_program->release();
 }
