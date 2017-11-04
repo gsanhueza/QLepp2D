@@ -1,6 +1,6 @@
 #include "model.h"
-#include "cpuengine.h"
-#include "openclengine.h"
+#include "engine/cpuengine.h"
+#include "engine/openclengine.h"
 
 Model::Model()
     : m_offhandler(new OFFHandler)

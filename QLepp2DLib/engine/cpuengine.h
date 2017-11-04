@@ -1,7 +1,7 @@
 #ifndef CPUENGINE_H
 #define CPUENGINE_H
 
-#include "abstractengine.h"
+#include "engine/abstractengine.h"
 
 class CPUEngine : public AbstractEngine
 {

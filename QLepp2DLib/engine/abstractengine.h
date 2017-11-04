@@ -2,14 +2,14 @@
 #define OPENCLHANDLER_H
 
 #include <vector>
-#include "offmetadata.h"
-#include "triangle.h"
-#include "vertex.h"
+#include "off/offmetadata.h"
+#include "structs/triangle.h"
+#include "structs/vertex.h"
 
 class AbstractEngine
 {
 public:
-    AbstractEngine();
+    AbstractEngine() {};
     virtual ~AbstractEngine() {};
 
     virtual bool detectBadTriangles(double &angle,
@@ -21,7 +21,7 @@ public:
                                         OFFMetadata &metadata) = 0;
 
 protected:
-    virtual void setup();
+    virtual void setup() {};
 };
 
 #endif // OPENCLHANDLER_H
