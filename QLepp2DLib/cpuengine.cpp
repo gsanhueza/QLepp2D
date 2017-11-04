@@ -10,8 +10,7 @@ CPUEngine::CPUEngine()
 
 bool CPUEngine::detectBadTriangles( double &angle,
                                     std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices,
-                                    std::vector<int> &indices)
+                                    std::vector<Vertex> &vertices)
 {
     // TODO
     // FIXME Maybe indices vector is not needed in this method.

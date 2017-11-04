@@ -13,8 +13,7 @@ public:
 
     virtual bool detectBadTriangles(double &angle,
                                     std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices,
-                                    std::vector<int> &indices) = 0;
+                                    std::vector<Vertex> &vertices) = 0;
     virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,

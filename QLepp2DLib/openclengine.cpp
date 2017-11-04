@@ -1,5 +1,5 @@
-#include <fstream>
 #include <QDebug>
+#include <QFile>
 #include "openclengine.h"
 
 OpenCLEngine::OpenCLEngine()
@@ -9,36 +9,22 @@ OpenCLEngine::OpenCLEngine()
 
 bool OpenCLEngine::detectBadTriangles(  double &angle,
                                         std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices)
+                                        std::vector<Vertex> &vertices)
 {
     qDebug() << "OpenCLEngine::detectBadTriangles - angle =" << angle;
 
     try
     {
-        // Create the memory buffers (Implicit copy to buffers)
-    //     cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), true);
-    //     cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true);
-
-        // Create the memory buffers
-        cl::Buffer bufferTriangles = cl::Buffer(m_context, CL_MEM_READ_WRITE, triangles.size() * sizeof(triangles.at(0)));
-        cl::Buffer bufferVertices = cl::Buffer(m_context, CL_MEM_READ_ONLY, vertices.size() * sizeof(vertices.at(0)));
-
-        // Copy the input data to the input buffers using the command queue.
-        m_queue.enqueueWriteBuffer( bufferTriangles, CL_FALSE, 0, triangles.size() * sizeof(triangles.at(0)), triangles.data());
-        m_queue.enqueueWriteBuffer( bufferVertices, CL_FALSE, 0, vertices.size() * sizeof(vertices.at(0)), vertices.data());
-
-        qDebug() << "* After buffer creation";
+        std::vector<double> angleVector;
+        angleVector.push_back(angle);
+        // Create the memory buffers (Implicit copy to buffers when using iterators)
+        // true == Read Only
+        cl::Buffer bufferAngle(m_context, angleVector.begin(), angleVector.end(), true);
+        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false);
+        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true);
 
         // Make kernel
-        cl::make_kernel<cl::Buffer, cl::Buffer> detect_kernel(m_program, "detect");
-        //     cl::Kernel detect_kernel(m_program, "detectBadTriangles");
-
-        qDebug() << "* After kernel creation";
-
-    //     // Enqueue the kernel arguments
-    //     detect_kernel.setArg(0, bufferTriangles);
-    //     detect_kernel.setArg(1, bufferVertices);
+        cl::make_kernel<cl::Buffer, cl::Buffer, cl::Buffer> detect_kernel(m_program, "detectBadTriangles");
 
         // Set dimensions
         cl::NDRange global(triangles.size());
@@ -46,19 +32,16 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
         // Execute the kernel
-    //     m_queue.enqueueNDRangeKernel(detect_kernel, cl::NullRange, global/*, local */);
-        detect_kernel(eargs, bufferTriangles, bufferVertices);
+        detect_kernel(eargs, bufferAngle, bufferTriangles, bufferVertices);
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
-    //     m_queue.enqueueReadBuffer( bufferTriangles, CL_TRUE, 0, triangles.size() * sizeof(triangles.at(0)), triangles.data() );
     }
     catch (cl::Error err)
     {
         qDebug() << err.err();
         return false;
     }
-
     return true;
 }
 
@@ -92,15 +75,17 @@ void OpenCLEngine::setup()
 
     // Create a command queue
     // Select the device.
-    m_queue = cl::CommandQueue( m_context, m_devices[device_id]);
+    m_queue = cl::CommandQueue(m_context, m_devices[device_id]);
 
-    // Read the program source
-    // FIXME Read source from QRC, to avoid loading it from the relative path of the GUI executable
-    std::ifstream sourceFile("kernel.cl");
-    std::string sourceCode( std::istreambuf_iterator<char>(sourceFile), (std::istreambuf_iterator<char>()));
-    cl::Program::Sources source(1, std::make_pair(sourceCode.c_str(), sourceCode.length()));
+    // Read the program source from QRC, to avoid loading it from the relative path of the GUI executable
+    QFile kernelfile(":/kernels/kernel.cl");
+    kernelfile.open(QIODevice::ReadOnly);
+    std::string kernel_code = kernelfile.readAll().toStdString();
+    kernelfile.close();
 
-    qDebug() << "Source length: " << sourceCode.length();
+    // create the program that we want to execute on the device
+    cl::Program::Sources source;
+    source.push_back({kernel_code.c_str(), kernel_code.length()});
 
     // Make program from the source code
     m_program = cl::Program(m_context, source);
