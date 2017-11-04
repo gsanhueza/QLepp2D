@@ -18,26 +18,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         offhandler.cpp \
-    model.cpp \
-    abstractengine.cpp \
-    cpuengine.cpp \
-    openclengine.cpp
+        model.cpp \
+        abstractengine.cpp \
+        cpuengine.cpp \
+        openclengine.cpp
 
 HEADERS += \
-        offhandler.h \
         qlepp2dlib_global.h \
-    model.h \
-    triangle.h \
-    vertex.h \
-    edge.h \
-    abstractengine.h \
-    cpuengine.h \
-    openclengine.h \
-    offmetadata.h
+        offhandler.h \
+        model.h \
+        triangle.h \
+        vertex.h \
+        edge.h \
+        abstractengine.h \
+        cpuengine.h \
+        openclengine.h \
+        offmetadata.h
+
+RESOURCES += \
+        res/libresources.qrc
 
 LIBS += -lOpenCL
 
 unix {
-    target.path = /usr/lib
-    INSTALLS += target
+        target.path = /usr/lib
+        INSTALLS += target
 }
