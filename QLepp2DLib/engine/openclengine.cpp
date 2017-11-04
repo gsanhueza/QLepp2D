@@ -50,9 +50,33 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                         std::vector<int> &indices,
                                         OFFMetadata &metadata)
 {
-    // TODO OpenCL improveTriangulation
-    qDebug() << "OpenCLEngine::improveTriangulation";
-    triangles.at(0).bad = 0;
+    // TODO Make implementation
+    try
+    {
+        // Create the memory buffers (Implicit copy to buffers when using iterators)
+        // true == Read Only
+        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false);
+        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true);
+
+        // Make kernel
+        cl::make_kernel<cl::Buffer, cl::Buffer> detect_kernel(m_program, "improveTriangulation");
+
+        // Set dimensions
+        cl::NDRange global(triangles.size());
+        //     cl::NDRange local( 256 );
+        cl::EnqueueArgs eargs(m_queue, global/*, local*/);
+
+        // Execute the kernel
+        detect_kernel(eargs, bufferTriangles, bufferVertices);
+
+        // Copy the output data back to the host
+        cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
+    }
+    catch (cl::Error err)
+    {
+        qDebug() << err.err();
+        return false;
+    }
     return true;
 }
 
@@ -60,7 +84,10 @@ void OpenCLEngine::setup()
 {
     qDebug() << "Executing OpenCLEngine::setup";
 
+    // Platform = Vendor (Intel, Nvidia, AMD, etc).
     int platform_id = 0;
+
+    // Device = Card identifier. If you have only one graphic card from a vendor, leave this at 0.
     int device_id = 0;
 
     // Query for platforms

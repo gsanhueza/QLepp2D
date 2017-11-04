@@ -45,3 +45,11 @@ kernel void detectBadTriangles(global double *angleVect, global Triangle *triang
 
     triangles[idx].bad = (angle_opp_a2 < rad_angle || angle_opp_b2 < rad_angle || angle_opp_c2 < rad_angle);
 }
+
+kernel void improveTriangulation(global Triangle *triangles, global Vertex *vertices)
+{
+    // TODO Kernel implementation
+    int idx = get_global_id(0);
+
+    triangles[idx].bad = 0;
+}
