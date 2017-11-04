@@ -34,10 +34,14 @@ MainWindow::MainWindow(QWidget *parent) :
     reset->setStatusTip(ui->actionResetView->statusTip());
     quit->setStatusTip(ui->actionQuit->statusTip());
 
+    // Toolbar connections
     connect(load, &QAction::triggered, this, &MainWindow::loadTriangulationClicked);
     connect(save, &QAction::triggered, this, &MainWindow::saveTriangulationClicked);
     connect(reset, &QAction::triggered, this, &MainWindow::resetViewClicked);
     connect(quit, &QAction::triggered, this, &MainWindow::close);
+
+    // Default title
+    setWindowTitle(windowTitle() + " (OpenCL)");
 }
 
 MainWindow::~MainWindow()
@@ -138,5 +142,33 @@ void MainWindow::improveClicked()
     {
         ui->statusBar->showMessage("Triangulation has been modified.");
         emit emitModel(m_model);
+    }
+}
+
+void MainWindow::cpuEngineClicked()
+{
+    qDebug() << "CPU Engine button clicked";
+    if (m_model->setCPUEngine())
+    {
+        ui->statusBar->showMessage("CPU Engine has been set.");
+        setWindowTitle("QLepp2D (CPU)");
+    }
+    else
+    {
+        ui->statusBar->showMessage("Unable to set CPU engine.");
+    }
+}
+
+void MainWindow::openclEngineClicked()
+{
+    qDebug() << "OpenCL Engine button clicked";
+    if (m_model->setOpenCLEngine())
+    {
+        ui->statusBar->showMessage("OpenCL Engine has been set.");
+        setWindowTitle("QLepp2D (OpenCL)");
+    }
+    else
+    {
+        ui->statusBar->showMessage("Unable to set OpenCL engine.");
     }
 }

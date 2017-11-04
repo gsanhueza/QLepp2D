@@ -3,19 +3,38 @@
 #include "openclengine.h"
 
 Model::Model()
-    : m_offhandler(new OFFHandler),
-      m_engine(new OpenCLEngine)
+    : m_offhandler(new OFFHandler)
 {
+    setEngine(new OpenCLEngine);
 }
 
 Model::Model(AbstractEngine *engine)
     : m_offhandler(new OFFHandler)
 {
-    m_engine = engine;
+    setEngine(engine);
 }
 
 Model::~Model()
 {
+}
+
+void Model::setEngine(AbstractEngine *engine)
+{
+    if (m_engine != nullptr)
+    {
+        delete m_engine;
+    }
+    m_engine = engine;
+}
+bool Model::setCPUEngine()
+{
+    setEngine(new CPUEngine);
+    return true;
+}
+bool Model::setOpenCLEngine()
+{
+    setEngine(new OpenCLEngine);
+    return true;
 }
 
 bool Model::loadOFF(QString &filepath)

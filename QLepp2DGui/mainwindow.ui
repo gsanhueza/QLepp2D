@@ -137,16 +137,27 @@
      <string>Opens the View menu.</string>
     </property>
     <property name="title">
-     <string>&amp;View</string>
+     <string>Vie&amp;w</string>
     </property>
     <addaction name="actionResetView"/>
    </widget>
+   <widget class="QMenu" name="menuEngine">
+    <property name="title">
+     <string>&amp;Engine</string>
+    </property>
+    <addaction name="actionUseCPUEngine"/>
+    <addaction name="actionUseOpenCLEngine"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEngine"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>Show Toolbar</string>
+   </property>
    <property name="movable">
     <bool>false</bool>
    </property>
@@ -236,6 +247,33 @@
    </property>
    <property name="statusTip">
     <string>Resets the view to an initial state. Does not modify the triangulation.</string>
+   </property>
+  </action>
+  <action name="actionUseCPUEngine">
+   <property name="icon">
+    <iconset theme="flag-red">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Use &amp;CPU Engine</string>
+   </property>
+   <property name="toolTip">
+    <string>Use CPU Engine.</string>
+   </property>
+   <property name="statusTip">
+    <string>Loads the CPU Engine.</string>
+   </property>
+  </action>
+  <action name="actionUseOpenCLEngine">
+   <property name="icon">
+    <iconset theme="flag-green">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Use &amp;OpenCL Engine</string>
+   </property>
+   <property name="statusTip">
+    <string>Loads the OpenCL Engine.</string>
    </property>
   </action>
  </widget>
@@ -415,6 +453,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionUseCPUEngine</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cpuEngineClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUseOpenCLEngine</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openclEngineClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>emitModel(Model*)</signal>
@@ -426,5 +496,7 @@
   <slot>resetViewClicked()</slot>
   <slot>detectClicked()</slot>
   <slot>improveClicked()</slot>
+  <slot>cpuEngineClicked()</slot>
+  <slot>openclEngineClicked()</slot>
  </slots>
 </ui>
