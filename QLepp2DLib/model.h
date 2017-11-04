@@ -4,9 +4,11 @@
 #include <QString>
 #include "offhandler.h"
 #include "offmetadata.h"
-#include "abstractengine.h"
+
 #include "vertex.h"
 #include "triangle.h"
+
+#include "abstractengine.h"
 
 class Model
 {
@@ -14,6 +16,10 @@ public:
     Model();
     Model(AbstractEngine *engine);
     ~Model();
+
+    void setEngine(AbstractEngine *engine);
+    void setCPUEngine();
+    void setOpenCLEngine();
 
     bool loadOFF(QString &filepath);
     bool saveOFF(QString &filepath);
@@ -28,7 +34,7 @@ public:
 private:
     OFFHandler *m_offhandler;
     OFFMetadata m_offmetadata;
-    AbstractEngine *m_engine;
+    AbstractEngine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Triangle> m_triangles;
     std::vector<int> m_indices;

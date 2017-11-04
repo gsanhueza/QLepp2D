@@ -137,11 +137,19 @@
      <string>Opens the View menu.</string>
     </property>
     <property name="title">
-     <string>&amp;View</string>
+     <string>Vie&amp;w</string>
     </property>
     <addaction name="actionResetView"/>
    </widget>
+   <widget class="QMenu" name="menuEngine">
+    <property name="title">
+     <string>&amp;Engine</string>
+    </property>
+    <addaction name="actionUseCPUEngine"/>
+    <addaction name="actionUseOpenCLEngine"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEngine"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -236,6 +244,33 @@
    </property>
    <property name="statusTip">
     <string>Resets the view to an initial state. Does not modify the triangulation.</string>
+   </property>
+  </action>
+  <action name="actionUseCPUEngine">
+   <property name="icon">
+    <iconset theme="flag-red">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Use &amp;CPU Engine</string>
+   </property>
+   <property name="toolTip">
+    <string>Use CPU Engine.</string>
+   </property>
+   <property name="statusTip">
+    <string>Loads the CPU Engine.</string>
+   </property>
+  </action>
+  <action name="actionUseOpenCLEngine">
+   <property name="icon">
+    <iconset theme="flag-green">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Use &amp;OpenCL Engine</string>
+   </property>
+   <property name="statusTip">
+    <string>Loads the OpenCL Engine.</string>
    </property>
   </action>
  </widget>

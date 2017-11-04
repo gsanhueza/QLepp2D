@@ -10,6 +10,7 @@ class AbstractEngine
 {
 public:
     AbstractEngine();
+    virtual ~AbstractEngine() {};
 
     virtual bool detectBadTriangles(double &angle,
                                     std::vector<Triangle> &triangles,
