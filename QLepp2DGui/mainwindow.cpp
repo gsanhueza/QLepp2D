@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QAction *reset = ui->mainToolBar->addAction(ui->actionResetView->icon(), ui->actionResetView->text());
     QAction *quit = ui->mainToolBar->addAction(ui->actionQuit->icon(), ui->actionQuit->text());
 
+    // Toolbar status tips
     load->setStatusTip(ui->actionLoadTriangulation->statusTip());
     save->setStatusTip(ui->actionSaveTriangulation->statusTip());
     reset->setStatusTip(ui->actionResetView->statusTip());
