@@ -18,8 +18,8 @@ public:
     ~Model();
 
     void setEngine(AbstractEngine *engine);
-    void setCPUEngine();
-    void setOpenCLEngine();
+    bool setCPUEngine();
+    bool setOpenCLEngine();
 
     bool loadOFF(QString &filepath);
     bool saveOFF(QString &filepath);

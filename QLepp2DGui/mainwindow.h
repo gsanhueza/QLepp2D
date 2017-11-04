@@ -32,6 +32,8 @@ private slots:
     void loadAboutClicked();
     void detectClicked();
     void improveClicked();
+    void cpuEngineClicked();
+    void openclEngineClicked();
 
 private:
     Ui::MainWindow *ui;

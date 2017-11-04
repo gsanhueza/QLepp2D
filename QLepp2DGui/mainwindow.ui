@@ -155,6 +155,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>Show Toolbar</string>
+   </property>
    <property name="movable">
     <bool>false</bool>
    </property>
@@ -450,6 +453,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionUseCPUEngine</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cpuEngineClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUseOpenCLEngine</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openclEngineClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>emitModel(Model*)</signal>
@@ -461,5 +496,7 @@
   <slot>resetViewClicked()</slot>
   <slot>detectClicked()</slot>
   <slot>improveClicked()</slot>
+  <slot>cpuEngineClicked()</slot>
+  <slot>openclEngineClicked()</slot>
  </slots>
 </ui>

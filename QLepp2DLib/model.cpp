@@ -26,13 +26,15 @@ void Model::setEngine(AbstractEngine *engine)
     }
     m_engine = engine;
 }
-void Model::setCPUEngine()
+bool Model::setCPUEngine()
 {
     setEngine(new CPUEngine);
+    return true;
 }
-void Model::setOpenCLEngine()
+bool Model::setOpenCLEngine()
 {
     setEngine(new OpenCLEngine);
+    return true;
 }
 
 bool Model::loadOFF(QString &filepath)
