@@ -147,7 +147,6 @@ void MainWindow::detectClicked()
 {
     qDebug() << "Detect button clicked";
     double angle = ui->angleSpinBox->value();
-    qDebug() << angle;
 
     if (m_model->detectBadTriangles(angle))
     {

@@ -8,7 +8,7 @@
 # include <CL/cl.hpp>
 #endif
 
-#include "abstractengine.h"
+#include "engine/abstractengine.h"
 
 class OpenCLEngine : public AbstractEngine
 {

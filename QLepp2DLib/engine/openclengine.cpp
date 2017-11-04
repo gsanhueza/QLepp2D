@@ -1,6 +1,6 @@
 #include <QDebug>
 #include <QFile>
-#include "openclengine.h"
+#include "engine/openclengine.h"
 
 OpenCLEngine::OpenCLEngine()
 {

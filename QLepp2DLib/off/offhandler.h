@@ -3,9 +3,9 @@
 
 #include <QString>
 #include <vector>
-#include "offmetadata.h"
-#include "triangle.h"
-#include "vertex.h"
+#include "off/offmetadata.h"
+#include "structs/triangle.h"
+#include "structs/vertex.h"
 #include "qlepp2dlib_global.h"
 
 class QLEPP2DLIBSHARED_EXPORT OFFHandler

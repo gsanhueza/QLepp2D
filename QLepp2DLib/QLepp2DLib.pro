@@ -17,23 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        offhandler.cpp \
         model.cpp \
-        abstractengine.cpp \
-        cpuengine.cpp \
-        openclengine.cpp
+        off/offhandler.cpp \
+        engine/cpuengine.cpp \
+        engine/openclengine.cpp
 
 HEADERS += \
         qlepp2dlib_global.h \
-        offhandler.h \
         model.h \
-        triangle.h \
-        vertex.h \
-        edge.h \
-        abstractengine.h \
-        cpuengine.h \
-        openclengine.h \
-        offmetadata.h
+        structs/triangle.h \
+        structs/vertex.h \
+        structs/edge.h \
+        engine/abstractengine.h \
+        engine/cpuengine.h \
+        engine/openclengine.h \
+        off/offhandler.h \
+        off/offmetadata.h
 
 RESOURCES += \
         res/libresources.qrc

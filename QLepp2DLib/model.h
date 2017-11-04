@@ -2,13 +2,13 @@
 #define MODEL_H
 
 #include <QString>
-#include "offhandler.h"
-#include "offmetadata.h"
+#include "off/offhandler.h"
+#include "off/offmetadata.h"
 
-#include "vertex.h"
-#include "triangle.h"
+#include "structs/vertex.h"
+#include "structs/triangle.h"
 
-#include "abstractengine.h"
+#include "engine/abstractengine.h"
 
 class Model
 {
