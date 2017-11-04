@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QFileDialog>
+#include <QMimeData>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -13,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_model(nullptr)
 {
     ui->setupUi(this);
+
+    setAcceptDrops(true);
 
     // Application centering
     int screenWidth = QApplication::desktop()->width();
@@ -56,13 +59,27 @@ void MainWindow::setModel(Model *model)
     m_model = model;
 }
 
-void MainWindow::loadTriangulationClicked()
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), ".", tr("OFF Files (*.off)"));
-    if (m_model->loadOFF(filepath))
+    qDebug() << "MainWindow::dragEnterEvent";
+    if (event->mimeData()->hasFormat("text/plain"))
+    {
+        event->acceptProposedAction();
+    }
+}
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    qDebug() << "MainWindow::dropEvent";
+    QString filepath = event->mimeData()->urls().at(0).toLocalFile();
+    loadFile(filepath);
+}
+
+void MainWindow::loadFile(QString path)
+{
+    if (m_model->loadOFF(path))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file
-        QFileInfo fileinfo(filepath);
+        QFileInfo fileinfo(path);
         m_currentFileName = fileinfo.completeBaseName();
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
@@ -73,10 +90,15 @@ void MainWindow::loadTriangulationClicked()
     }
     else
     {
-        qWarning() << "Could not open file" << filepath;
+        qWarning() << "Could not open file" << path;
         ui->statusBar->showMessage("Unable to load.");
     }
+}
 
+void MainWindow::loadTriangulationClicked()
+{
+    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), ".", tr("OFF Files (*.off)"));
+    loadFile(filepath);
 }
 
 void MainWindow::saveTriangulationClicked()

@@ -24,6 +24,10 @@ signals:
     void emitModel(Model *m);
     void resetView();
 
+protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
 private slots:
     void loadTriangulationClicked();
     void saveTriangulationClicked();
@@ -34,6 +38,9 @@ private slots:
     void improveClicked();
     void cpuEngineClicked();
     void openclEngineClicked();
+
+private:
+    void loadFile(QString path);
 
 private:
     Ui::MainWindow *ui;
