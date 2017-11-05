@@ -1,5 +1,6 @@
 /*
- * QHighLife is a High Life cellular-automata computing and visualization application using CPU and GPU.
+ * QLepp2D is a triangulation improver and visualization program that uses
+ * a Lepp-Delaunay algorithm.
  * Copyright (C) 2017  Gabriel Sanhueza <gabriel_8032@hotmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
