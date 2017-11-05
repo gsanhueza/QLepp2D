@@ -55,3 +55,8 @@ QMAKE_LFLAGS += -Wl,--rpath=$$OUT_PWD/../QLepp2DLib/
 
 RESOURCES += \
     res/resources.qrc
+
+unix {
+        target.path = /usr/bin
+        INSTALLS += target
+}
