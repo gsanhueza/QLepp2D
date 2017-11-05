@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ABOUT_H_
-#define _ABOUT_H_
+#ifndef ABOUT_H
+#define ABOUT_H
 
 #include <QWidget>
 #include <QDesktopWidget>
@@ -36,8 +36,11 @@ public:
     explicit About(QWidget *parent = nullptr);
     ~About();
 
+protected:
+    void keyPressEvent(QKeyEvent *e);
+
 private:
     Ui::About* ui;
 };
 
-#endif // _ABOUT_H_
+#endif // ABOUT_H

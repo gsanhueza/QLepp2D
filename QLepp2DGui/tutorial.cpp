@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QKeyEvent>
 #include "tutorial.h"
 #include "ui_tutorial.h"
 
@@ -37,4 +38,12 @@ Tutorial::Tutorial(QWidget *parent) :
 Tutorial::~Tutorial()
 {
     delete ui;
+}
+
+void Tutorial::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Escape)
+    {
+        close();
+    }
 }

@@ -36,6 +36,9 @@ public:
     explicit Tutorial(QWidget *parent = nullptr);
     ~Tutorial();
 
+protected:
+    void keyPressEvent(QKeyEvent *e);
+
 private:
     Ui::Tutorial* ui;
 };

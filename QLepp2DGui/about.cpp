@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QKeyEvent>
 #include "about.h"
 #include "ui_about.h"
 
@@ -37,4 +38,12 @@ About::About(QWidget *parent) :
 About::~About()
 {
     delete ui;
+}
+
+void About::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Escape)
+    {
+        close();
+    }
 }
