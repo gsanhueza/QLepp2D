@@ -5,7 +5,7 @@
 Model::Model()
     : m_offhandler(new OFFHandler)
 {
-    setEngine(new OpenCLEngine);
+    setEngine(new CPUEngine);
 }
 
 Model::Model(AbstractEngine *engine)
@@ -28,13 +28,27 @@ void Model::setEngine(AbstractEngine *engine)
 }
 bool Model::setCPUEngine()
 {
-    setEngine(new CPUEngine);
-    return true;
+    try
+    {
+        setEngine(new CPUEngine);
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
 bool Model::setOpenCLEngine()
 {
-    setEngine(new OpenCLEngine);
-    return true;
+    try
+    {
+        setEngine(new OpenCLEngine);
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
 
 bool Model::loadOFF(QString &filepath)

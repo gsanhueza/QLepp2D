@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quit, &QAction::triggered, this, &MainWindow::close);
 
     // Default title
-    setWindowTitle(windowTitle() + " (OpenCL)");
+    setWindowTitle(windowTitle() + " (CPU)");
 }
 
 MainWindow::~MainWindow()
