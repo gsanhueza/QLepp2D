@@ -3,5 +3,12 @@
         <file>shaders/vertex.glsl</file>
         <file>shaders/fragment.glsl</file>
         <file>icons/icon.png</file>
+        <file>icons/icon16.png</file>
+        <file>icons/icon32.png</file>
+        <file>icons/icon48.png</file>
+        <file>icons/icon64.png</file>
+        <file>icons/icon128.png</file>
+        <file>icons/icon256.png</file>
+        <file>icons/icon512.png</file>
     </qresource>
 </RCC>
