@@ -1,6 +1,6 @@
 QT       -= gui
 
-TARGET = QLepp2DLib
+TARGET = qlepp2d-lib
 TEMPLATE = lib
 
 DEFINES += QLEPP2DLIB_LIBRARY

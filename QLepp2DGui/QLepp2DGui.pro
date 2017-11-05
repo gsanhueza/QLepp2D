@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = QLepp2DGui
+TARGET = qlepp2d
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -43,9 +43,9 @@ FORMS += \
 
 LIBS += -lOpenCL
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/release/ -lQLepp2DLib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/debug/ -lQLepp2DLib
-else:unix: LIBS += -L$$OUT_PWD/../QLepp2DLib/ -lQLepp2DLib
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/release/ -lqlepp2d-lib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/debug/ -lqlepp2d-lib
+else:unix: LIBS += -L$$OUT_PWD/../QLepp2DLib/ -lqlepp2d-lib
 
 INCLUDEPATH += $$PWD/../QLepp2DLib
 DEPENDPATH += $$PWD/../QLepp2DLib

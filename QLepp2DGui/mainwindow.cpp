@@ -69,8 +69,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete m_tutorial;
-    delete m_about;
     delete ui;
 }
 
