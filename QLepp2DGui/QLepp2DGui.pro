@@ -57,6 +57,10 @@ RESOURCES += \
     res/resources.qrc
 
 unix {
-        target.path = /usr/bin
-        INSTALLS += target
+    isEmpty(PREFIX)
+    {
+        PREFIX = /usr/bin
+    }
+    target.path = $$PREFIX
+    INSTALLS += target
 }

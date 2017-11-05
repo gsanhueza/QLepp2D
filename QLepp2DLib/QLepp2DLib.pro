@@ -40,6 +40,10 @@ RESOURCES += \
 LIBS += -lOpenCL
 
 unix {
-        target.path = /usr/lib
-        INSTALLS += target
+    isEmpty(PREFIX)
+    {
+        PREFIX = /usr/lib
+    }
+    target.path = $$PREFIX
+    INSTALLS += target
 }
