@@ -137,7 +137,7 @@
      <string>Opens the View menu.</string>
     </property>
     <property name="title">
-     <string>Vie&amp;w</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionResetView"/>
    </widget>
@@ -200,7 +200,8 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="window-close"/>
+    <iconset theme="window-close">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -211,7 +212,8 @@
   </action>
   <action name="actionTutorial">
    <property name="icon">
-    <iconset theme="system-help"/>
+    <iconset theme="system-help">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Tutorial</string>
@@ -249,7 +251,8 @@
   </action>
   <action name="actionUseCPUEngine">
    <property name="icon">
-    <iconset theme="speed-low"/>
+    <iconset theme="speed-low">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Use &amp;CPU Engine</string>
@@ -263,7 +266,8 @@
   </action>
   <action name="actionUseOpenCLEngine">
    <property name="icon">
-    <iconset theme="speed-high"/>
+    <iconset theme="speed-high">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Use &amp;OpenCL Engine</string>

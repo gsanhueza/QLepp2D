@@ -1,7 +1,8 @@
+#!/usr/bin/env xdg-open
 [Desktop Entry]
 Type=Application
 Terminal=false
-Categories=GPU;Graphics;Education;Qt
+Categories=GPU;Education;Qt
 Name=QLepp2D
 GenericName=Mesh viewer and improver
 Comment=QLepp2D
