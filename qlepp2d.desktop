@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Categories=GPU;Graphics;Education;Qt
+Name=QLepp2D
+GenericName=Mesh viewer and improver
+Comment=QLepp2D
+Encoding=UTF-8
+Icon=qlepp2d
+Exec=qlepp2d
