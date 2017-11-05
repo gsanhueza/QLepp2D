@@ -60,6 +60,7 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
     catch (cl::Error err)
     {
         qDebug() << err.err();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
         return false;
     }
     return true;
@@ -95,6 +96,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     catch (cl::Error err)
     {
         qDebug() << err.err();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
         return false;
     }
     return true;
@@ -103,40 +105,48 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
 void OpenCLEngine::setup()
 {
     qDebug() << "Executing OpenCLEngine::setup";
+    try
+    {
+        // Platform = Vendor (Intel, Nvidia, AMD, etc).
+        int platform_id = 0;
 
-    // Platform = Vendor (Intel, Nvidia, AMD, etc).
-    int platform_id = 0;
+        // Device = Card identifier. If you have only one graphic card from a vendor, leave this at 0.
+        int device_id = 0;
 
-    // Device = Card identifier. If you have only one graphic card from a vendor, leave this at 0.
-    int device_id = 0;
+        // Query for platforms
+        cl::Platform::get(&m_platforms);
 
-    // Query for platforms
-    cl::Platform::get(&m_platforms);
+        // Get a list of devices on this platform
+        // Select the platform.
+        m_platforms[platform_id].getDevices(CL_DEVICE_TYPE_GPU|CL_DEVICE_TYPE_CPU, &m_devices);
 
-    // Get a list of devices on this platform
-    // Select the platform.
-    m_platforms[platform_id].getDevices(CL_DEVICE_TYPE_GPU|CL_DEVICE_TYPE_CPU, &m_devices);
+        // Create a context
+        m_context = cl::Context(m_devices);
 
-    // Create a context
-    m_context = cl::Context(m_devices);
+        // Create a command queue
+        // Select the device.
+        m_queue = cl::CommandQueue(m_context, m_devices[device_id]);
 
-    // Create a command queue
-    // Select the device.
-    m_queue = cl::CommandQueue(m_context, m_devices[device_id]);
+        // Read the program source from QRC, to avoid loading it from the relative path of the GUI executable
+        QFile kernelfile(":/kernels/kernel.cl");
+        kernelfile.open(QIODevice::ReadOnly);
+        std::string kernel_code = kernelfile.readAll().toStdString();
+        kernelfile.close();
 
-    // Read the program source from QRC, to avoid loading it from the relative path of the GUI executable
-    QFile kernelfile(":/kernels/kernel.cl");
-    kernelfile.open(QIODevice::ReadOnly);
-    std::string kernel_code = kernelfile.readAll().toStdString();
-    kernelfile.close();
+        // Create the program that we want to execute on the device
+        cl::Program::Sources source;
+        source.push_back({kernel_code.c_str(), kernel_code.length()});
 
-    // create the program that we want to execute on the device
-    cl::Program::Sources source;
-    source.push_back({kernel_code.c_str(), kernel_code.length()});
+        // Make program from the source code
+        m_program = cl::Program(m_context, source);
 
-    // Make program from the source code
-    m_program = cl::Program(m_context, source);
-
-    // Build the program for the devices
-    m_program.build(m_devices);
+        // Build the program for the devices
+        m_program.build(m_devices);
+    }
+    catch (cl::Error &e)
+    {
+        qDebug() << e.err();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
+        throw e;
+    }
 }
