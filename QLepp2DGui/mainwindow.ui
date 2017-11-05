@@ -200,8 +200,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="exit">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="window-close"/>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -212,8 +211,7 @@
   </action>
   <action name="actionTutorial">
    <property name="icon">
-    <iconset theme="help">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="system-help"/>
    </property>
    <property name="text">
     <string>&amp;Tutorial</string>
