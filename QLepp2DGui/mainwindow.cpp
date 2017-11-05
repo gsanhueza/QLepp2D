@@ -94,6 +94,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 void MainWindow::loadFile(QString path)
 {
+    ui->statusBar->showMessage("Loading...");
     if (m_model->loadOFF(path))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file

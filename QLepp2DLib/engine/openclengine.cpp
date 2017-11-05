@@ -38,9 +38,10 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         angleVector.push_back(angle);
         // Create the memory buffers (Implicit copy to buffers when using iterators)
         // true == Read Only
-        cl::Buffer bufferAngle(m_context, angleVector.begin(), angleVector.end(), true);
-        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false);
-        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true);
+        const bool USE_HOST_PTR = true;
+        cl::Buffer bufferAngle(m_context, angleVector.begin(), angleVector.end(), true, USE_HOST_PTR);
+        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
+        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
 
         // Make kernel
         cl::make_kernel<cl::Buffer, cl::Buffer, cl::Buffer> detect_kernel(m_program, "detectBadTriangles");
