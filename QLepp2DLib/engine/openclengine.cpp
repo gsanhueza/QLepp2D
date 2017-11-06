@@ -34,25 +34,23 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
 
     try
     {
-        std::vector<double> angleVector;
-        angleVector.push_back(angle);
         // Create the memory buffers (Implicit copy to buffers when using iterators)
-        // true == Read Only
         const bool USE_HOST_PTR = true;
-        cl::Buffer bufferAngle(m_context, angleVector.begin(), angleVector.end(), true, USE_HOST_PTR);
+
+        // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
         cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
         cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
 
         // Make kernel
-        cl::make_kernel<cl::Buffer, cl::Buffer, cl::Buffer> detect_kernel(m_program, "detectBadTriangles");
+        cl::make_kernel<double&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "detectBadTriangles");
 
         // Set dimensions
         cl::NDRange global(triangles.size());
-        //     cl::NDRange local( 256 );
+        //cl::NDRange local( 256 );
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
         // Execute the kernel
-        detect_kernel(eargs, bufferAngle, bufferTriangles, bufferVertices);
+        detect_kernel(eargs, angle, bufferTriangles, bufferVertices);
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
@@ -75,16 +73,18 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     try
     {
         // Create the memory buffers (Implicit copy to buffers when using iterators)
-        // true == Read Only
-        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false);
-        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true);
+        const bool USE_HOST_PTR = true;
+
+        // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
+        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
+        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
 
         // Make kernel
         cl::make_kernel<cl::Buffer, cl::Buffer> detect_kernel(m_program, "improveTriangulation");
 
         // Set dimensions
         cl::NDRange global(triangles.size());
-        //     cl::NDRange local( 256 );
+        //cl::NDRange local( 256 );
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
         // Execute the kernel
@@ -118,7 +118,7 @@ void OpenCLEngine::setup()
 
         // Get a list of devices on this platform
         // Select the platform.
-        m_platforms[platform_id].getDevices(CL_DEVICE_TYPE_GPU|CL_DEVICE_TYPE_CPU, &m_devices);
+        m_platforms[platform_id].getDevices(CL_DEVICE_TYPE_GPU | CL_DEVICE_TYPE_CPU, &m_devices);
 
         // Create a context
         m_context = cl::Context(m_devices);

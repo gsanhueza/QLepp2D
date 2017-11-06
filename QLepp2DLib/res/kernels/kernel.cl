@@ -39,10 +39,9 @@ typedef struct {
     int bad;
 } Triangle;
 
-kernel void detectBadTriangles(global double *angleVect, global Triangle *triangles, global Vertex *vertices)
+kernel void detectBadTriangles(const double angle, global Triangle *triangles, global Vertex *vertices)
 {
     int idx = get_global_id(0);
-    double angle = angleVect[0];
 
     Edge A, B, C;
     A.a = vertices[triangles[idx].i1];
