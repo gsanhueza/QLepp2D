@@ -43,6 +43,8 @@ FORMS += \
 
 LIBS += -lOpenCL
 
+TRANSLATIONS += qlepp2d_es.ts \
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/release/ -lqlepp2d-lib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/debug/ -lqlepp2d-lib
 else:unix: LIBS += -L$$OUT_PWD/../QLepp2DLib/ -lqlepp2d-lib
