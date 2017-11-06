@@ -20,7 +20,11 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include "CL/cl.h"
+# if defined(__APPLE__) || defined(__MACOSX)
+#   include <OpenCL/opencl.hpp>
+# else
+#   include <CL/cl.hpp>
+# endif
 
 typedef struct {
     cl_float x;

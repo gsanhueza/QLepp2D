@@ -20,7 +20,12 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include "CL/cl.h"
+# if defined(__APPLE__) || defined(__MACOSX)
+#   include <OpenCL/opencl.hpp>
+# else
+#   include <CL/cl.hpp>
+# endif
+
 #include "vertex.h"
 
 typedef struct {
