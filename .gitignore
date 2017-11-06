@@ -8,3 +8,5 @@
 # Build folder
 build/
 
+# Compiled translations
+QLepp2DGui/res/i18n/

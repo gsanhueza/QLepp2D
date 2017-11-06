@@ -12,7 +12,7 @@
     <message>
         <location filename="about.ui" line="30"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/icons/icon64.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/icons/icon64.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="about.ui" line="43"/>
@@ -328,22 +328,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.cpp" line="193"/>
         <source>CPU Engine has been set.</source>
-        <translation type="unfinished">Se ha instalado el motor de CPU.</translation>
+        <translation type="unfinished">Se ha cargado el motor de CPU.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="198"/>
         <source>Unable to set CPU engine.</source>
-        <translation type="unfinished">No se puede instalar el motor de CPU.</translation>
+        <translation type="unfinished">No se puede cargar el motor de CPU.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="207"/>
         <source>OpenCL Engine has been set.</source>
-        <translation type="unfinished">Se ha instalado el motor de OpenCL.</translation>
+        <translation type="unfinished">Se ha cargado el motor de OpenCL.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="212"/>
         <source>Unable to set OpenCL engine.</source>
-        <translation type="unfinished">No se puede instalar el motor de OpenCL.</translation>
+        <translation type="unfinished">No se puede cargar el motor de OpenCL.</translation>
     </message>
 </context>
 <context>
