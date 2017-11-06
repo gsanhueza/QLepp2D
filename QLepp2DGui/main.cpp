@@ -18,6 +18,8 @@
  */
 
 #include <QApplication>
+#include <QTranslator>
+#include <QLocale>
 #include "mainwindow.h"
 #include "model.h"
 #include "engine/cpuengine.h"
@@ -26,6 +28,10 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
     Model model;
+
+    QTranslator translator;
+    translator.load(QString("qlepp2d_%1").arg(QLocale::system().name().split("_").at(0)), ":/i18n/");
+    app.installTranslator(&translator);
 
     MainWindow window;
     window.setModel(&model);

@@ -94,7 +94,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 void MainWindow::loadFile(QString path)
 {
-    ui->statusBar->showMessage("Loading...");
+    ui->statusBar->showMessage(tr("Loading..."));
     if (m_model->loadOFF(path))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file
@@ -102,7 +102,7 @@ void MainWindow::loadFile(QString path)
         m_currentFileName = fileinfo.completeBaseName();
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
-        ui->statusBar->showMessage("Loaded.");
+        ui->statusBar->showMessage(tr("Loaded."));
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
         emit emitModel(m_model);
@@ -110,7 +110,7 @@ void MainWindow::loadFile(QString path)
     else
     {
         qWarning() << "Could not open file" << path;
-        ui->statusBar->showMessage("Unable to load.");
+        ui->statusBar->showMessage(tr("Unable to load."));
     }
 }
 
@@ -126,7 +126,7 @@ void MainWindow::saveTriangulationClicked()
     if (m_currentFileName == "")
     {
         qWarning() << "Nothing to save.";
-        ui->statusBar->showMessage("Nothing to save.");
+        ui->statusBar->showMessage(tr("Nothing to save."));
         return;
     }
 
@@ -135,12 +135,12 @@ void MainWindow::saveTriangulationClicked()
     if (not m_model->saveOFF(filepath))
     {
         qWarning() << "Could not save file" << filepath;
-        ui->statusBar->showMessage("Unable to save.");
+        ui->statusBar->showMessage(tr("Unable to save."));
     }
     else
     {
         qDebug() << "Triangulation Saved.";
-        ui->statusBar->showMessage("Saved.");
+        ui->statusBar->showMessage(tr("Saved."));
     }
 }
 
@@ -170,7 +170,7 @@ void MainWindow::detectClicked()
     if (m_model->detectBadTriangles(angle))
     {
         ui->improveButton->setEnabled(true);
-        ui->statusBar->showMessage("Bad triangles have been detected. You can now proceed to improve them.");
+        ui->statusBar->showMessage(tr("Bad triangles have been detected. You can now proceed to improve them."));
         emit emitModel(m_model);
     }
 }
@@ -180,7 +180,7 @@ void MainWindow::improveClicked()
     qDebug() << "Improve button clicked";
     if (m_model->improveTriangulation())
     {
-        ui->statusBar->showMessage("Triangulation has been modified.");
+        ui->statusBar->showMessage(tr("Triangulation has been modified."));
         emit emitModel(m_model);
     }
 }
@@ -190,12 +190,12 @@ void MainWindow::cpuEngineClicked()
     qDebug() << "CPU Engine button clicked";
     if (m_model->setCPUEngine())
     {
-        ui->statusBar->showMessage("CPU Engine has been set.");
+        ui->statusBar->showMessage(tr("CPU Engine has been set."));
         setWindowTitle("QLepp2D (CPU)");
     }
     else
     {
-        ui->statusBar->showMessage("Unable to set CPU engine.");
+        ui->statusBar->showMessage(tr("Unable to set CPU engine."));
     }
 }
 
@@ -204,11 +204,11 @@ void MainWindow::openclEngineClicked()
     qDebug() << "OpenCL Engine button clicked";
     if (m_model->setOpenCLEngine())
     {
-        ui->statusBar->showMessage("OpenCL Engine has been set.");
+        ui->statusBar->showMessage(tr("OpenCL Engine has been set."));
         setWindowTitle("QLepp2D (OpenCL)");
     }
     else
     {
-        ui->statusBar->showMessage("Unable to set OpenCL engine.");
+        ui->statusBar->showMessage(tr("Unable to set OpenCL engine."));
     }
 }
