@@ -49,9 +49,6 @@ DEPENDPATH += $$PWD/../QLepp2DLib
 # Useful when not installing the app, but testing it in a local environment
 QMAKE_LFLAGS += -Wl,--rpath=$$OUT_PWD/../QLepp2DLib/
 
-RESOURCES += \
-    res/resources.qrc
-
 # Translations compiling
 QMAKE_EXTRA_COMPILERS += lrelease
 lrelease.input = TRANSLATIONS
@@ -60,6 +57,9 @@ lrelease.commands = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm $$PWD/res/
 lrelease.CONFIG += no_link target_predeps
 
 PRE_TARGETDEPS += compiler_lrelease_make_all
+
+RESOURCES += \
+    res/resources.qrc
 
 unix {
     isEmpty(PREFIX)
