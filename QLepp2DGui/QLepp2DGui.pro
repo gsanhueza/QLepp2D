@@ -35,9 +35,15 @@ FORMS += \
         about.ui \
         tutorial.ui
 
-LIBS += -lOpenCL
-
 TRANSLATIONS += qlepp2d_es.ts \
+
+unix:!macx {
+    LIBS += -lOpenCL
+}
+
+macx: {
+    LIBS += -framework OpenCL
+}
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/release/ -lqlepp2d-lib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../QLepp2DLib/debug/ -lqlepp2d-lib

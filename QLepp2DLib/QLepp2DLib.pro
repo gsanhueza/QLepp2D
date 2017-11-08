@@ -37,7 +37,13 @@ HEADERS += \
 RESOURCES += \
         res/libresources.qrc
 
-LIBS += -lOpenCL
+unix:!macx {
+    LIBS += -lOpenCL
+}
+
+macx: {
+    LIBS += -framework OpenCL
+}
 
 unix {
     isEmpty(PREFIX)
