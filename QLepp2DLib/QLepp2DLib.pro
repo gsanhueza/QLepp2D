@@ -34,6 +34,11 @@ HEADERS += \
         off/offhandler.h \
         off/offmetadata.h
 
+# Installable headers
+header_files.path = /usr/include
+header_files.files = ./*
+INSTALLS += header_files
+
 RESOURCES += \
         res/libresources.qrc
 
