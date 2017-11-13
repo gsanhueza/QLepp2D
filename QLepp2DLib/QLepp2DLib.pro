@@ -35,11 +35,9 @@ HEADERS += \
         off/offmetadata.h
 
 # Installable headers
-header_files.path = /usr/include
-header_files.files +=   engine/ \
-                        off/ \
-                        structs/ \
-                        *.h
+header_files.path   =   /usr/include
+header_files.files +=   model.h \
+                        qlepp2dlib_global.h
 INSTALLS += header_files
 
 RESOURCES += \
