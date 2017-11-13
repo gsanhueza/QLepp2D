@@ -36,7 +36,10 @@ HEADERS += \
 
 # Installable headers
 header_files.path = /usr/include
-header_files.files = ./*
+header_files.files +=   engine/*.h \
+                        off/*.h \
+                        structs/*.h \
+                        *.h
 INSTALLS += header_files
 
 RESOURCES += \
