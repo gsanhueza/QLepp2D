@@ -21,7 +21,7 @@
 #include <QTranslator>
 #include <QLocale>
 #include "mainwindow.h"
-#include "model.h"
+#include <model.h>
 
 int main(int argc, char **argv)
 {

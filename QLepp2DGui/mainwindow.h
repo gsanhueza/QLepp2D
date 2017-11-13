@@ -23,7 +23,7 @@
 #include <QMainWindow>
 #include "tutorial.h"
 #include "about.h"
-#include "model.h"
+#include <model.h>
 
 namespace Ui {
 class MainWindow;
