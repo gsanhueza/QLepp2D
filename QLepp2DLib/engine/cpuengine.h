@@ -22,18 +22,44 @@
 
 #include "engine/abstractengine.h"
 
+/**
+* @brief CPU Implementation of the AbstractEngine.
+*
+*/
 class CPUEngine : public AbstractEngine
 {
 public:
+    /**
+    * @brief CPUEngine constructor.
+    *
+    */
     CPUEngine();
 
+    /**
+    * @brief Detects every bad triangle in the vector of triangles. Overriden method.
+    *
+    * @param angle p_angle: Tolerance angle.
+    * @param triangles p_triangles: Vector of triangles.
+    * @param vertices p_vertices: Vector of vertices.
+    * @return True if detected without issues.
+    */
     virtual bool detectBadTriangles(double &angle,
                                     std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices);
+                                    std::vector<Vertex> &vertices) override;
+
+    /**
+    * @brief Improves the actual triangulation from the vector of triangles. Overridden method.
+    *
+    * @param triangles p_triangles: Vector of triangles.
+    * @param vertices p_vertices: Vector of vertices.
+    * @param indices p_indices: Vector of indices.
+    * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
+    * @return True if improved without issues.
+    */
     virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
-                                        OFFMetadata &metadata);
+                                        OFFMetadata &metadata) override;
 };
 
 #endif // CPUENGINE_H

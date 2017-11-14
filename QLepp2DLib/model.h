@@ -29,6 +29,8 @@
 
 #include "engine/abstractengine.h"
 
+#include "qlepp2dlib_global.h"
+
 /**
 * @brief Facade class for GUI/Library interaction.
 *
