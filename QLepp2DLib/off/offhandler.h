@@ -26,6 +26,10 @@
 #include "structs/triangle.h"
 #include "structs/vertex.h"
 
+/**
+* @brief OFF files handling module.
+*
+*/
 class OFFHandler
 {
 public:
