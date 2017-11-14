@@ -29,29 +29,107 @@
 
 #include "engine/abstractengine.h"
 
+/**
+* @brief Facade class for GUI/Library interaction.
+*
+*/
 class Model
 {
 public:
+    /**
+    * @brief Basic constructor. Creates a Model instance with the CPU engine.
+    *
+    */
     Model();
+
+    /**
+    * @brief Constructor that creates a Model instance with the selected engine.
+    *
+    * @param engine p_engine: Engine used by the Model.
+    */
     Model(AbstractEngine *engine);
+
+    /**
+    * @brief Model destructor.
+    *
+    */
     ~Model();
 
+    /**
+    * @brief Sets the engine that will be used by the Model.
+    *
+    * @param engine p_engine: Engine.
+    */
     void setEngine(AbstractEngine *engine);
+
+    /**
+    * @brief Convenience method that sets the CPU Engine.
+    *
+    * @return bool True if correctly set.
+    */
     bool setCPUEngine();
+
+    /**
+     * @brief Convenience method that sets the OpenCL Engine.
+     *
+     * @return bool True if correctly set.
+     */
     bool setOpenCLEngine();
 
+    /**
+    * @brief Loads an OFF file so the inner implementation can receive the triangles.
+    *
+    * @param filepath p_filepath: Path of the file.
+    * @return bool True if correctly loaded.
+    */
     bool loadOFF(QString &filepath);
+
+    /**
+    * @brief Saves an OFF file in the provided filepath.
+    *
+    * @param filepath p_filepath: Path of the file.
+    * @return bool True if correctly saved.
+    */
     bool saveOFF(QString &filepath);
 
+    /**
+    * @brief Gets a vector of Vertex which are being used by the implementation.
+    *
+    * @return std::vector< Vertex >& Reference to the actual vector of vertices.
+    */
     std::vector<Vertex>& getVertices();
+
+    /**
+    * @brief Gets a vector of Vertex which are being used by the implementation.
+    *
+    * @return std::vector< int >& Reference to the actual vector of indices.
+    */
     std::vector<int>& getIndices();
+
+    /**
+    * @brief Gets a vector of Triangles which are being used by the implementation.
+    *
+    * @return std::vector< Triangle >& Reference to the actual vector of triangles.
+    */
     std::vector<Triangle>& getTriangles();
 
+    /**
+    * @brief Detects every triangle in the vector of triangles whose minimum angle is lesser than the provided angle.
+    *
+    * @param angle p_angle: Provided angle.
+    * @return bool True if method has run without issues.
+    */
     bool detectBadTriangles(double &angle);
+
+    /**
+    * @brief Improves the actual triangulation, modifying the vectors in the Model.
+    *
+    * @return bool True if method has run without issues.
+    */
     bool improveTriangulation();
 
 private:
-    OFFHandler *m_offhandler;
+    OFFHandler *m_offhandler = nullptr;
     OFFMetadata m_offmetadata;
     AbstractEngine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
