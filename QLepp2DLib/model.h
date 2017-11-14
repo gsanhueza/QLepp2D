@@ -33,7 +33,7 @@
 * @brief Facade class for GUI/Library interaction.
 *
 */
-class Model
+class QLEPP2DLIBSHARED_EXPORT Model
 {
 public:
     /**
@@ -65,14 +65,14 @@ public:
     /**
     * @brief Convenience method that sets the CPU Engine.
     *
-    * @return bool True if correctly set.
+    * @return True if correctly set.
     */
     bool setCPUEngine();
 
     /**
      * @brief Convenience method that sets the OpenCL Engine.
      *
-     * @return bool True if correctly set.
+     * @return True if correctly set.
      */
     bool setOpenCLEngine();
 
@@ -80,7 +80,7 @@ public:
     * @brief Loads an OFF file so the inner implementation can receive the triangles.
     *
     * @param filepath p_filepath: Path of the file.
-    * @return bool True if correctly loaded.
+    * @return True if correctly loaded.
     */
     bool loadOFF(QString &filepath);
 
@@ -88,7 +88,7 @@ public:
     * @brief Saves an OFF file in the provided filepath.
     *
     * @param filepath p_filepath: Path of the file.
-    * @return bool True if correctly saved.
+    * @return True if correctly saved.
     */
     bool saveOFF(QString &filepath);
 
@@ -117,14 +117,14 @@ public:
     * @brief Detects every triangle in the vector of triangles whose minimum angle is lesser than the provided angle.
     *
     * @param angle p_angle: Provided angle.
-    * @return bool True if method has run without issues.
+    * @return True if method has run without issues.
     */
     bool detectBadTriangles(double &angle);
 
     /**
     * @brief Improves the actual triangulation, modifying the vectors in the Model.
     *
-    * @return bool True if method has run without issues.
+    * @return True if method has run without issues.
     */
     bool improveTriangulation();
 

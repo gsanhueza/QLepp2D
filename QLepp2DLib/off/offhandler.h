@@ -25,14 +25,37 @@
 #include "off/offmetadata.h"
 #include "structs/triangle.h"
 #include "structs/vertex.h"
-#include "qlepp2dlib_global.h"
 
-class QLEPP2DLIBSHARED_EXPORT OFFHandler
+class OFFHandler
 {
-
 public:
+    /**
+    * @brief Constructor of OFFHandler.
+    *
+    */
     OFFHandler();
+
+    /**
+    * @brief Method that loads an OFF file and modifies the parameters according to the loaded triangulation.
+    *
+    * @param filepath p_filepath: Path of the OFF file.
+    * @param metadata p_metadata: Metadata of the OFF file (i.e, how many vertices, faces and edges)
+    * @param vertices p_vertices: Vector of vertices.
+    * @param indices p_indices: Vector of indices.
+    * @param triangles p_triangles: Vector of triangles.
+    * @return True if correctly loaded.
+    */
     bool loadOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices, std::vector<Triangle> &triangles);
+
+    /**
+    * @brief Method that saves an OFF file according to the actual parameters.
+    *
+    * @param filepath p_filepath: Path of the OFF file.
+    * @param metadata p_metadata: Metadata of the OFF file (i.e, how many vertices, faces and edges)
+    * @param vertices p_vertices:  Vector of vertices.
+    * @param indices p_indices:  Vector of indices.
+    * @return True if correctly saved.
+    */
     bool saveOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices) const;
 
 private:
