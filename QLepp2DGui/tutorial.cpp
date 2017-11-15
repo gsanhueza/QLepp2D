@@ -22,7 +22,7 @@
 #include "ui_tutorial.h"
 
 Tutorial::Tutorial(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::Tutorial)
 {
     ui->setupUi(this);

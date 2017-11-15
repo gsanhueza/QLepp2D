@@ -2,7 +2,10 @@
 <ui version="4.0">
  <author>Gabriel Sanhueza</author>
  <class>Tutorial</class>
- <widget class="QWidget" name="Tutorial">
+ <widget class="QDialog" name="Tutorial">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>

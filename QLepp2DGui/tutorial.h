@@ -21,14 +21,14 @@
 #define TUTORIAL_H
 
 #include <QDesktopWidget>
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui
 {
     class Tutorial;
 }
 
-class Tutorial : public QWidget
+class Tutorial : public QDialog
 {
     Q_OBJECT
 
