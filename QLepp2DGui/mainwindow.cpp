@@ -28,8 +28,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_tutorial(new Tutorial),
-    m_about(new About),
+    m_tutorial(new Tutorial(this)),
+    m_about(new About(this)),
     m_model(nullptr)
 {
     ui->setupUi(this);

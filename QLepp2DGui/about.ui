@@ -2,9 +2,9 @@
 <ui version="4.0">
  <author>Gabriel Sanhueza</author>
  <class>About</class>
- <widget class="QWidget" name="About">
+ <widget class="QDialog" name="About">
   <property name="windowModality">
-   <enum>Qt::NonModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
