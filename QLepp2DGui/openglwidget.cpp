@@ -200,21 +200,29 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
     int dx = event->x() - m_lastPos.x();
     int dy = event->y() - m_lastPos.y();
 
-    if (event->buttons() & Qt::LeftButton) {
+    if (event->buttons() & Qt::LeftButton)
+    {
         setXRotation(m_xRot + 8 * dy);
         setYRotation(m_yRot + 8 * dx);
-      } else if (event->buttons() & Qt::RightButton) {
-          setXRotation(m_xRot + 8 * dy);
-          setZRotation(m_zRot + 8 * dx);
-        }
+    }
+    else if (event->buttons() & Qt::MiddleButton)
+    {
+        setXMovement(m_xCamPos + dx);
+        setYMovement(m_yCamPos + dy);
+    }
+    else if (event->buttons() & Qt::RightButton)
+    {
+        setXRotation(m_xRot + 8 * dy);
+        setZRotation(m_zRot + 8 * dx);
+    }
     m_lastPos = event->pos();
 }
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event)
 {
-    m_zCamPos += (event->delta()/120);
+    m_zCamPos += (event->delta() / 120);
     m_camera.setToIdentity();
-    m_camera.translate(-m_xCamPos, -m_yCamPos, m_zCamPos);
+    m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
     update();
 }
 
@@ -224,41 +232,68 @@ void OpenGLWidget::resetView()
     m_xCamPos = m_yCamPos = 0;
     m_zCamPos = -5;
     m_camera.setToIdentity();
-    m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
+    m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
     update();
 }
 
 static void qNormalizeAngle(int &angle)
 {
     while (angle < 0)
-    angle += 360 * 16;
+        angle += 360 * 16;
     while (angle > 360 * 16)
-    angle -= 360 * 16;
+        angle -= 360 * 16;
 }
 
 void OpenGLWidget::setXRotation(int angle)
 {
     qNormalizeAngle(angle);
-    if (angle != m_xRot) {
+    if (angle != m_xRot)
+    {
         m_xRot = angle;
         update();
-      }
+    }
 }
 
 void OpenGLWidget::setYRotation(int angle)
 {
     qNormalizeAngle(angle);
-    if (angle != m_yRot) {
+    if (angle != m_yRot)
+    {
         m_yRot = angle;
         update();
-      }
+    }
 }
 
 void OpenGLWidget::setZRotation(int angle)
 {
     qNormalizeAngle(angle);
-    if (angle != m_zRot) {
+    if (angle != m_zRot)
+    {
         m_zRot = angle;
         update();
-      }
+    }
+}
+
+void OpenGLWidget::setXMovement(int position)
+{
+
+    if (position != m_xCamPos)
+    {
+        m_xCamPos = position;
+        m_camera.setToIdentity();
+        m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
+        update();
+    }
+}
+
+void OpenGLWidget::setYMovement(int position)
+{
+
+    if (position != m_yCamPos)
+    {
+        m_yCamPos = position;
+        m_camera.setToIdentity();
+        m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
+        update();
+    }
 }

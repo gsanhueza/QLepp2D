@@ -45,6 +45,8 @@ public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
+    void setXMovement(int position);
+    void setYMovement(int position);
 
 protected:
     void initializeGL() override;
