@@ -21,8 +21,6 @@
 #include "engine/cpuengine.h"
 #include "engine/openclengine.h"
 
-#include <QDebug>
-
 Model& Model::getInstance(void)
 {
     static Model instance;
