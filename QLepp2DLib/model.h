@@ -33,29 +33,18 @@
 
 /**
 * @brief Facade class for GUI/Library interaction.
+* Singleton Pattern is used here.
 *
 */
 class QLEPP2DLIBSHARED_EXPORT Model
 {
 public:
     /**
-    * @brief Basic constructor. Creates a Model instance with the CPU engine.
-    *
-    */
-    Model();
-
-    /**
-    * @brief Constructor that creates a Model instance with the selected engine.
-    *
-    * @param engine p_engine: Engine used by the Model.
-    */
-    Model(AbstractEngine *engine);
-
-    /**
-    * @brief Model destructor.
-    *
-    */
-    ~Model();
+     * @brief Gets the actual instance of the Model.
+     *
+     * @return Instance of Model.
+     */
+    static Model& getInstance();
 
     /**
     * @brief Sets the engine that will be used by the Model.
@@ -131,6 +120,19 @@ public:
     bool improveTriangulation();
 
 private:
+    /**
+    * @brief Basic constructor. Creates a Model instance with the CPU engine.
+    *
+    */
+    Model();
+
+    /**
+    * @brief Constructor that creates a Model instance with the selected engine.
+    *
+    * @param engine p_engine: Engine used by the Model.
+    */
+    Model(AbstractEngine *engine);
+
     OFFHandler *m_offhandler = nullptr;
     OFFMetadata m_offmetadata;
     AbstractEngine *m_engine = nullptr;

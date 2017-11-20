@@ -26,14 +26,13 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    Model model;
 
     QTranslator translator;
     translator.load(QString("qlepp2d_%1").arg(QLocale::system().name().split("_").at(0)), ":/i18n/");
     app.installTranslator(&translator);
 
+    Model::getInstance().setCPUEngine();
     MainWindow window;
-    window.setModel(&model);
 
     window.show();
 

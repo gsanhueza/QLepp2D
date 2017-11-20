@@ -106,7 +106,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>47</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -305,7 +305,7 @@
    <extends>QOpenGLWidget</extends>
    <header>openglwidget.h</header>
    <slots>
-    <slot>receiveModel(Model*)</slot>
+    <slot>updateData()</slot>
     <slot>resetView()</slot>
    </slots>
   </customwidget>
@@ -459,22 +459,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>MainWindow</sender>
-   <signal>emitModel(Model*)</signal>
-   <receiver>openGLWidget</receiver>
-   <slot>receiveModel(Model*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
-     <y>359</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>639</x>
-     <y>340</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionUseCPUEngine</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -506,9 +490,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>emitUpdateData()</signal>
+   <receiver>openGLWidget</receiver>
+   <slot>updateData()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>349</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <signal>emitModel(Model*)</signal>
+  <signal>emitUpdateData()</signal>
   <signal>resetView()</signal>
   <slot>loadTriangulationClicked()</slot>
   <slot>saveTriangulationClicked()</slot>
