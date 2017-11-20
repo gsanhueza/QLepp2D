@@ -4,24 +4,24 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="about.ui" line="18"/>
-        <location filename="about.ui" line="56"/>
+        <location filename="about.ui" line="15"/>
+        <location filename="about.ui" line="53"/>
         <source>About</source>
-        <translation type="unfinished">Acerca de</translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="about.ui" line="30"/>
+        <location filename="about.ui" line="27"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/icons/icon64.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/icons/icon64.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/icons/icon64.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="about.ui" line="43"/>
+        <location filename="about.ui" line="40"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Version 0.1.5&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Version 0.1.4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Versión 0.1.5&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Versión 0.1.5&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="about.ui" line="62"/>
+        <location filename="about.ui" line="59"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -29,7 +29,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;QLepp2D is a triangulation improver and visualization program that uses a Lepp-Delaunay algorithm.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;© 2017 Gabriel Sanhueza&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -38,12 +38,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;© 2017 Gabriel Sanhueza&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="about.ui" line="76"/>
+        <location filename="about.ui" line="73"/>
         <source>Authors</source>
-        <translation type="unfinished">Autores</translation>
+        <translation>Autores</translation>
     </message>
     <message>
-        <location filename="about.ui" line="82"/>
+        <location filename="about.ui" line="79"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -51,7 +51,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Gabriel Sanhueza&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Development and GUI design&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -60,9 +60,9 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Desarrollo y Diseño de interfaz&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="about.ui" line="105"/>
+        <location filename="about.ui" line="102"/>
         <source>Close</source>
-        <translation type="unfinished">Cerrar</translation>
+        <translation>Cerrar</translation>
     </message>
 </context>
 <context>
@@ -70,281 +70,291 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="14"/>
         <source>QLepp2D</source>
-        <translation type="unfinished">QLepp2D</translation>
+        <translation>QLepp2D</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="37"/>
         <source>Insert tolerance angle (degrees)</source>
-        <translation type="unfinished">Inserte ángulo de tolerancia (grados)</translation>
+        <translation>Inserte ángulo de tolerancia (grados)</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="44"/>
         <source>Insert an angle in degrees to allow the application to detect those triangles with minimum angles less than this angle.</source>
-        <translation type="unfinished">Inserte un ángulo en grados para permitir que la aplicación detecte aquellos triángulos con ángulos mínimos menores que este ángulo.</translation>
+        <translation>Inserte un ángulo en grados para permitir que la aplicación detecte aquellos triángulos con ángulos mínimos menores que este ángulo.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="47"/>
         <source>Insert an angle in degrees.</source>
-        <translation type="unfinished">Inserte un ángulo en grados.</translation>
+        <translation>Inserte un ángulo en grados.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="73"/>
         <location filename="mainwindow.ui" line="76"/>
         <source>Detects triangles with minimum angles less than the specified.</source>
-        <translation type="unfinished">Detecta triángulos con ángulos mínimos menores que el especificado.</translation>
+        <translation>Detecta triángulos con ángulos mínimos menores que el especificado.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="79"/>
         <source>Detect</source>
-        <translation type="unfinished">Detectar</translation>
+        <translation>Detectar</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="89"/>
         <location filename="mainwindow.ui" line="92"/>
         <source>Improves the triangulation, using the detected bad triangles.</source>
-        <translation type="unfinished">Mejora la triangulación, usando los triángulos malos detectados.</translation>
+        <translation>Mejora la triangulación, usando los triángulos malos detectados.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="95"/>
         <source>Improve</source>
-        <translation type="unfinished">Mejorar</translation>
+        <translation>Mejorar</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="114"/>
         <source>Opens the File menu.</source>
-        <translation type="unfinished">Abre el menú Archivo.</translation>
+        <translation>Abre el menú Archivo.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="117"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Archivo</translation>
+        <translation>&amp;Archivo</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="126"/>
         <source>Opens the Help menu.</source>
-        <translation type="unfinished">Abre el menú Ayuda.</translation>
+        <translation>Abre el menú de Ayuda.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="129"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">A&amp;yuda</translation>
+        <translation>A&amp;yuda</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="137"/>
         <source>Opens the View menu.</source>
-        <translation type="unfinished">Abre el menú Vista.</translation>
+        <translation>Abre el menú de Vista.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="140"/>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Vista</translation>
+        <translation>&amp;Vista</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="146"/>
         <source>&amp;Engine</source>
-        <translation type="unfinished">&amp;Motor</translation>
+        <translation>&amp;Motor</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="159"/>
         <source>Show Toolbar</source>
-        <translation type="unfinished">Mostrar caja de herramientas.</translation>
+        <translation>Mostrar caja de herramientas.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="183"/>
         <source>&amp;Load Triangulation</source>
-        <translation type="unfinished">&amp;Cargar Triangulación</translation>
+        <translation>&amp;Cargar Triangulación</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="186"/>
         <source>Loads an OFF file containing a triangulation.</source>
-        <translation type="unfinished">Carga un archivo OFF que contiene una triangulación.</translation>
+        <translation>Carga un archivo OFF que contiene una triangulación.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="189"/>
         <source>Ctrl+E</source>
-        <translation type="unfinished">Ctrl+E</translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="198"/>
         <source>&amp;Save Triangulation</source>
-        <translation type="unfinished">&amp;Guardar Triangulación</translation>
+        <translation>&amp;Guardar Triangulación</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="201"/>
         <source>Saves your triangulation in an OFF file.</source>
-        <translation type="unfinished">Guarda su triangulación en un archivo OFF.</translation>
+        <translation>Guarda su triangulación en un archivo OFF.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="204"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished">Ctrl+S</translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="213"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Salir</translation>
+        <translation>&amp;Salir</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="216"/>
         <source>Quits this application.</source>
-        <translation type="unfinished">Cierra la aplicación.</translation>
+        <translation>Cierra la aplicación.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="219"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished">Ctrl+Q</translation>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="228"/>
         <source>&amp;Tutorial</source>
-        <translation type="unfinished">&amp;Tutorial</translation>
+        <translation>&amp;Tutorial</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="231"/>
         <source>Tutorial</source>
-        <translation type="unfinished">Tutorial</translation>
+        <translation>Tutorial</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="234"/>
         <source>Shows how to use this application.</source>
-        <translation type="unfinished">Muestra cómo usar esta aplicación.</translation>
+        <translation>Muestra cómo usar esta aplicación.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="237"/>
         <source>F1</source>
-        <translation type="unfinished">F1</translation>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="246"/>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;Acerca de</translation>
+        <translation>&amp;Acerca de</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="249"/>
         <source>Shows an About window.</source>
-        <translation type="unfinished">Muestra una ventana de &quot;Acerca de&quot;.</translation>
+        <translation>Muestra una ventana de &quot;Acerca de&quot;.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="258"/>
         <source>&amp;Reset View</source>
-        <translation type="unfinished">&amp;Restaurar Vista</translation>
+        <translation>&amp;Restaurar Vista</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="261"/>
         <source>Resets the view to an initial state. Does not modify the triangulation.</source>
-        <translation type="unfinished">Restaura la vista a un estado inicial. No modifica la triangulación.</translation>
+        <translation>Restaura la vista a un estado inicial. No modifica la triangulación.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="264"/>
         <source>Ctrl+R</source>
-        <translation type="unfinished">Ctrl+R</translation>
+        <translation>Ctrl+R</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="273"/>
         <source>Use &amp;CPU Engine</source>
-        <translation type="unfinished">Usar motor de &amp;CPU</translation>
+        <translation>Usar motor de &amp;CPU</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="276"/>
         <source>Use CPU Engine.</source>
-        <translation type="unfinished">Usa el motor de CPU.</translation>
+        <translation>Usa el motor de CPU.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="279"/>
         <source>Loads the CPU Engine.</source>
-        <translation type="unfinished">Carga el motor de CPU.</translation>
+        <translation>Carga el motor de CPU.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="282"/>
         <source>Ctrl+I</source>
-        <translation type="unfinished">Ctrl+I</translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="291"/>
         <source>Use &amp;OpenCL Engine</source>
-        <translation type="unfinished">Usar motor de &amp;OpenCL</translation>
+        <translation>Usar motor de &amp;OpenCL</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="294"/>
         <source>Loads the OpenCL Engine.</source>
-        <translation type="unfinished">Carga el motor de OpenCL.</translation>
+        <translation>Carga el motor de OpenCL.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="297"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished">Ctrl+O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="97"/>
+        <location filename="mainwindow.cpp" line="91"/>
         <source>Loading...</source>
-        <translation type="unfinished">Cargando...</translation>
+        <translation>Cargando...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="105"/>
+        <location filename="mainwindow.cpp" line="99"/>
         <source>Loaded.</source>
-        <translation type="unfinished">Cargado.</translation>
+        <translation>Cargado.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="107"/>
+        <source>Unable to load.</source>
+        <translation>No se puede cargar.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="113"/>
-        <source>Unable to load.</source>
-        <translation type="unfinished">No se puede cargar.</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="119"/>
-        <location filename="mainwindow.cpp" line="133"/>
+        <location filename="mainwindow.cpp" line="127"/>
         <source>OFF files</source>
-        <translation type="unfinished">Archivos OFF</translation>
+        <translation>Archivos OFF</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="119"/>
-        <location filename="mainwindow.cpp" line="133"/>
+        <location filename="mainwindow.cpp" line="113"/>
+        <location filename="mainwindow.cpp" line="127"/>
         <source>OFF Files (*.off)</source>
-        <translation type="unfinished">Archivos OFF (*.off)</translation>
+        <translation>Archivos OFF (*.off)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="129"/>
+        <location filename="mainwindow.cpp" line="123"/>
         <source>Nothing to save.</source>
-        <translation type="unfinished">Nada por guardar.</translation>
+        <translation>Nada por guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="138"/>
+        <location filename="mainwindow.cpp" line="132"/>
         <source>Unable to save.</source>
-        <translation type="unfinished">No se puede guardar.</translation>
+        <translation>No se puede guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="143"/>
+        <location filename="mainwindow.cpp" line="137"/>
         <source>Saved.</source>
-        <translation type="unfinished">Guardado.</translation>
+        <translation>Guardado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="173"/>
+        <location filename="mainwindow.cpp" line="167"/>
         <source>Bad triangles have been detected. You can now proceed to improve them.</source>
-        <translation type="unfinished">Se han detectado los triángulos malos. Puede proceder a mejorarlos.</translation>
+        <translation>Se han detectado los triángulos malos. Puede proceder a mejorarlos.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="183"/>
+        <location filename="mainwindow.cpp" line="177"/>
         <source>Triangulation has been modified.</source>
-        <translation type="unfinished">La triangulación ha sido modificada.</translation>
+        <translation>La triangulación ha sido modificada.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="193"/>
+        <location filename="mainwindow.cpp" line="187"/>
         <source>CPU Engine has been set.</source>
-        <translation type="unfinished">Se ha cargado el motor de CPU.</translation>
+        <translation>Se ha cargado el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="198"/>
+        <location filename="mainwindow.cpp" line="188"/>
+        <source>QLepp2D (CPU)</source>
+        <translation>QLepp2D (CPU)</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="192"/>
         <source>Unable to set CPU engine.</source>
-        <translation type="unfinished">No se puede cargar el motor de CPU.</translation>
+        <translation>No se puede cargar el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="207"/>
+        <location filename="mainwindow.cpp" line="201"/>
         <source>OpenCL Engine has been set.</source>
-        <translation type="unfinished">Se ha cargado el motor de OpenCL.</translation>
+        <translation>Se ha cargado el motor de OpenCL.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="212"/>
+        <location filename="mainwindow.cpp" line="202"/>
+        <source>QLepp2D (OpenCL)</source>
+        <translation>QLepp2D (OpenCL)</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="206"/>
         <source>Unable to set OpenCL engine.</source>
-        <translation type="unfinished">No se puede cargar el motor de OpenCL.</translation>
+        <translation>No se puede cargar el motor de OpenCL.</translation>
     </message>
 </context>
 <context>
@@ -352,7 +362,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="tutorial.ui" line="15"/>
         <source>Tutorial</source>
-        <translation type="unfinished">Tutorial</translation>
+        <translation>Tutorial</translation>
     </message>
     <message>
         <location filename="tutorial.ui" line="25"/>
@@ -386,7 +396,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Insert an angle (in degrees) between 0.0° and 60.0° and press the &amp;quot;Detect button&amp;quot; to check those triangles whose minimum angle is less than the desired angle.&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Triangulation improvement&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;When the &amp;quot;Detect&amp;quot; button has been clicked, the application will improve the triangulation, using the bad triangles to follow the improvement algorithm, and updating the view when it&apos;s ready.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -405,7 +415,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="tutorial.ui" line="52"/>
         <source>Close</source>
-        <translation type="unfinished">Cerrar</translation>
+        <translation>Cerrar</translation>
     </message>
 </context>
 </TS>

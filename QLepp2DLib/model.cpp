@@ -21,6 +21,14 @@
 #include "engine/cpuengine.h"
 #include "engine/openclengine.h"
 
+#include <QDebug>
+
+Model& Model::getInstance(void)
+{
+    static Model instance;
+    return instance;
+}
+
 Model::Model()
     : m_offhandler(new OFFHandler)
 {
@@ -33,10 +41,6 @@ Model::Model(AbstractEngine *engine)
     setEngine(engine);
 }
 
-Model::~Model()
-{
-}
-
 void Model::setEngine(AbstractEngine *engine)
 {
     if (m_engine != nullptr)
@@ -45,6 +49,7 @@ void Model::setEngine(AbstractEngine *engine)
     }
     m_engine = engine;
 }
+
 bool Model::setCPUEngine()
 {
     try

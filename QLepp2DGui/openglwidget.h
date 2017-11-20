@@ -40,7 +40,7 @@ public:
     ~OpenGLWidget();
 
 public slots:
-    void receiveModel(Model *m);
+    void updateData();
     void resetView();
     void setXRotation(int angle);
     void setYRotation(int angle);
@@ -55,8 +55,6 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 
 private:
-    Model *m_model;
-
     void setupVertexAttribs();
     void generateGLProgram();
     void loadData();

@@ -21,7 +21,6 @@
 
 OpenGLWidget::OpenGLWidget(QWidget* parent)
   : QOpenGLWidget(parent),
-    m_model(nullptr),
     m_program(0),
     m_xRot(0),
     m_yRot(0),
@@ -61,7 +60,7 @@ void OpenGLWidget::setupVertexAttribs()
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * Model::getInstance().getTriangles().size()));
     m_vbo.release();
 }
 
@@ -100,11 +99,6 @@ void OpenGLWidget::generateGLProgram()
 
 void OpenGLWidget::loadData()
 {
-    if (m_model == nullptr)
-    {
-        return;
-    }
-
     // Setup our vertex buffer object.
     m_vbo.create();
     m_vbo.bind();
@@ -113,9 +107,10 @@ void OpenGLWidget::loadData()
     m_data.clear();
 
     // Load vertices
-    std::vector<Vertex> vertices(m_model->getVertices());
+    std::vector<Vertex> vertices(Model::getInstance().getVertices());
+    std::vector<Triangle> triangles(Model::getInstance().getTriangles());
 
-    for (Triangle t : m_model->getTriangles())
+    for (Triangle &t : triangles)
     {
         m_data.append(vertices.at(t.i1).x);
         m_data.append(vertices.at(t.i1).y);
@@ -131,7 +126,7 @@ void OpenGLWidget::loadData()
     }
 
     // Generate color
-    for (Triangle t : m_model->getTriangles())
+    for (Triangle &t : triangles)
     {
         for (int i(1); i <= 3; i++)
         {
@@ -189,9 +184,8 @@ void OpenGLWidget::resizeGL(int w, int h)
     m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 10000.0f);
 }
 
-void OpenGLWidget::receiveModel(Model *m)
+void OpenGLWidget::updateData()
 {
-    m_model = m;
     m_dataAlreadyLoaded = false;
     update();
 }
