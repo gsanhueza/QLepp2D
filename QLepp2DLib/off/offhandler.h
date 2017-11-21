@@ -25,6 +25,7 @@
 #include "off/offmetadata.h"
 #include "structs/triangle.h"
 #include "structs/vertex.h"
+#include "structs/edge.h"
 
 /**
 * @brief OFF files handling module.
@@ -46,10 +47,16 @@ public:
     * @param metadata p_metadata: Metadata of the OFF file (i.e, how many vertices, faces and edges)
     * @param vertices p_vertices: Vector of vertices.
     * @param indices p_indices: Vector of indices.
+    * @param edges p_edges: Vector of edges.
     * @param triangles p_triangles: Vector of triangles.
     * @return True if correctly loaded.
     */
-    bool loadOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices, std::vector<Triangle> &triangles);
+    bool loadOffFile(   QString &filepath,
+                        OFFMetadata &metadata,
+                        std::vector<Vertex> &vertices,
+                        std::vector<int> &indices,
+                        std::vector<Edge> &edges,
+                        std::vector<Triangle> &triangles);
 
     /**
     * @brief Method that saves an OFF file according to the actual parameters.
@@ -60,7 +67,10 @@ public:
     * @param indices p_indices:  Vector of indices.
     * @return True if correctly saved.
     */
-    bool saveOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices) const;
+    bool saveOffFile(   QString &filepath,
+                        OFFMetadata &metadata,
+                        std::vector<Vertex> &vertices,
+                        std::vector<int> &indices) const;
 
 private:
     int m_numVertices;

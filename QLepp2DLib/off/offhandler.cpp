@@ -25,7 +25,12 @@ OFFHandler::OFFHandler()
 {
 }
 
-bool OFFHandler::loadOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices, std::vector<Triangle> &triangles)
+bool OFFHandler::loadOffFile(   QString &filepath,
+                                OFFMetadata &metadata,
+                                std::vector<Vertex> &vertices,
+                                std::vector<int> &indices,
+                                std::vector<Edge> &edges,
+                                std::vector<Triangle> &triangles)
 {
     qDebug() << "Loading OFF file from" << filepath << endl;
 
@@ -102,7 +107,10 @@ bool OFFHandler::loadOffFile(QString &filepath, OFFMetadata &metadata, std::vect
     return false;
 }
 
-bool OFFHandler::saveOffFile(QString &filepath, OFFMetadata &metadata, std::vector<Vertex> &vertices, std::vector<int> &indices) const
+bool OFFHandler::saveOffFile(   QString &filepath,
+                                OFFMetadata &metadata,
+                                std::vector<Vertex> &vertices,
+                                std::vector<int> &indices) const
 {
     qDebug() << "Saving OFF file to" << filepath << endl;
     qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.indices << " " << metadata.edges;

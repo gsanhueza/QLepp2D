@@ -67,6 +67,7 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
 bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
+                                        std::vector<Edge> &edges,
                                         OFFMetadata &metadata)
 {
     // TODO Make implementation

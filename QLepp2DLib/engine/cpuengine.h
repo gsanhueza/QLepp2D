@@ -59,6 +59,7 @@ public:
     virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
+                                        std::vector<Edge> &edges,
                                         OFFMetadata &metadata) override;
 };
 

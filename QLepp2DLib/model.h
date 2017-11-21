@@ -26,6 +26,7 @@
 
 #include "structs/vertex.h"
 #include "structs/triangle.h"
+#include "structs/edge.h"
 
 #include "engine/abstractengine.h"
 
@@ -137,6 +138,7 @@ private:
     OFFMetadata m_offmetadata;
     AbstractEngine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
+    std::vector<Edge> m_edges;
     std::vector<Triangle> m_triangles;
     std::vector<int> m_indices;
 };

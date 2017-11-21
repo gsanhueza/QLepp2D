@@ -75,7 +75,7 @@ bool Model::setOpenCLEngine()
 
 bool Model::loadOFF(QString &filepath)
 {
-    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_indices, m_triangles);
+    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_indices, m_edges, m_triangles);
 }
 
 bool Model::saveOFF(QString &filepath)
@@ -105,5 +105,5 @@ bool Model::detectBadTriangles(double &angle)
 
 bool Model::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_indices, m_offmetadata);
+    return m_engine->improveTriangulation(m_triangles, m_vertices, m_indices, m_edges, m_offmetadata);
 }
