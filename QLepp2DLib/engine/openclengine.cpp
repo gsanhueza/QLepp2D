@@ -77,10 +77,11 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
 
         // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
         cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
-        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
+        cl::Buffer bufferIndices(m_context, indices.begin(), indices.end(), false, USE_HOST_PTR);
 
         // Make kernel
-        cl::make_kernel<cl::Buffer, cl::Buffer> detect_kernel(m_program, "improveTriangulation");
+        cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "improveTriangulation");
 
         // Set dimensions
         cl::NDRange global(triangles.size());
@@ -88,10 +89,12 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
         // Execute the kernel
-        detect_kernel(eargs, bufferTriangles, bufferVertices);
+        detect_kernel(eargs, bufferTriangles, bufferVertices, bufferIndices);
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
+        cl::copy(m_queue, bufferVertices, vertices.begin(), vertices.end());
+        cl::copy(m_queue, bufferIndices, indices.begin(), indices.end());
     }
     catch (cl::Error err)
     {
