@@ -47,10 +47,20 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         // Set dimensions
         cl::NDRange global(triangles.size());
         //cl::NDRange local( 256 );
+
+        cl_ulong time_start = 0;
+        cl_ulong time_end = 0;
+
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
         // Execute the kernel
-        detect_kernel(eargs, angle, bufferTriangles, bufferVertices);
+        cl::Event event = detect_kernel(eargs, angle, bufferTriangles, bufferVertices);
+        event.wait();
+
+        event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
+        event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
+
+        qDebug() << "Processed in" << time_end - time_start << "nanoseconds.";
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
@@ -127,9 +137,9 @@ void OpenCLEngine::setup()
         // Create a context
         m_context = cl::Context(m_devices);
 
-        // Create a command queue
+        // Create a command queue with profiling enabled.
         // Select the device.
-        m_queue = cl::CommandQueue(m_context, m_devices[device_id]);
+        m_queue = cl::CommandQueue(m_context, m_devices[device_id], CL_QUEUE_PROFILING_ENABLE);
 
         // Read the program source from QRC, to avoid loading it from the relative path of the GUI executable
         QFile kernelfile(":/kernels/kernel.cl");
