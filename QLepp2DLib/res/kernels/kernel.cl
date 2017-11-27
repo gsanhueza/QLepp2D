@@ -21,6 +21,10 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#if __OPENCL_VERSION__ <= CL_VERSION_1_1
+#pragma OPENCL EXTENSION cl_khr_fp64 : enable
+#endif
+
 typedef struct {
     float x;
     float y;
@@ -28,16 +32,25 @@ typedef struct {
 } Vertex;
 
 typedef struct {
-    Vertex a;
-    Vertex b;
-} Edge;
-
-typedef struct {
     int i1;
     int i2;
     int i3;
     int bad;
 } Triangle;
+
+typedef struct {
+    Vertex a;
+    Vertex b;
+    Triangle it1;
+    Triangle it2;
+} Edge;
+
+#if 0
+int get_global_id(int);
+float pown(float, int);
+float sqrt(float);
+float acos(float);
+#endif
 
 kernel void detectBadTriangles(const double angle, global Triangle *triangles, global Vertex *vertices)
 {
