@@ -24,6 +24,7 @@
 #include "off/offmetadata.h"
 #include "structs/triangle.h"
 #include "structs/vertex.h"
+#include "structs/edge.h"
 
 /**
 * @brief Abstract class for engines. Each implementation must override at least
@@ -70,6 +71,7 @@ public:
     virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
+                                        std::vector<Edge> &edges,
                                         OFFMetadata &metadata) = 0;
 
 protected:

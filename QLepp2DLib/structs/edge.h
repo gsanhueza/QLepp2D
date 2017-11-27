@@ -22,9 +22,11 @@
 
 #include "vertex.h"
 
-// FIXME This structure can have the triangle containing the edge
 typedef struct {
     Vertex a;
     Vertex b;
+    Triangle it1;
+    Triangle it2;
 } Edge;
+
 #endif // EDGE_H
