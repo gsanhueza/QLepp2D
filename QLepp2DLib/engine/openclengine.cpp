@@ -60,7 +60,7 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-        qDebug() << "Processed in" << time_end - time_start << "nanoseconds.";
+        qDebug() << "OpenCL: Processed in" << time_end - time_start << "nanoseconds.";
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());

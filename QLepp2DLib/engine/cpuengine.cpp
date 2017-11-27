@@ -18,6 +18,7 @@
  */
 
 #include <QDebug>
+#include <QElapsedTimer>
 #include <cmath>
 #include "engine/cpuengine.h"
 #include "structs/triangle.h"
@@ -32,6 +33,9 @@ bool CPUEngine::detectBadTriangles( double &angle,
                                     std::vector<Vertex> &vertices)
 {
     qDebug() << "CPUEngine::detectBadTriangles - angle =" << angle;
+
+    QElapsedTimer timer;
+    timer.start();
     for (Triangle &t : triangles)
     {
         // FIXME Read edge data from Triangle struct
@@ -59,6 +63,8 @@ bool CPUEngine::detectBadTriangles( double &angle,
 
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
     }
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "CPU: Processed in" << elapsed << "nanoseconds.";
     return true;
 }
 
