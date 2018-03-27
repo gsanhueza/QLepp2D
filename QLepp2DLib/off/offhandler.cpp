@@ -19,6 +19,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QMap>
 #include "off/offhandler.h"
 
 OFFHandler::OFFHandler()
@@ -52,6 +53,7 @@ bool OFFHandler::loadOffFile(   QString &filepath,
         vertices.clear();
         indices.clear();
         triangles.clear();
+        edges.clear();
 
         // Skip comments
         do
@@ -83,6 +85,18 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             vertices.push_back(v);
         }
 
+        /* From here we create our structures in 4 phases:
+         * Phase 1: Add triangles with incomplete data (only indices to vertices).
+         * Phase 2: Create a temporal QMap that can detect neighbors of each
+         * parsed triangle.
+         * Phase 3: Use the temporal QMap to update the "edges" vector.
+         * Phase 4: Update incomplete data of triangles with info from earlier
+         * phases.
+         */
+
+        // Create QMap.
+        QMap<QString, EdgeData> map;
+
         // Read faces data (indices)
         for (int i(0); i < metadata.indices; i++)
         {
@@ -90,15 +104,69 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
             // We check and skip the first one, because it marks the amount of indices, not the index itself.
             Triangle t;
-            t.i1 = mappedIndices.at(1).toInt();
-            t.i2 = mappedIndices.at(2).toInt();
-            t.i3 = mappedIndices.at(3).toInt();
+
+            // Phase 1
+            t.iv1 = mappedIndices.at(1).toInt();
+            t.iv2 = mappedIndices.at(2).toInt();
+            t.iv3 = mappedIndices.at(3).toInt();
+            t.ie1 = -1;
+            t.ie2 = -1;
+            t.ie3 = -1;
             t.bad = 0;
             triangles.push_back(t);
 
-            indices.push_back(t.i1);
-            indices.push_back(t.i2);
-            indices.push_back(t.i3);
+            indices.push_back(t.iv1);
+            indices.push_back(t.iv2);
+            indices.push_back(t.iv3);
+
+            // Phase 2
+            QVector<int> tmpIV; // Temporal vertices
+            tmpIV.append(t.iv1);
+            tmpIV.append(t.iv2);
+            tmpIV.append(t.iv3);
+
+            for (int j(0); j < 3; j++)
+            {
+                QString key;
+                key.append(std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
+                key.append("-");
+                key.append(std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
+                EdgeData ed;
+
+                if (map.contains(key))
+                {
+                    ed = map.value(key);
+                    ed.ivopb = tmpIV.at((j + 2) % 3); // Index of opposite vertex from neighbour whose edge was already in "map"
+                    ed.itb = i; // Index of current triangle, neighbour of earlier triangle in "map"
+                    map.insert(key, ed);
+                }
+                else
+                {
+                    ed.iv1 = j % 3;
+                    ed.iv2 = (j + 1) % 3;
+                    ed.ivopa = (j + 2) % 3;
+                    ed.ita = i; // Index of current triangle
+                    ed.ivopb = -1; // Index of opposite vertex from neighbour not yet found
+                    ed.itb = -1; // Index of neighbour triangle not yet found
+                    map.insert(key, ed);
+                }
+            }
+        }
+
+        // Phase 3
+        for (QMap<QString, EdgeData>::iterator i(map.begin()); i != map.end(); i++)
+        {
+            Edge e;
+            e.ita = i.value().ita;
+            e.itb = i.value().itb;
+            edges.push_back(e);
+
+            qDebug() << "test";
+            // Phase 4
+//            Triangle &ta = triangles.at(e.ita);
+//            Triangle &tb = triangles.at(e.itb);
+            // TODO Update ta.ie1, ta.ie2, ta.ie3
+            // TODO Update tb.ie1, tb.ie2, tb.ie3
         }
 
         inputFile.close();

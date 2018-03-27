@@ -38,18 +38,14 @@ bool CPUEngine::detectBadTriangles( double &angle,
     timer.start();
     for (Triangle &t : triangles)
     {
-        // FIXME Read edge data from Triangle struct
-        Edge A, B, C;
-        A.a = vertices.at(t.i1);
-        A.b = vertices.at(t.i2);
-        B.a = vertices.at(t.i2);
-        B.b = vertices.at(t.i3);
-        C.a = vertices.at(t.i3);
-        C.b = vertices.at(t.i1);
+        Vertex A, B, C;
+        A = vertices.at(t.iv1);
+        B = vertices.at(t.iv2);
+        C = vertices.at(t.iv3);
 
-        float length_a2 = pow(A.a.x - A.b.x, 2) + pow(A.a.y - A.b.y, 2) + pow(A.a.z - A.b.z, 2);
-        float length_b2 = pow(B.a.x - B.b.x, 2) + pow(B.a.y - B.b.y, 2) + pow(B.a.z - B.b.z, 2);
-        float length_c2 = pow(C.a.x - C.b.x, 2) + pow(C.a.y - C.b.y, 2) + pow(C.a.z - C.b.z, 2);
+        float length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
+        float length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
+        float length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
 
         float length_a = sqrt(length_a2);
         float length_b = sqrt(length_b2);

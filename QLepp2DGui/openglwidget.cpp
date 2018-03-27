@@ -112,17 +112,17 @@ void OpenGLWidget::loadData()
 
     for (Triangle &t : triangles)
     {
-        m_data.append(vertices.at(t.i1).x);
-        m_data.append(vertices.at(t.i1).y);
-        m_data.append(vertices.at(t.i1).z);
+        m_data.append(vertices.at(t.iv1).x);
+        m_data.append(vertices.at(t.iv1).y);
+        m_data.append(vertices.at(t.iv1).z);
 
-        m_data.append(vertices.at(t.i2).x);
-        m_data.append(vertices.at(t.i2).y);
-        m_data.append(vertices.at(t.i2).z);
+        m_data.append(vertices.at(t.iv2).x);
+        m_data.append(vertices.at(t.iv2).y);
+        m_data.append(vertices.at(t.iv2).z);
 
-        m_data.append(vertices.at(t.i3).x);
-        m_data.append(vertices.at(t.i3).y);
-        m_data.append(vertices.at(t.i3).z);
+        m_data.append(vertices.at(t.iv3).x);
+        m_data.append(vertices.at(t.iv3).y);
+        m_data.append(vertices.at(t.iv3).z);
     }
 
     // Generate color

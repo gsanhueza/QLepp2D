@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+#ifndef EDGEDATA_H
+#define EDGEDATA_H
 
 # if defined(__APPLE__) || defined(__MACOSX)
 #   include <OpenCL/opencl.hpp>
@@ -31,12 +31,10 @@
 typedef struct {
     cl_int iv1;
     cl_int iv2;
-    cl_int iv3;
-    cl_int ie1;
-    cl_int ie2;
-    cl_int ie3;
-    cl_int bad;
-    cl_int valid;
-} Triangle;
+    cl_int ivopa;
+    cl_int ivopb;
+    cl_int ita;
+    cl_int itb;
+} EdgeData;
 
-#endif // TRIANGLE_H
+#endif // EDGEDATA_H
