@@ -24,9 +24,7 @@
 #include "structs/triangle.h"
 #include "structs/edge.h"
 
-CPUEngine::CPUEngine()
-{
-}
+CPUEngine::CPUEngine() = default;
 
 bool CPUEngine::detectBadTriangles( double &angle,
                                     std::vector<Triangle> &triangles,
