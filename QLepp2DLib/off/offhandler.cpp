@@ -88,8 +88,7 @@ bool OFFHandler::loadOffFile(   QString &filepath,
          * Phase 2: Create a temporal QMap that can detect neighbors of each
          * parsed triangle.
          * Phase 3: Use the temporal QMap to update the "edges" vector.
-         * Phase 4: Update incomplete data of triangles with info from earlier
-         * phases.
+         * Phase 4: Update incomplete data of triangles with info from phase 3.
          */
 
         // Create QMap.
@@ -160,7 +159,6 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             e.itb = i.value().itb;
             edges.push_back(e);
 
-            qDebug() << "test";
             // Phase 4
             // Triangle A
             Triangle &ta = triangles.at(e.ita);
