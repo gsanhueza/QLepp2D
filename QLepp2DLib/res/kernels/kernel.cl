@@ -32,17 +32,19 @@ typedef struct {
 } Vertex;
 
 typedef struct {
-    int i1;
-    int i2;
-    int i3;
+    int iv1;
+    int iv2;
+    int iv3;
+    int ie1;
+    int ie2;
+    int ie3;
     int bad;
+    int valid;
 } Triangle;
 
 typedef struct {
-    Vertex a;
-    Vertex b;
-    Triangle it1;
-    Triangle it2;
+    int ita;
+    int itb;
 } Edge;
 
 #if 0
@@ -56,17 +58,15 @@ kernel void detectBadTriangles(const double angle, global Triangle *triangles, g
 {
     int idx = get_global_id(0);
 
-    Edge A, B, C;
-    A.a = vertices[triangles[idx].i1];
-    A.b = vertices[triangles[idx].i2];
-    B.a = vertices[triangles[idx].i2];
-    B.b = vertices[triangles[idx].i3];
-    C.a = vertices[triangles[idx].i3];
-    C.b = vertices[triangles[idx].i1];
+    Vertex A, B, C;
+    A = vertices[triangles[idx].iv1];
+    B = vertices[triangles[idx].iv2];
+    C = vertices[triangles[idx].iv3];
 
-    float length_a2 = pown(A.a.x - A.b.x, 2) + pown(A.a.y - A.b.y, 2) + pown(A.a.z - A.b.z, 2);
-    float length_b2 = pown(B.a.x - B.b.x, 2) + pown(B.a.y - B.b.y, 2) + pown(B.a.z - B.b.z, 2);
-    float length_c2 = pown(C.a.x - C.b.x, 2) + pown(C.a.y - C.b.y, 2) + pown(C.a.z - C.b.z, 2);
+    float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+    float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+    float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+
 
     float length_a = sqrt(length_a2);
     float length_b = sqrt(length_b2);

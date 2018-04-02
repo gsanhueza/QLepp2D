@@ -20,13 +20,17 @@
 #ifndef EDGE_H
 #define EDGE_H
 
+# if defined(__APPLE__) || defined(__MACOSX)
+#   include <OpenCL/opencl.hpp>
+# else
+#   include <CL/cl.hpp>
+# endif
+
 #include "vertex.h"
 
 typedef struct {
-    Vertex a;
-    Vertex b;
-    Triangle it1;
-    Triangle it2;
+    cl_int ita;
+    cl_int itb;
 } Edge;
 
 #endif // EDGE_H

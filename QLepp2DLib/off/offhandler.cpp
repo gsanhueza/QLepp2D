@@ -19,11 +19,10 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QMap>
 #include "off/offhandler.h"
 
-OFFHandler::OFFHandler()
-{
-}
+OFFHandler::OFFHandler() = default;
 
 bool OFFHandler::loadOffFile(   QString &filepath,
                                 OFFMetadata &metadata,
@@ -52,6 +51,7 @@ bool OFFHandler::loadOffFile(   QString &filepath,
         vertices.clear();
         indices.clear();
         triangles.clear();
+        edges.clear();
 
         // Skip comments
         do
@@ -83,6 +83,17 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             vertices.push_back(v);
         }
 
+        /* From here we create our structures in 4 phases:
+         * Phase 1: Add triangles with incomplete data (only indices to vertices).
+         * Phase 2: Create a temporal QMap that can detect neighbors of each
+         * parsed triangle.
+         * Phase 3: Use the temporal QMap to update the "edges" vector.
+         * Phase 4: Update incomplete data of triangles with info from phase 3.
+         */
+
+        // Create QMap.
+        QMap<QString, EdgeData> map;
+
         // Read faces data (indices)
         for (int i(0); i < metadata.indices; i++)
         {
@@ -90,15 +101,108 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
             // We check and skip the first one, because it marks the amount of indices, not the index itself.
             Triangle t;
-            t.i1 = mappedIndices.at(1).toInt();
-            t.i2 = mappedIndices.at(2).toInt();
-            t.i3 = mappedIndices.at(3).toInt();
+
+            // Phase 1
+            t.iv1 = mappedIndices.at(1).toInt();
+            t.iv2 = mappedIndices.at(2).toInt();
+            t.iv3 = mappedIndices.at(3).toInt();
+            t.ie1 = -1;
+            t.ie2 = -1;
+            t.ie3 = -1;
             t.bad = 0;
+            t.valid = 1;
             triangles.push_back(t);
 
-            indices.push_back(t.i1);
-            indices.push_back(t.i2);
-            indices.push_back(t.i3);
+            indices.push_back(t.iv1);
+            indices.push_back(t.iv2);
+            indices.push_back(t.iv3);
+
+            // Phase 2
+            QVector<int> tmpIV; // Temporal vertices
+            tmpIV.append(t.iv1);
+            tmpIV.append(t.iv2);
+            tmpIV.append(t.iv3);
+
+            for (int j(0); j < 3; j++)
+            {
+                QString key;
+                key.append(std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
+                key.append("-");
+                key.append(std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
+                EdgeData ed;
+
+                if (map.contains(key))
+                {
+                    ed = map.value(key);
+                    ed.ivopb = tmpIV.at((j + 2) % 3); // Index of opposite vertex from neighbour whose edge was already in "map"
+                    ed.itb = i; // Index of current triangle, neighbour of earlier triangle in "map"
+                }
+                else
+                {
+                    ed.iv1 = tmpIV.at(j % 3);
+                    ed.iv2 = tmpIV.at((j + 1) % 3);
+                    ed.ivopa = tmpIV.at((j + 2) % 3);
+                    ed.ita = i; // Index of current triangle
+                    ed.ivopb = -1; // Index of opposite vertex from neighbour not yet found
+                    ed.itb = -1; // Index of neighbour triangle not yet found
+                }
+                map.insert(key, ed);
+            }
+        }
+
+        // Phase 3
+        int k = 0;
+        for (QMap<QString, EdgeData>::iterator i(map.begin()); i != map.end(); i++, k++)
+        {
+            Edge e;
+            e.ita = i.value().ita;
+            e.itb = i.value().itb;
+            edges.push_back(e);
+
+            // Phase 4
+            // Triangle A
+            Triangle &ta = triangles.at(e.ita);
+            if (i.value().ivopa == ta.iv1)
+            {
+                ta.ie1 = k;
+            }
+            else if (i.value().ivopa == ta.iv2)
+            {
+                ta.ie2 = k;
+            }
+            else if (i.value().ivopa == ta.iv3)
+            {
+                ta.ie3 = k;
+            }
+            else
+            {
+                qFatal("Inconsistent data (A)!");
+            }
+
+            // Triangle B
+            if (e.itb < 0)
+            {
+                continue; // Maybe there isn't a neighbour triangle.
+            }
+
+            Triangle &tb = triangles.at(e.itb);
+
+            if (i.value().ivopb == tb.iv1)
+            {
+                tb.ie1 = k;
+            }
+            else if (i.value().ivopb == tb.iv2)
+            {
+                tb.ie2 = k;
+            }
+            else if (i.value().ivopb == tb.iv3)
+            {
+                tb.ie3 = k;
+            }
+            else
+            {
+                qFatal("Inconsistent data (B)!");
+            }
         }
 
         inputFile.close();
@@ -114,7 +218,7 @@ bool OFFHandler::saveOffFile(   QString &filepath,
 {
     qDebug() << "Saving OFF file to" << filepath << endl;
     qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.indices << " " << metadata.edges;
-    qDebug() << "coordinatesPerVertex = " << vertices.size() / metadata.vertices;
+    qDebug() << "coordinatesPerVertex = " << static_cast<int>(vertices.size()) / metadata.vertices;
 
     QFile outputFile(filepath);
 
@@ -126,28 +230,28 @@ bool OFFHandler::saveOffFile(   QString &filepath,
         out << metadata.vertices << " " << metadata.indices << " " << metadata.edges;
 
         // Write vertices
-        int coordinatesPerVertex = vertices.size() / metadata.vertices;
-        for (unsigned int i(0); i < vertices.size(); i++)
+        int coordinatesPerVertex = static_cast<int>(vertices.size()) / metadata.vertices;
+        for (int i(0); i < static_cast<int>(vertices.size()); i++)
         {
             if (i % coordinatesPerVertex == 0)
             {
                 out << endl;
             }
-            out << vertices.at(i).x << " ";
-            out << vertices.at(i).y << " ";
-            out << vertices.at(i).z;
+            out << vertices.at(static_cast<unsigned long>(i)).x << " ";
+            out << vertices.at(static_cast<unsigned long>(i)).y << " ";
+            out << vertices.at(static_cast<unsigned long>(i)).z;
         }
 
         // Write faces (indices)
-        int verticesPerFace = indices.size() / metadata.indices;
-        for (unsigned int i(0); i < indices.size(); i++)
+        int verticesPerFace = static_cast<int>(indices.size()) / metadata.indices;
+        for (int i(0); i < static_cast<int>(indices.size()); i++)
         {
             if (i % verticesPerFace == 0)
             {
                 out << endl;
                 out << verticesPerFace;
             }
-            out << " " << indices.at(i);
+            out << " " << indices.at(static_cast<unsigned long>(i));
         }
 
         outputFile.close();
