@@ -61,6 +61,21 @@ public:
                                         std::vector<int> &indices,
                                         std::vector<Edge> &edges,
                                         OFFMetadata &metadata) override;
+
+private:
+    /**
+    * @brief Returns the index to the "edges" vector in which the shared (or border) terminal edge was found.
+    *
+    * @param it p_it: Index of the starting "bad" triangle.
+    * @param triangles p_triangles: Triangles vector.
+    * @param vertices p_vertices: Vertices vector.
+    * @param edges p_edges: Edges vector.
+    * @return int Index of the terminal edge. -1 on error (Not expected to return this).
+    */
+    int getTerminalEdge(    int it,
+                            std::vector<Triangle> &triangles,
+                            std::vector<Vertex> &vertices,
+                            std::vector<Edge> &edges) const;
 };
 
 #endif // CPUENGINE_H
