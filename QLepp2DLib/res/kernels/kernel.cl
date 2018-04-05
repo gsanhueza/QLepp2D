@@ -88,3 +88,87 @@ kernel void improveTriangulation(global Triangle *triangles, global Vertex *vert
 
     triangles[idx].bad = 0;
 }
+
+kernel void detectTerminalIEdges(global Triangle *triangles,
+                                 global Vertex *vertices,
+                                 global Edge *edges,
+                                 global int *terminalEdges,
+                                 global int *triangleHistory)
+{
+    int idx = get_global_id(0);
+
+    /* triangleHistory is a vector of size 3 brought from the host.
+     * We'll use it as a circular vector, so we can just check
+     * if triangleHistory[k] == triangleHistory[(k + 2) % 3].
+     */
+    Triangle t = triangles[idx];
+    int it = idx;
+
+    if (!t.bad)
+    {
+        terminalEdges[idx] = -1;
+    }
+    else
+    {
+        while (true)
+        {
+            // Add myself to the history.
+            int k = 0; // Index of triangleHistory
+            triangleHistory[k] = it;
+            k = (k + 1) % 3;
+
+            // Detect longest edge.
+            Vertex A, B, C;
+            A = vertices[triangles[idx].iv1];
+            B = vertices[triangles[idx].iv2];
+            C = vertices[triangles[idx].iv3];
+
+            float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+            float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+            float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+
+            int neighbourIT;
+            int longestIE;
+            Edge longestEdge;
+
+            if (length_a2 >= length_b2 && length_a2 >= length_c2)
+            {
+                longestEdge = edges[t.ie1];
+                longestIE = t.ie1;
+            }
+            else if (length_b2 >= length_a2 && length_b2 >= length_c2)
+            {
+                longestEdge = edges[t.ie2];
+                longestIE = t.ie2;
+            }
+            else
+            {
+                longestEdge = edges[t.ie3];
+                longestIE = t.ie3;
+            }
+
+            // Detect my neighbour.
+            neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
+    //         qDebug() << "I'm" << idx (it) << "and my neighbour is" << neighbourIT;
+
+            if (neighbourIT < 0)
+            {
+    //             qDebug() << "Border triangle";
+                terminalEdges[idx] = longestIE;
+                break;
+            }
+
+            // If I was here before, then I found the final edge of Lepp.
+            if (it == triangleHistory[(k + 2) % 3])
+            {
+    //             qDebug() << "Found myself, and my longest-edge-shared neighbour";
+                terminalEdges[idx] = longestIE;
+                break;
+            }
+
+            // Update t to check neighbour
+            it = neighbourIT;
+            t = triangles[neighbourIT];
+        }
+    }
+}

@@ -72,7 +72,7 @@ private:
     * @param edges p_edges: Edges vector.
     * @return int Index of the terminal edge. -1 on error (Not expected to return this).
     */
-    int getTerminalEdge(    int it,
+    int getTerminalIEdge(    int it,
                             std::vector<Triangle> &triangles,
                             std::vector<Vertex> &vertices,
                             std::vector<Edge> &edges) const;

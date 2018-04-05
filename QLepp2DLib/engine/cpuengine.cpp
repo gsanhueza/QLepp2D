@@ -62,18 +62,25 @@ bool CPUEngine::detectBadTriangles( double &angle,
     return true;
 }
 
-int CPUEngine::getTerminalEdge( int it,
+int CPUEngine::getTerminalIEdge(int it,
                                 std::vector<Triangle> &triangles,
                                 std::vector<Vertex> &vertices,
                                 std::vector<Edge> &edges) const
 {
     QVector<int> triangleHistory;
+    triangleHistory.resize(3);
+    for (int j(0); j < 3; j++)
+    {
+        triangleHistory.push_back(-1);
+    }
     Triangle t(triangles.at(it));                           // Copy, not reference
 
     while (true)
     {
         // Add myself to the history.
-        triangleHistory.append(it);
+        int k = 0;                                          // Index of triangleHistory
+        triangleHistory[k] = it;
+        k = (k + 1) % 3;
 
         // Detect longest edge.
         Vertex A, B, C;
@@ -119,7 +126,7 @@ int CPUEngine::getTerminalEdge( int it,
         }
 
         // If I was here before, then I found the final edge of Lepp.
-        if (triangleHistory.size() > 2 and it == triangleHistory.at(triangleHistory.size() - 3))
+        if (it == triangleHistory.at((k + 2) % 3))
         {
             qDebug() << "Found myself, and my longest-edge-shared neighbour";
             return longestIE;
@@ -155,7 +162,7 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
      */
 
     // Phase 1
-    for (int i(0); i < triangles.size(); i++)
+    for (int i(0); i < static_cast<int>(triangles.size()); i++)
     {
         Triangle &t(triangles.at(i));
 
@@ -173,7 +180,7 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
              * to calculate the required here in CPU, as there's no need for
              * everyone right now.
              */
-            int longestEdge = getTerminalEdge(i, triangles, vertices, edges);
+            int longestEdge = getTerminalIEdge(i, triangles, vertices, edges);
             terminalIEdges.append(longestEdge); // FIXME How do I avoid duplication?
         }
         t.bad = 0;
