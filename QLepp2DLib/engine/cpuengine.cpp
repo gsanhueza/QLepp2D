@@ -165,12 +165,11 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
         Triangle &t(triangles.at(i));
 
         /* Since we need to find the longest edges to get the Lepp, we can
-         * just create a protected method std::vector<Edge> getTerminalEdges()
-         * that returns a vector of Edges for each t.bad, with a predicted
-         * size of #(t.bad).
-         * Worst case, just return the vector with size #(triangles), where
-         * each position "i" represents the longest edge (position) detected
-         * from the triangle "i".
+         * just create a protected method "int getTerminalIEdge(...)" that returns
+         * the index of the edge that is a terminal edge.
+         *
+         * From here, we can update the "edges" vector, and each of these edges
+         * will know if it's a terminal edge or not.
          */
         if (t.bad)
         {
@@ -178,18 +177,19 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
              * to calculate the required here in CPU, as there's no need for
              * everyone right now.
              */
-            int longestEdge = getTerminalIEdge(i, triangles, vertices, edges);
-            terminalIEdges.append(longestEdge); // FIXME How do I avoid duplication?
+            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges);
+            edges.at(longestIEdge).isTerminalEdge = 1;
+            terminalIEdges.append(longestIEdge);            // WARNING terminalIEdges can be used or deprecated
         }
         t.bad = 0;
 
     }
     // TODO Delete this
     // Checking terminal edges
-    qDebug() << "Found" << terminalIEdges.size() << "terminal edges";
-    for (int i : terminalIEdges)
+    qDebug() << "Found" << terminalIEdges.size() << "triangles with terminal edges";
+    for (int i(0); i < edges.size(); i++)
     {
-        qDebug() << "Found edge" << i;
+        qDebug() << "Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
     }
 
     // TODO Phase 2

@@ -45,6 +45,7 @@ typedef struct {
 typedef struct {
     int ita;
     int itb;
+    int isTerminalEdge;
 } Edge;
 
 #if 0
@@ -92,7 +93,6 @@ kernel void improveTriangulation(global Triangle *triangles, global Vertex *vert
 kernel void detectTerminalIEdges(global Triangle *triangles,
                                  global Vertex *vertices,
                                  global Edge *edges,
-                                 global int *terminalIEdges,
                                  global int *triangleHistory)
 {
     int idx = get_global_id(0);
@@ -105,11 +105,7 @@ kernel void detectTerminalIEdges(global Triangle *triangles,
     int it = idx;
     int k = 0; // Index of triangleHistory
 
-    if (!t.bad)
-    {
-        terminalIEdges[idx] = -1;
-    }
-    else
+    if (t.bad)
     {
         while (true)
         {
@@ -153,7 +149,7 @@ kernel void detectTerminalIEdges(global Triangle *triangles,
             if (neighbourIT < 0)
             {
                 printf("[KERNEL THREAD %d] - Border triangle\n", idx);
-                terminalIEdges[idx] = longestIE;
+                edges[longestIE].isTerminalEdge = 1;
                 break;
             }
 
@@ -161,7 +157,7 @@ kernel void detectTerminalIEdges(global Triangle *triangles,
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
                 printf("[KERNEL THREAD %d] - Found myself, and my longest-edge-shared neighbour\n", idx);
-                terminalIEdges[idx] = longestIE;
+                edges[longestIE].isTerminalEdge = 1;
                 break;
             }
 

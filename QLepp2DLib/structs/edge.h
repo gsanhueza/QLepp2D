@@ -31,6 +31,7 @@
 typedef struct {
     cl_int ita;
     cl_int itb;
+    cl_int isTerminalEdge;
 } Edge;
 
 #endif // EDGE_H
