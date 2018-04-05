@@ -142,10 +142,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         // Checking terminal edges
         for (int i : terminalIEdges)
         {
-            if (i > 0)
-            {
-                qDebug() << "Found terminal Edge" << i;
-            }
+            qDebug() << "Found Edge" << i;
         }
     }
     catch (cl::Error err)

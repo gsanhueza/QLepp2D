@@ -68,6 +68,8 @@ int CPUEngine::getTerminalIEdge(int it,
                                 std::vector<Edge> &edges) const
 {
     QVector<int> triangleHistory;
+    int k = 0;                                              // Index of triangleHistory
+
     triangleHistory.resize(3);
     for (int j(0); j < 3; j++)
     {
@@ -78,9 +80,7 @@ int CPUEngine::getTerminalIEdge(int it,
     while (true)
     {
         // Add myself to the history.
-        int k = 0;                                          // Index of triangleHistory
         triangleHistory[k] = it;
-        k = (k + 1) % 3;
 
         // Detect longest edge.
         Vertex A, B, C;
@@ -98,19 +98,16 @@ int CPUEngine::getTerminalIEdge(int it,
 
         if (length_a2 >= length_b2 and length_a2 >= length_c2)
         {
-            qDebug() << "ie1 is longest";
             longestEdge = edges.at(t.ie1);
             longestIE = t.ie1;
         }
         else if (length_b2 >= length_a2 and length_b2 >= length_c2)
         {
-            qDebug() << "ie2 is longest";
             longestEdge = edges.at(t.ie2);
             longestIE = t.ie2;
         }
         else
         {
-            qDebug() << "ie3 is longest";
             longestEdge = edges.at(t.ie3);
             longestIE = t.ie3;
         }
@@ -126,7 +123,7 @@ int CPUEngine::getTerminalIEdge(int it,
         }
 
         // If I was here before, then I found the final edge of Lepp.
-        if (it == triangleHistory.at((k + 2) % 3))
+        if (it == triangleHistory.at((k + 1) % 3))          // Equivalent of (k - 2)
         {
             qDebug() << "Found myself, and my longest-edge-shared neighbour";
             return longestIE;
@@ -135,6 +132,7 @@ int CPUEngine::getTerminalIEdge(int it,
         // Update t to check neighbour
         it = neighbourIT;
         t = triangles.at(neighbourIT);
+        k = (k + 1) % 3;
 
     }
     return -1;
@@ -184,8 +182,15 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
             terminalIEdges.append(longestEdge); // FIXME How do I avoid duplication?
         }
         t.bad = 0;
+
     }
+    // TODO Delete this
+    // Checking terminal edges
     qDebug() << "Found" << terminalIEdges.size() << "terminal edges";
+    for (int i : terminalIEdges)
+    {
+        qDebug() << "Found edge" << i;
+    }
 
     // TODO Phase 2
     // TODO Phase 3
