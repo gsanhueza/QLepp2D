@@ -111,9 +111,11 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
 
         /* As we're using GPU, we can use CRCW in this particular situation,
          * because when a terminal iedge (index of edge) is found, we update
-         * the information of the edge, so it knows that it's a terminal edge.
-         * That way we can avoid duplicated terminal edges, if we used a
-         * vector of triangles in which each triangle had its terminal iedge.
+         * the information of the edge, so it knows that it's a terminal edge by
+         * updating isTerminalEdge with 0 or 1, and each thread will write the
+         * same value. Thus, we can avoid duplicated terminal edges like we
+         * could've had if we had used a vector of triangles in which each
+         * triangle had its terminal iedge.
          *
          * This means that "detect_terminal_iedges_kernel" will concurrently
          * update the "edges" vector so we can know which edges are terminals.
