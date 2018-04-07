@@ -157,6 +157,7 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             Edge e;
             e.ita = i.value().ita;
             e.itb = i.value().itb;
+            e.isTerminalEdge = 0;
             edges.push_back(e);
 
             // Phase 4
