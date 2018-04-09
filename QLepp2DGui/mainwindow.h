@@ -21,6 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSettings>
 #include "tutorial.h"
 #include "about.h"
 #include <model.h>
@@ -63,6 +64,7 @@ private:
     Ui::MainWindow *ui;
     Tutorial *m_tutorial;
     About *m_about;
+    QSettings *m_settings;
 
     QString m_currentFileName;
 };

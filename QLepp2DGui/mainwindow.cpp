@@ -29,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_tutorial(new Tutorial(this)),
-    m_about(new About(this))
+    m_about(new About(this)),
+    m_settings(new QSettings("QLepp2D", "qlepp2d", this))
 {
     ui->setupUi(this);
 
@@ -94,6 +95,7 @@ void MainWindow::loadFile(QString path)
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
         m_currentFileName = fileinfo.completeBaseName();
+        m_settings->setValue("lastdir", fileinfo.absolutePath());
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage(tr("Loaded."));
@@ -110,7 +112,7 @@ void MainWindow::loadFile(QString path)
 
 void MainWindow::loadTriangulationClicked()
 {
-    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), ".", tr("OFF Files (*.off)"));
+    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), m_settings->value("lastdir", ".").toString() , tr("OFF Files (*.off)"));
     loadFile(filepath);
 }
 
