@@ -78,6 +78,20 @@ protected:
     virtual void setup() override;
 
 private:
+    /**
+     * @brief Detects if an edge can be a terminal edge for any triangle.
+     *
+     * @param globalSize p_globalSize: Number of threads.
+     * @param edges p_bufferEdges: Buffer to a vector of edges.
+     * @param vertices p_bufferVertices: Buffer to a vector of vertices.
+     * @param triangles p_bufferTriangles: Buffer to a vector of triangles.
+     */
+    virtual void detectTerminalEdgesBuffered(unsigned long globalSize,
+                                             cl::Buffer &bufferEdges,
+                                             cl::Buffer &bufferVertices,
+                                             cl::Buffer &bufferTriangles);
+
+private:
     std::vector<cl::Platform> m_platforms;
     std::vector<cl::Device> m_devices;
     cl::Context m_context;

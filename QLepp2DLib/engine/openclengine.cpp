@@ -74,6 +74,23 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
     return true;
 }
 
+void OpenCLEngine::detectTerminalEdgesBuffered(unsigned long globalSize,
+                                               cl::Buffer &bufferEdges,
+                                               cl::Buffer &bufferVertices,
+                                               cl::Buffer &bufferTriangles)
+{
+    // Set dimensions
+    cl::NDRange global(globalSize);
+    //cl::NDRange local(256);
+    cl::EnqueueArgs eargs(m_queue, global/*, local*/);
+
+    // Make kernel
+    cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_edges_kernel(m_program, "detectTerminalEdges");
+
+    // Execute the kernel
+    detect_terminal_edges_kernel(eargs, bufferEdges, bufferVertices, bufferTriangles);
+}
+
 bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
                                         std::vector<int> &indices,
@@ -81,8 +98,8 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                         OFFMetadata &metadata)
 {
     /* We'll do this in 3 phases:
-     * Phase 1: Detect the terminal edges for each bad triangle.
-     * Phase 2: Insert new triangle(s) at each terminal edge.
+     * Phase 1: Detect terminal edges.
+     * Phase 2: Insert new triangle(s) at each terminal edge if needed.
      * Phase 3: Recalculate bad triangles.
      */
     try
@@ -90,46 +107,23 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         // Create the memory buffers (Implicit copy to buffers when using iterators)
         const bool USE_HOST_PTR = true;
 
-        // Create the triangleHistory vector
-        std::vector<int> triangleHistory;
-        for (int j(0); j < 3; j++)
-        {
-            triangleHistory.push_back(-1);
-        }
-
         // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
         cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
         cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
         cl::Buffer bufferIndices(m_context, indices.begin(), indices.end(), false, USE_HOST_PTR);
         cl::Buffer bufferEdges(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
-        cl::Buffer bufferTriangleHistory(m_context, triangleHistory.begin(), triangleHistory.end(), false, USE_HOST_PTR);
-
-        // Set dimensions
-        cl::NDRange global(triangles.size());
-        //cl::NDRange local( 256 );
-        cl::EnqueueArgs eargs(m_queue, global/*, local*/);
-
-        /* As we're using GPU, we can use CRCW in this particular situation,
-         * because when a terminal iedge (index of edge) is found, we update
-         * the information of the edge, so it knows that it's a terminal edge by
-         * updating isTerminalEdge with 0 or 1, and each thread will write the
-         * same value. Thus, we can avoid duplicated terminal edges like we
-         * could've had if we had used a vector of triangles in which each
-         * triangle had its terminal iedge.
-         *
-         * This means that "detect_terminal_iedges_kernel" will concurrently
-         * update the "edges" vector so we can know which edges are terminals.
-         */
 
         // Phase 1
-        // Make kernel
-        cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_iedges_kernel(m_program, "detectTerminalIEdges");
+        detectTerminalEdgesBuffered(edges.size(), bufferEdges, bufferVertices, bufferTriangles);
 
-        // Execute the kernel
-        detect_terminal_iedges_kernel(eargs, bufferTriangles, bufferVertices, bufferEdges, bufferTriangleHistory);
-
+        // BEGIN Delete this
+        // Set dimensions
+        cl::NDRange global(triangles.size());
+        //cl::NDRange local(256);
+        cl::EnqueueArgs eargs(m_queue, global/*, local*/);
         cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "improveTriangulation");
         detect_kernel(eargs, bufferTriangles, bufferVertices, bufferIndices);
+        // END Delete this
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
