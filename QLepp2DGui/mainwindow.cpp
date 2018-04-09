@@ -69,6 +69,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    // Save last opened files before closing
+    m_settings->setValue("recentFiles", QStringList(m_recentFilesStack.toList()));
+
     delete ui;
 }
 
@@ -95,7 +98,8 @@ void MainWindow::loadFile(QString path)
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
         m_currentFileName = fileinfo.completeBaseName();
-        m_settings->setValue("lastdir", fileinfo.absolutePath());
+        m_recentFilesStack.push(fileinfo.absoluteFilePath());
+        m_settings->setValue("lastDir", fileinfo.absolutePath());
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage(tr("Loaded."));
