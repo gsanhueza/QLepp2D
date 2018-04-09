@@ -106,7 +106,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>29</height>
+     <height>49</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -116,7 +116,22 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuRecentTriangulations">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>&amp;Recent Triangulations</string>
+     </property>
+     <property name="icon">
+      <iconset theme="document-open-recent"/>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionClearHistory"/>
+    </widget>
     <addaction name="actionLoadTriangulation"/>
+    <addaction name="menuRecentTriangulations"/>
+    <addaction name="separator"/>
     <addaction name="actionSaveTriangulation"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -295,6 +310,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionClearHistory">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="edit-clear-history">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Clear history</string>
    </property>
   </action>
  </widget>
