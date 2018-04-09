@@ -116,7 +116,7 @@ void MainWindow::loadFile(QString path)
 
 void MainWindow::loadTriangulationClicked()
 {
-    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), m_settings->value("lastdir", ".").toString() , tr("OFF Files (*.off)"));
+    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), m_settings->value("lastDir", ".").toString() , tr("OFF Files (*.off)"));
     loadFile(filepath);
 }
 
