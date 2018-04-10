@@ -92,102 +92,81 @@ kernel void improveTriangulation(global Triangle *triangles, global Vertex *vert
     triangles[idx].bad = 0;
 }
 
-/* Each thread is an Edge */
-kernel void detectTerminalEdges(global Edge *edges,
+/* Each thread is a Triangle */
+kernel void detectTerminalEdges(global Triangle *triangles,
                                 global Vertex *vertices,
-                                global Triangle *triangles)
+                                global Edge *edges)
 {
-    int ie = get_global_id(0);
+    int idx = get_global_id(0);
 
-    /* We need to check if an edge is the longest edge for both triangles
-     * (or "Triangle A" if border edge).
-     * Then, we can mark it as a "terminal edge".
+    /* triangleHistory is a vector of size 3 brought from the host.
+     * We'll use it as a circular vector, so we can just check
+     * if triangleHistory[k] == triangleHistory[(k + 2) % 3].
      */
-    Vertex A, B, C;
-    float length_a2, length_b2, length_c2;
+    private int triangleHistory[3] = {-1, -1, -1};
 
-    // Triangle A
-    Triangle ta = triangles[edges[ie].ita];
-    A = vertices[ta.iv1];
-    B = vertices[ta.iv2];
-    C = vertices[ta.iv3];
+    Triangle t = triangles[idx];
+    int it = idx;
+    int k = 0; // Index of triangleHistory
 
-    length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
-    length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
-    length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+    if (t.bad)
+    {
+        while (true)
+        {
+            // Add myself to the history.
+            triangleHistory[k] = it;
 
-    int longestIEA;
-    if (length_a2 >= length_b2 && length_a2 >= length_c2)
-    {
-        longestIEA = ta.ie1;
-    }
-    else if (length_b2 >= length_a2 && length_b2 >= length_c2)
-    {
-        longestIEA = ta.ie2;
-    }
-    else
-    {
-        longestIEA = ta.ie3;
-    }
+            // Detect longest edge.
+            Vertex A, B, C;
+            A = vertices[t.iv1];
+            B = vertices[t.iv2];
+            C = vertices[t.iv3];
 
-    /* If edges[ie] is not the longest edge of Triangle A, it won't
-     * matter if it's the longest edge of Triangle B, as it can't be a
-     * terminal edge.
-     */
-    if (longestIEA != ie)
-    {
-        edges[ie].isTerminalEdge = 0;
-        return;
-    }
-    else if (edges[ie].itb < 0) // "A" might be a border triangle with the longest edge
-    {
-        edges[ie].isTerminalEdge = 1;
-        return;
-    }
+            float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+            float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+            float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
 
-    // Triangle B
-    Triangle tb = triangles[edges[ie].itb];
-    A = vertices[tb.iv1];
-    B = vertices[tb.iv2];
-    C = vertices[tb.iv3];
+            int neighbourIT;
+            int longestIE;
+            Edge longestEdge;
 
-    length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
-    length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
-    length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+            if (length_a2 >= length_b2 && length_a2 >= length_c2)
+            {
+                longestEdge = edges[t.ie1];
+                longestIE = t.ie1;
+            }
+            else if (length_b2 >= length_a2 && length_b2 >= length_c2)
+            {
+                longestEdge = edges[t.ie2];
+                longestIE = t.ie2;
+            }
+            else
+            {
+                longestEdge = edges[t.ie3];
+                longestIE = t.ie3;
+            }
 
-    int longestIEB;
-    if (length_a2 >= length_b2 && length_a2 >= length_c2)
-    {
-        longestIEB = tb.ie1;
-    }
-    else if (length_b2 >= length_a2 && length_b2 >= length_c2)
-    {
-        longestIEB = tb.ie2;
-    }
-    else
-    {
-        longestIEB = tb.ie3;
-    }
+            // Detect my neighbour.
+            neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
 
-    /* If edges[ie] is not the longest edge of Triangle B, it won't
-     * matter if it's the longest edge of Triangle A, as it can't be a
-     * terminal edge.
-     */
-    if (longestIEB != ie)
-    {
-        edges[ie].isTerminalEdge = 0;
-        return;
-    }
+            // Border triangle
+            if (neighbourIT < 0)
+            {
+                edges[longestIE].isTerminalEdge = 1;
+                return;
+            }
 
-    /* Final check, if the longest edges of each triangle are the same as
-     * "this" edge, we have our terminal edge.
-     */
-    if (longestIEA == longestIEB && longestIEB == ie)
-    {
-        edges[ie].isTerminalEdge = 1;
-    }
-    else
-    {
-        edges[ie].isTerminalEdge = 0;
+            // If I was here before, then I found the final edge of Lepp.
+            if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
+            {
+                edges[longestIE].isTerminalEdge = 1;
+                return;
+            }
+
+            // Update t to check neighbour
+            it = neighbourIT;
+            t = triangles[neighbourIT];
+            k = (k + 1) % 3;
+        }
     }
 }
