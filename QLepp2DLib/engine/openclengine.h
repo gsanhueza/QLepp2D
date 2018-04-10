@@ -87,10 +87,9 @@ private:
      * @param triangles p_bufferTriangles: Buffer to a vector of triangles.
      */
     void detectTerminalEdgesBuffered(unsigned long globalSize,
-                                     cl::Buffer &bufferEdges,
-                                     cl::Buffer &bufferVertices,
                                      cl::Buffer &bufferTriangles,
-                                     cl::Buffer &bufferTriangleHistory);
+                                     cl::Buffer &bufferVertices,
+                                     cl::Buffer &bufferEdges);
 
 
 private:

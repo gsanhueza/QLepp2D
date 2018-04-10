@@ -93,10 +93,9 @@ kernel void improveTriangulation(global Triangle *triangles, global Vertex *vert
 }
 
 /* Each thread is a Triangle */
-kernel void detectTerminalEdges(global Edge *edges,
+kernel void detectTerminalEdges(global Triangle *triangles,
                                 global Vertex *vertices,
-                                global Triangle *triangles,
-                                global int *triangleHistory)
+                                global Edge *edges)
 {
     int idx = get_global_id(0);
 
@@ -104,6 +103,8 @@ kernel void detectTerminalEdges(global Edge *edges,
      * We'll use it as a circular vector, so we can just check
      * if triangleHistory[k] == triangleHistory[(k + 2) % 3].
      */
+    private int triangleHistory[3] = {-1, -1, -1};
+
     Triangle t = triangles[idx];
     int it = idx;
     int k = 0; // Index of triangleHistory
@@ -152,14 +153,14 @@ kernel void detectTerminalEdges(global Edge *edges,
             if (neighbourIT < 0)
             {
                 edges[longestIE].isTerminalEdge = 1;
-                break;
+                return;
             }
 
             // If I was here before, then I found the final edge of Lepp.
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
                 edges[longestIE].isTerminalEdge = 1;
-                break;
+                return;
             }
 
             // Update t to check neighbour

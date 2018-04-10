@@ -60,8 +60,7 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-        qDebug() << "OpenCL: Processed in" << time_end - time_start << "nanoseconds.";
-
+        qDebug() << "OpenCL: Bad Triangles detected in" << time_end - time_start << "nanoseconds.";
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
     }
@@ -75,10 +74,9 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
 }
 
 void OpenCLEngine::detectTerminalEdgesBuffered(unsigned long globalSize,
-                                               cl::Buffer &bufferEdges,
-                                               cl::Buffer &bufferVertices,
                                                cl::Buffer &bufferTriangles,
-                                               cl::Buffer &bufferTriangleHistory)
+                                               cl::Buffer &bufferVertices,
+                                               cl::Buffer &bufferEdges)
 {
     cl_ulong time_start = 0;
     cl_ulong time_end = 0;
@@ -89,10 +87,10 @@ void OpenCLEngine::detectTerminalEdgesBuffered(unsigned long globalSize,
     cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
     // Make kernel
-    cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_edges_kernel(m_program, "detectTerminalEdges");
+    cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_edges_kernel(m_program, "detectTerminalEdges");
 
     // Execute the kernel
-    cl::Event event = detect_terminal_edges_kernel(eargs, bufferEdges, bufferVertices, bufferTriangles, bufferTriangleHistory);
+    cl::Event event = detect_terminal_edges_kernel(eargs, bufferTriangles, bufferVertices, bufferEdges);
 
     event.wait();
 
@@ -146,7 +144,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
          */
 
         // Phase 1
-        detectTerminalEdgesBuffered(edges.size(), bufferEdges, bufferVertices, bufferTriangles, bufferTriangleHistory);
+        detectTerminalEdgesBuffered(triangles.size(), bufferTriangles, bufferVertices, bufferEdges);
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
@@ -159,9 +157,15 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
 
         // TODO Delete this
         // Checking terminal edges
-        for (int i(0); i < edges.size(); i++)
+//         for (int i(0); i < edges.size(); i++)
+//         {
+//             qDebug() << "[OPENCL] Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
+//         }
+
+        // TODO Delete this
+        for (Triangle &t : triangles)
         {
-            qDebug() << "[OPENCL] Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
+            t.bad = 0;
         }
     }
     catch (cl::Error err)

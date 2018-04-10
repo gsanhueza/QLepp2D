@@ -114,18 +114,16 @@ int CPUEngine::getTerminalIEdge(int it,
 
         // Detect my neighbour.
         neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
-        qDebug() << "I'm" << it << "and my neighbour is" << neighbourIT;
 
+        // Border triangle
         if (neighbourIT < 0)
         {
-            qDebug() << "Border triangle";
             return longestIE;
         }
 
         // If I was here before, then I found the final edge of Lepp.
         if (it == triangleHistory.at((k + 1) % 3))          // Equivalent of (k - 2)
         {
-            qDebug() << "Found myself, and my longest-edge-shared neighbour";
             return longestIE;
         }
 
@@ -138,9 +136,9 @@ int CPUEngine::getTerminalIEdge(int it,
     return -1;
 }
 
-void CPUEngine::detectTerminalEdges(std::vector<Edge> &edges,
+void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
                                     std::vector<Vertex> &vertices,
-                                    std::vector<Triangle> &triangles)
+                                    std::vector<Edge> &edges)
 {
     QElapsedTimer timer;
     timer.start();
@@ -191,14 +189,14 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
      */
 
     // Phase 1
-    detectTerminalEdges(edges, vertices, triangles);
+    detectTerminalEdges(triangles, vertices, edges);
 
     // TODO Delete this
     // Checking terminal edges
-    for (int i(0); i < edges.size(); i++)
-    {
-        qDebug() << "Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
-    }
+//     for (int i(0); i < edges.size(); i++)
+//     {
+//         qDebug() << "Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
+//     }
 
     // TODO Phase 2
     // TODO Phase 3
