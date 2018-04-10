@@ -58,115 +58,111 @@ bool CPUEngine::detectBadTriangles( double &angle,
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
     }
     qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "CPU: Bad triangles detected in" << elapsed << "nanoseconds.";
+    qDebug() << "CPU: Processed in" << elapsed << "nanoseconds.";
     return true;
 }
 
-void CPUEngine::detectTerminalEdges(std::vector<Edge>& edges,
-                                    std::vector<Vertex>& vertices,
-                                    std::vector<Triangle>& triangles)
+int CPUEngine::getTerminalIEdge(int it,
+                                std::vector<Triangle> &triangles,
+                                std::vector<Vertex> &vertices,
+                                std::vector<Edge> &edges) const
 {
-    /* We need to check if an edge is the longest edge for both triangles
-     * (or "Triangle A" if border edge).
-     * Then, we can mark it as a "terminal edge".
-     */
-    QElapsedTimer timer;
-    timer.start();
-    for (int ie(0); ie < edges.size(); ie++)
+    QVector<int> triangleHistory;
+    int k = 0;                                              // Index of triangleHistory
+
+    triangleHistory.resize(3);
+    for (int j(0); j < 3; j++)
     {
-        Edge &e(edges.at(ie));
+        triangleHistory.push_back(-1);
+    }
+    Triangle t(triangles.at(it));                           // Copy, not reference
 
+    while (true)
+    {
+        // Add myself to the history.
+        triangleHistory[k] = it;
+
+        // Detect longest edge.
         Vertex A, B, C;
-        float length_a2, length_b2, length_c2;
+        A = vertices.at(t.iv1);
+        B = vertices.at(t.iv2);
+        C = vertices.at(t.iv3);
 
-        // Triangle A
-        Triangle &ta(triangles.at(e.ita));
-        A = vertices.at(ta.iv1);
-        B = vertices.at(ta.iv2);
-        C = vertices.at(ta.iv3);
+        float length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
+        float length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
+        float length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
 
-        length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
-        length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
-        length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
+        int neighbourIT;
+        int longestIE;
+        Edge longestEdge;
 
-        int longestIEA;
         if (length_a2 >= length_b2 and length_a2 >= length_c2)
         {
-            longestIEA = ta.ie1;
+            longestEdge = edges.at(t.ie1);
+            longestIE = t.ie1;
         }
         else if (length_b2 >= length_a2 and length_b2 >= length_c2)
         {
-            longestIEA = ta.ie2;
+            longestEdge = edges.at(t.ie2);
+            longestIE = t.ie2;
         }
         else
         {
-            longestIEA = ta.ie3;
+            longestEdge = edges.at(t.ie3);
+            longestIE = t.ie3;
         }
 
-        /* If edges[ie] is not the longest edge of Triangle A, it won't
-         * matter if it's the longest edge of Triangle B, as it can't be a
-         * terminal edge.
+        // Detect my neighbour.
+        neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
+        qDebug() << "I'm" << it << "and my neighbour is" << neighbourIT;
+
+        if (neighbourIT < 0)
+        {
+            qDebug() << "Border triangle";
+            return longestIE;
+        }
+
+        // If I was here before, then I found the final edge of Lepp.
+        if (it == triangleHistory.at((k + 1) % 3))          // Equivalent of (k - 2)
+        {
+            qDebug() << "Found myself, and my longest-edge-shared neighbour";
+            return longestIE;
+        }
+
+        // Update t to check neighbour
+        it = neighbourIT;
+        t = triangles.at(neighbourIT);
+        k = (k + 1) % 3;
+
+    }
+    return -1;
+}
+
+void CPUEngine::detectTerminalEdges(std::vector<Edge> &edges,
+                                    std::vector<Vertex> &vertices,
+                                    std::vector<Triangle> &triangles)
+{
+    for (int i(0); i < static_cast<int>(triangles.size()); i++)
+    {
+        Triangle &t(triangles.at(i));
+
+        /* Since we need to find the longest edges to get the Lepp, we can
+         * just create a protected method "int getTerminalIEdge(...)" that returns
+         * the index of the edge that is a terminal edge.
+         *
+         * From here, we can update the "edges" vector, and each of these edges
+         * will know if it's a terminal edge that has to be modified or not.
          */
-        if (longestIEA != ie)
+        if (t.bad)
         {
-            e.isTerminalEdge = 0;
-            continue;
-        }
-        else if (e.itb < 0)                                 // "A" might be a border triangle with the longest edge
-        {
-            e.isTerminalEdge = 1;
-            continue;
-        }
-
-        // Triangle B
-        Triangle &tb(triangles.at(e.itb));
-        A = vertices.at(tb.iv1);
-        B = vertices.at(tb.iv2);
-        C = vertices.at(tb.iv3);
-
-        length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
-        length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
-        length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
-
-        int longestIEB;
-        if (length_a2 >= length_b2 and length_a2 >= length_c2)
-        {
-            longestIEB = tb.ie1;
-        }
-        else if (length_b2 >= length_a2 and length_b2 >= length_c2)
-        {
-            longestIEB = tb.ie2;
-        }
-        else
-        {
-            longestIEB = tb.ie3;
-        }
-
-        /* If edges[ie] is not the longest edge of Triangle B, it won't
-         * matter if it's the longest edge of Triangle A, as it can't be a
-         * terminal edge.
-         */
-        if (longestIEB != ie)
-        {
-            e.isTerminalEdge = 0;
-            continue;
-        }
-
-        /* Final check, if the longest edges of each triangle are the same as
-         * "this" edge, we have our terminal edge.
-         */
-        if (longestIEA == longestIEB and longestIEB == ie)
-        {
-            e.isTerminalEdge = 1;
-        }
-        else
-        {
-            e.isTerminalEdge = 0;
+            /* We can just calculate every triangle's lepp in GPU, but only have
+             * to calculate the required here in CPU, as there's no need for
+             * everyone right now.
+             */
+            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges);
+            edges.at(longestIEdge).isTerminalEdge = 1;
         }
     }
-
-    qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
 bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
@@ -183,15 +179,10 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
     qDebug() << "CPUEngine::improveTriangulation";
 
     /* We'll do this in 3 phases:
-     * Phase 1: Detect terminal edges.
-     * Phase 2: Insert new triangle(s) at each terminal edge if needed.
+     * Phase 1: Detect the terminal edges for each bad triangle.
+     * Phase 2: Insert new triangle(s) at each terminal edge.
      * Phase 3: Recalculate bad triangles.
      */
-
-    for (Triangle &t : triangles)
-    {
-        t.bad = 0;
-    }
 
     // Phase 1
     detectTerminalEdges(edges, vertices, triangles);
@@ -205,6 +196,12 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
 
     // TODO Phase 2
     // TODO Phase 3
+
+    // TODO Delete this
+    for (Triangle &t : triangles)
+    {
+        t.bad = 0;
+    }
 
     return true;
 }

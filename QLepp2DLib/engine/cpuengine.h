@@ -62,17 +62,25 @@ public:
                                         std::vector<Edge> &edges,
                                         OFFMetadata &metadata) override;
 
+    // TODO Brief of detectTerminalEdges
+    void detectTerminalEdges(std::vector<Edge> &edges,
+                             std::vector<Vertex> &vertices,
+                             std::vector<Triangle> &triangles);
+
 private:
     /**
-    * @brief Detects if an edge can be a terminal edge for any triangle.
+    * @brief Returns the index to the "edges" vector in which the shared (or border) terminal edge was found.
     *
-    * @param edges p_edges: Vector of edges.
-    * @param vertices p_vertices: Vector of vertices.
-    * @param triangles p_triangles: Vector of triangles.
+    * @param it p_it: Index of the starting "bad" triangle.
+    * @param triangles p_triangles: Triangles vector.
+    * @param vertices p_vertices: Vertices vector.
+    * @param edges p_edges: Edges vector.
+    * @return int Index of the terminal edge. -1 on error (Not expected to return an error).
     */
-    virtual void detectTerminalEdges(   std::vector<Edge> &edges,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<Triangle> &triangles);
+    int getTerminalIEdge(   int it,
+                            std::vector<Triangle> &triangles,
+                            std::vector<Vertex> &vertices,
+                            std::vector<Edge> &edges) const;
 };
 
 #endif // CPUENGINE_H
