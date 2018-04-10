@@ -147,11 +147,10 @@ kernel void detectTerminalEdges(global Edge *edges,
 
             // Detect my neighbour.
             neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
-            printf("[KERNEL THREAD %d] - I'm << %d (it) and my neighbour is %d\n", idx, it, neighbourIT);
 
+            // Border triangle
             if (neighbourIT < 0)
             {
-                printf("[KERNEL THREAD %d] - Border triangle\n", idx);
                 edges[longestIE].isTerminalEdge = 1;
                 break;
             }
@@ -159,7 +158,6 @@ kernel void detectTerminalEdges(global Edge *edges,
             // If I was here before, then I found the final edge of Lepp.
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
-                printf("[KERNEL THREAD %d] - Found myself, and my longest-edge-shared neighbour\n", idx);
                 edges[longestIE].isTerminalEdge = 1;
                 break;
             }

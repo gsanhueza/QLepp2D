@@ -58,7 +58,7 @@ bool CPUEngine::detectBadTriangles( double &angle,
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
     }
     qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "CPU: Processed in" << elapsed << "nanoseconds.";
+    qDebug() << "CPU: Bad Triangles detected in" << elapsed << "nanoseconds.";
     return true;
 }
 
@@ -142,6 +142,9 @@ void CPUEngine::detectTerminalEdges(std::vector<Edge> &edges,
                                     std::vector<Vertex> &vertices,
                                     std::vector<Triangle> &triangles)
 {
+    QElapsedTimer timer;
+    timer.start();
+
     for (int i(0); i < static_cast<int>(triangles.size()); i++)
     {
         Triangle &t(triangles.at(i));
@@ -163,6 +166,9 @@ void CPUEngine::detectTerminalEdges(std::vector<Edge> &edges,
             edges.at(longestIEdge).isTerminalEdge = 1;
         }
     }
+
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
 bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
