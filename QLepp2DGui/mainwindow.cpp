@@ -260,6 +260,7 @@ void MainWindow::removeRecentFile(QString path)
 void MainWindow::updateRecentFiles()
 {
     ui->menuRecentTriangulations->clear();
+
     if (!m_recentFilesList.isEmpty())
     {
         ui->menuRecentTriangulations->setEnabled(true);

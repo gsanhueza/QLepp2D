@@ -55,6 +55,9 @@ DEPENDPATH += $$PWD/../QLepp2DLib
 # Useful when not installing the app, but testing it in a local environment
 QMAKE_LFLAGS += -Wl,-rpath,$$OUT_PWD/../QLepp2DLib/
 
+# Translations updating
+system(lupdate $$PWD/../QLepp2D.pro)
+
 # Translations compiling
 QMAKE_EXTRA_COMPILERS += lrelease
 lrelease.input = TRANSLATIONS

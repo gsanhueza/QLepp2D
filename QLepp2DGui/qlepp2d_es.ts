@@ -295,7 +295,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.ui" line="323"/>
-        <location filename="mainwindow.cpp" line="283"/>
+        <location filename="mainwindow.cpp" line="284"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Limpiar historial</translation>
     </message>
