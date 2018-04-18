@@ -64,6 +64,7 @@ private:
     void addRecentFile(QString path);
     void removeRecentFile(QString path);
     void updateRecentFiles();
+    void clearRecentFiles();
 
 private:
     Ui::MainWindow *ui;

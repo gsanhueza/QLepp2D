@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QFileDialog>
+#include <QMenu>
 #include <QMimeData>
 
 #include "mainwindow.h"
@@ -69,6 +70,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Load recent files
     readSettings();
+
+    // Update recent files in menu
+    updateRecentFiles();
 }
 
 MainWindow::~MainWindow()
@@ -114,6 +118,7 @@ void MainWindow::loadFile(QString path)
         removeRecentFile(path);
         ui->statusBar->showMessage(tr("Unable to load."));
     }
+    updateRecentFiles();
 }
 
 void MainWindow::loadTriangulationClicked()
@@ -254,5 +259,28 @@ void MainWindow::removeRecentFile(QString path)
 
 void MainWindow::updateRecentFiles()
 {
-    qDebug() << "updateRecentFiles()";
+    ui->menuRecentTriangulations->clear();
+    if (!m_recentFilesList.isEmpty())
+    {
+        ui->menuRecentTriangulations->setEnabled(true);
+
+        for (QString &recentFile : m_recentFilesList)
+        {
+            QAction *recentFileAction = ui->menuRecentTriangulations->addAction(recentFile);
+            connect(recentFileAction, &QAction::triggered, this, [recentFile, this] () {loadFile(recentFile);});
+        }
+        ui->menuRecentTriangulations->addSeparator();
+        QAction *clearHistoryAction = ui->menuRecentTriangulations->addAction(tr("Clear history"));
+        connect(clearHistoryAction, &QAction::triggered, this, &MainWindow::clearRecentFiles);
+    }
+    else
+    {
+        ui->menuRecentTriangulations->setDisabled(true);
+    }
+}
+
+void MainWindow::clearRecentFiles()
+{
+    m_recentFilesList.clear();
+    updateRecentFiles();
 }

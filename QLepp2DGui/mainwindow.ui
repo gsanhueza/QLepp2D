@@ -124,10 +124,9 @@
       <string>&amp;Recent Triangulations</string>
      </property>
      <property name="icon">
-      <iconset theme="document-open-recent"/>
+      <iconset theme="document-open-recent">
+       <normaloff>.</normaloff>.</iconset>
      </property>
-     <addaction name="separator"/>
-     <addaction name="actionClearHistory"/>
     </widget>
     <addaction name="actionLoadTriangulation"/>
     <addaction name="menuRecentTriangulations"/>
