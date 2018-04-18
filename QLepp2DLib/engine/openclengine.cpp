@@ -60,8 +60,7 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-        qDebug() << "OpenCL: Processed in" << time_end - time_start << "nanoseconds.";
-
+        qDebug() << "OpenCL: Bad Triangles detected in" << time_end - time_start << "nanoseconds.";
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
     }
@@ -72,6 +71,33 @@ bool OpenCLEngine::detectBadTriangles(  double &angle,
         return false;
     }
     return true;
+}
+
+void OpenCLEngine::detectTerminalEdgesBuffered(unsigned long globalSize,
+                                               cl::Buffer &bufferTriangles,
+                                               cl::Buffer &bufferVertices,
+                                               cl::Buffer &bufferEdges)
+{
+    cl_ulong time_start = 0;
+    cl_ulong time_end = 0;
+
+    // Set dimensions
+    cl::NDRange global(globalSize);
+    //cl::NDRange local(256);
+    cl::EnqueueArgs eargs(m_queue, global/*, local*/);
+
+    // Make kernel
+    cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_edges_kernel(m_program, "detectTerminalEdges");
+
+    // Execute the kernel
+    cl::Event event = detect_terminal_edges_kernel(eargs, bufferTriangles, bufferVertices, bufferEdges);
+
+    event.wait();
+
+    event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
+    event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
+
+    qDebug() << "OpenCL: Terminal edges detected in" << time_end - time_start << "nanoseconds.";
 }
 
 bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
@@ -104,32 +130,21 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         cl::Buffer bufferEdges(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
         cl::Buffer bufferTriangleHistory(m_context, triangleHistory.begin(), triangleHistory.end(), false, USE_HOST_PTR);
 
-        // Set dimensions
-        cl::NDRange global(triangles.size());
-        //cl::NDRange local( 256 );
-        cl::EnqueueArgs eargs(m_queue, global/*, local*/);
-
         /* As we're using GPU, we can use CRCW in this particular situation,
-         * because when a terminal iedge (index of edge) is found, we update
+         * because when a terminal (index of) edge is found, we can update
          * the information of the edge, so it knows that it's a terminal edge by
          * updating isTerminalEdge with 0 or 1, and each thread will write the
          * same value. Thus, we can avoid duplicated terminal edges like we
          * could've had if we had used a vector of triangles in which each
          * triangle had its terminal iedge.
          *
-         * This means that "detect_terminal_iedges_kernel" will concurrently
-         * update the "edges" vector so we can know which edges are terminals.
+         * This means that "detect_terminal_edges_kernel" will concurrently
+         * update the "edges" vector so we can know which edges from the
+         * bad triangles are terminals.
          */
 
         // Phase 1
-        // Make kernel
-        cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_iedges_kernel(m_program, "detectTerminalIEdges");
-
-        // Execute the kernel
-        detect_terminal_iedges_kernel(eargs, bufferTriangles, bufferVertices, bufferEdges, bufferTriangleHistory);
-
-        cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "improveTriangulation");
-        detect_kernel(eargs, bufferTriangles, bufferVertices, bufferIndices);
+        detectTerminalEdgesBuffered(triangles.size(), bufferTriangles, bufferVertices, bufferEdges);
 
         // Copy the output data back to the host
         cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
@@ -137,11 +152,20 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         cl::copy(m_queue, bufferIndices, indices.begin(), indices.end());
         cl::copy(m_queue, bufferEdges, edges.begin(), edges.end());
 
+//         cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "improveTriangulation");
+//         detect_kernel(eargs, bufferTriangles, bufferVertices, bufferIndices);
+
         // TODO Delete this
         // Checking terminal edges
-        for (int i(0); i < edges.size(); i++)
+//         for (int i(0); i < edges.size(); i++)
+//         {
+//             qDebug() << "[OPENCL] Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
+//         }
+
+        // TODO Delete this
+        for (Triangle &t : triangles)
         {
-            qDebug() << "[OPENCL] Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
+            t.bad = 0;
         }
     }
     catch (cl::Error err)

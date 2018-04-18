@@ -120,239 +120,258 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Archivo</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="126"/>
+        <location filename="mainwindow.ui" line="124"/>
+        <source>&amp;Recent Triangulations</source>
+        <translation>&amp;Triangulaciones Recientes</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="140"/>
         <source>Opens the Help menu.</source>
         <translation>Abre el menú de Ayuda.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="129"/>
+        <location filename="mainwindow.ui" line="143"/>
         <source>&amp;Help</source>
         <translation>A&amp;yuda</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="137"/>
+        <location filename="mainwindow.ui" line="151"/>
         <source>Opens the View menu.</source>
         <translation>Abre el menú de Vista.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="140"/>
+        <location filename="mainwindow.ui" line="154"/>
         <source>&amp;View</source>
         <translation>&amp;Vista</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="146"/>
+        <location filename="mainwindow.ui" line="160"/>
         <source>&amp;Engine</source>
         <translation>&amp;Motor</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="159"/>
+        <location filename="mainwindow.ui" line="173"/>
         <source>Show Toolbar</source>
-        <translation>Mostrar caja de herramientas.</translation>
+        <translation>Mostrar caja de herramientas</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="183"/>
+        <location filename="mainwindow.ui" line="197"/>
         <source>&amp;Load Triangulation</source>
         <translation>&amp;Cargar Triangulación</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="186"/>
+        <location filename="mainwindow.ui" line="200"/>
         <source>Loads an OFF file containing a triangulation.</source>
         <translation>Carga un archivo OFF que contiene una triangulación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="189"/>
+        <location filename="mainwindow.ui" line="203"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="198"/>
+        <location filename="mainwindow.ui" line="212"/>
         <source>&amp;Save Triangulation</source>
         <translation>&amp;Guardar Triangulación</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="201"/>
+        <location filename="mainwindow.ui" line="215"/>
         <source>Saves your triangulation in an OFF file.</source>
         <translation>Guarda su triangulación en un archivo OFF.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="204"/>
+        <location filename="mainwindow.ui" line="218"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="213"/>
+        <location filename="mainwindow.ui" line="227"/>
         <source>&amp;Quit</source>
         <translation>&amp;Salir</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="216"/>
+        <location filename="mainwindow.ui" line="230"/>
         <source>Quits this application.</source>
         <translation>Cierra la aplicación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="219"/>
+        <location filename="mainwindow.ui" line="233"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="228"/>
+        <location filename="mainwindow.ui" line="242"/>
         <source>&amp;Tutorial</source>
         <translation>&amp;Tutorial</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="231"/>
+        <location filename="mainwindow.ui" line="245"/>
         <source>Tutorial</source>
         <translation>Tutorial</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="234"/>
+        <location filename="mainwindow.ui" line="248"/>
         <source>Shows how to use this application.</source>
         <translation>Muestra cómo usar esta aplicación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="237"/>
+        <location filename="mainwindow.ui" line="251"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="246"/>
+        <location filename="mainwindow.ui" line="260"/>
         <source>&amp;About</source>
         <translation>&amp;Acerca de</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="249"/>
+        <location filename="mainwindow.ui" line="263"/>
         <source>Shows an About window.</source>
         <translation>Muestra una ventana de &quot;Acerca de&quot;.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="258"/>
+        <location filename="mainwindow.ui" line="272"/>
         <source>&amp;Reset View</source>
         <translation>&amp;Restaurar Vista</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="261"/>
+        <location filename="mainwindow.ui" line="275"/>
         <source>Resets the view to an initial state. Does not modify the triangulation.</source>
         <translation>Restaura la vista a un estado inicial. No modifica la triangulación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="264"/>
+        <location filename="mainwindow.ui" line="278"/>
         <source>Ctrl+R</source>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="273"/>
+        <location filename="mainwindow.ui" line="287"/>
         <source>Use &amp;CPU Engine</source>
         <translation>Usar motor de &amp;CPU</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="276"/>
+        <location filename="mainwindow.ui" line="290"/>
         <source>Use CPU Engine.</source>
         <translation>Usa el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="279"/>
+        <location filename="mainwindow.ui" line="293"/>
         <source>Loads the CPU Engine.</source>
         <translation>Carga el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="282"/>
+        <location filename="mainwindow.ui" line="296"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="291"/>
+        <location filename="mainwindow.ui" line="305"/>
         <source>Use &amp;OpenCL Engine</source>
         <translation>Usar motor de &amp;OpenCL</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="294"/>
+        <location filename="mainwindow.ui" line="308"/>
         <source>Loads the OpenCL Engine.</source>
         <translation>Carga el motor de OpenCL.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="297"/>
+        <location filename="mainwindow.ui" line="311"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="91"/>
+        <location filename="mainwindow.ui" line="323"/>
+        <location filename="mainwindow.cpp" line="282"/>
+        <source>&amp;Clear history</source>
+        <translation>&amp;Limpiar historial</translation>
+    </message>
+    <message>
+        <source>Recent Triangulations</source>
+        <translation type="vanished">Triangulaciones recientes</translation>
+    </message>
+    <message>
+        <source>Shows the most recently opened OFF files.</source>
+        <translation type="vanished">Muestra los archivos OFF más recientemente abiertos.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="101"/>
         <source>Loading...</source>
         <translation>Cargando...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="99"/>
+        <location filename="mainwindow.cpp" line="110"/>
         <source>Loaded.</source>
         <translation>Cargado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="107"/>
+        <location filename="mainwindow.cpp" line="119"/>
         <source>Unable to load.</source>
         <translation>No se puede cargar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="113"/>
-        <location filename="mainwindow.cpp" line="127"/>
+        <location filename="mainwindow.cpp" line="126"/>
+        <location filename="mainwindow.cpp" line="140"/>
         <source>OFF files</source>
         <translation>Archivos OFF</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="113"/>
-        <location filename="mainwindow.cpp" line="127"/>
+        <location filename="mainwindow.cpp" line="126"/>
+        <location filename="mainwindow.cpp" line="140"/>
         <source>OFF Files (*.off)</source>
         <translation>Archivos OFF (*.off)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="123"/>
+        <location filename="mainwindow.cpp" line="136"/>
         <source>Nothing to save.</source>
         <translation>Nada por guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="132"/>
+        <location filename="mainwindow.cpp" line="145"/>
         <source>Unable to save.</source>
         <translation>No se puede guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="137"/>
+        <location filename="mainwindow.cpp" line="150"/>
         <source>Saved.</source>
         <translation>Guardado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="167"/>
+        <location filename="mainwindow.cpp" line="180"/>
         <source>Bad triangles have been detected. You can now proceed to improve them.</source>
         <translation>Se han detectado los triángulos malos. Puede proceder a mejorarlos.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="177"/>
+        <location filename="mainwindow.cpp" line="190"/>
         <source>Triangulation has been modified.</source>
         <translation>La triangulación ha sido modificada.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="187"/>
+        <location filename="mainwindow.cpp" line="200"/>
         <source>CPU Engine has been set.</source>
         <translation>Se ha cargado el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="188"/>
+        <location filename="mainwindow.cpp" line="201"/>
         <source>QLepp2D (CPU)</source>
         <translation>QLepp2D (CPU)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="192"/>
+        <location filename="mainwindow.cpp" line="205"/>
         <source>Unable to set CPU engine.</source>
         <translation>No se puede cargar el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="201"/>
+        <location filename="mainwindow.cpp" line="214"/>
         <source>OpenCL Engine has been set.</source>
         <translation>Se ha cargado el motor de OpenCL.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="202"/>
+        <location filename="mainwindow.cpp" line="215"/>
         <source>QLepp2D (OpenCL)</source>
         <translation>QLepp2D (OpenCL)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="206"/>
+        <location filename="mainwindow.cpp" line="219"/>
         <source>Unable to set OpenCL engine.</source>
         <translation>No se puede cargar el motor de OpenCL.</translation>
     </message>

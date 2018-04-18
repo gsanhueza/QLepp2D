@@ -58,7 +58,7 @@ bool CPUEngine::detectBadTriangles( double &angle,
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
     }
     qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "CPU: Processed in" << elapsed << "nanoseconds.";
+    qDebug() << "CPU: Bad Triangles detected in" << elapsed << "nanoseconds.";
     return true;
 }
 
@@ -114,18 +114,16 @@ int CPUEngine::getTerminalIEdge(int it,
 
         // Detect my neighbour.
         neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
-        qDebug() << "I'm" << it << "and my neighbour is" << neighbourIT;
 
+        // Border triangle
         if (neighbourIT < 0)
         {
-            qDebug() << "Border triangle";
             return longestIE;
         }
 
         // If I was here before, then I found the final edge of Lepp.
         if (it == triangleHistory.at((k + 1) % 3))          // Equivalent of (k - 2)
         {
-            qDebug() << "Found myself, and my longest-edge-shared neighbour";
             return longestIE;
         }
 
@@ -138,6 +136,38 @@ int CPUEngine::getTerminalIEdge(int it,
     return -1;
 }
 
+void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
+                                    std::vector<Vertex> &vertices,
+                                    std::vector<Edge> &edges)
+{
+    QElapsedTimer timer;
+    timer.start();
+
+    for (int i(0); i < static_cast<int>(triangles.size()); i++)
+    {
+        Triangle &t(triangles.at(i));
+
+        /* Since we need to find the longest edges to get the Lepp, we can
+         * just create a protected method "int getTerminalIEdge(...)" that returns
+         * the index of the edge that is a terminal edge.
+         *
+         * From here, we can update the "edges" vector, and each of these edges
+         * will know if it's a terminal edge that has to be modified or not.
+         */
+        if (t.bad)
+        {
+            /* We can just calculate every triangle's lepp in GPU, but only have
+             * to calculate the required here in CPU, as there's no need for
+             * everyone right now.
+             */
+            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges);
+            edges.at(longestIEdge).isTerminalEdge = 1;
+        }
+    }
+
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
+}
 
 bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
@@ -151,7 +181,6 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
     // +2 to metadata.indices
     // +3 to metadata.edges
     qDebug() << "CPUEngine::improveTriangulation";
-    QVector<int> terminalIEdges;
 
     /* We'll do this in 3 phases:
      * Phase 1: Detect the terminal edges for each bad triangle.
@@ -160,40 +189,23 @@ bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
      */
 
     // Phase 1
-    for (int i(0); i < static_cast<int>(triangles.size()); i++)
-    {
-        Triangle &t(triangles.at(i));
+    detectTerminalEdges(triangles, vertices, edges);
 
-        /* Since we need to find the longest edges to get the Lepp, we can
-         * just create a protected method "int getTerminalIEdge(...)" that returns
-         * the index of the edge that is a terminal edge.
-         *
-         * From here, we can update the "edges" vector, and each of these edges
-         * will know if it's a terminal edge or not.
-         */
-        if (t.bad)
-        {
-            /* We can just calculate every triangle's lepp in GPU, but only have
-             * to calculate the required here in CPU, as there's no need for
-             * everyone right now.
-             */
-            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges);
-            edges.at(longestIEdge).isTerminalEdge = 1;
-            terminalIEdges.append(longestIEdge);            // WARNING terminalIEdges can be used or deprecated
-        }
-        t.bad = 0;
-
-    }
     // TODO Delete this
     // Checking terminal edges
-    qDebug() << "Found" << terminalIEdges.size() << "triangles with terminal edges";
-    for (int i(0); i < edges.size(); i++)
-    {
-        qDebug() << "Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
-    }
+//     for (int i(0); i < edges.size(); i++)
+//     {
+//         qDebug() << "Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
+//     }
 
     // TODO Phase 2
     // TODO Phase 3
+
+    // TODO Delete this
+    for (Triangle &t : triangles)
+    {
+        t.bad = 0;
+    }
 
     return true;
 }

@@ -55,6 +55,7 @@ float sqrt(float);
 float acos(float);
 #endif
 
+/* Each thread is a Triangle */
 kernel void detectBadTriangles(const double angle, global Triangle *triangles, global Vertex *vertices)
 {
     int idx = get_global_id(0);
@@ -82,6 +83,7 @@ kernel void detectBadTriangles(const double angle, global Triangle *triangles, g
     triangles[idx].bad = (angle_opp_a2 < rad_angle || angle_opp_b2 < rad_angle || angle_opp_c2 < rad_angle);
 }
 
+/* Each thread is a Triangle */
 kernel void improveTriangulation(global Triangle *triangles, global Vertex *vertices, global int *indices)
 {
     // TODO Kernel implementation
@@ -90,10 +92,10 @@ kernel void improveTriangulation(global Triangle *triangles, global Vertex *vert
     triangles[idx].bad = 0;
 }
 
-kernel void detectTerminalIEdges(global Triangle *triangles,
-                                 global Vertex *vertices,
-                                 global Edge *edges,
-                                 global int *triangleHistory)
+/* Each thread is a Triangle */
+kernel void detectTerminalEdges(global Triangle *triangles,
+                                global Vertex *vertices,
+                                global Edge *edges)
 {
     int idx = get_global_id(0);
 
@@ -101,6 +103,8 @@ kernel void detectTerminalIEdges(global Triangle *triangles,
      * We'll use it as a circular vector, so we can just check
      * if triangleHistory[k] == triangleHistory[(k + 2) % 3].
      */
+    private int triangleHistory[3] = {-1, -1, -1};
+
     Triangle t = triangles[idx];
     int it = idx;
     int k = 0; // Index of triangleHistory
@@ -144,21 +148,19 @@ kernel void detectTerminalIEdges(global Triangle *triangles,
 
             // Detect my neighbour.
             neighbourIT = (longestEdge.ita == it) ? longestEdge.itb : longestEdge.ita;
-            printf("[KERNEL THREAD %d] - I'm << %d (it) and my neighbour is %d\n", idx, it, neighbourIT);
 
+            // Border triangle
             if (neighbourIT < 0)
             {
-                printf("[KERNEL THREAD %d] - Border triangle\n", idx);
                 edges[longestIE].isTerminalEdge = 1;
-                break;
+                return;
             }
 
             // If I was here before, then I found the final edge of Lepp.
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
-                printf("[KERNEL THREAD %d] - Found myself, and my longest-edge-shared neighbour\n", idx);
                 edges[longestIE].isTerminalEdge = 1;
-                break;
+                return;
             }
 
             // Update t to check neighbour

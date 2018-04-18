@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QFileDialog>
+#include <QMenu>
 #include <QMimeData>
 
 #include "mainwindow.h"
@@ -29,7 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_tutorial(new Tutorial(this)),
-    m_about(new About(this))
+    m_about(new About(this)),
+    m_settings(new QSettings("QLepp2D", "qlepp2d", this)),
+    m_recentFilesLimit(9)
 {
     ui->setupUi(this);
 
@@ -64,10 +67,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Default title
     setWindowTitle(windowTitle() + " (CPU)");
+
+    // Load recent files
+    readSettings();
+
+    // Update recent files in menu
+    updateRecentFiles();
 }
 
 MainWindow::~MainWindow()
 {
+    writeSettings();
     delete ui;
 }
 
@@ -94,6 +104,7 @@ void MainWindow::loadFile(QString path)
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
         m_currentFileName = fileinfo.completeBaseName();
+        addRecentFile(path);
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage(tr("Loaded."));
@@ -104,13 +115,15 @@ void MainWindow::loadFile(QString path)
     else
     {
         qWarning() << "Could not open file" << path;
+        removeRecentFile(path);
         ui->statusBar->showMessage(tr("Unable to load."));
     }
+    updateRecentFiles();
 }
 
 void MainWindow::loadTriangulationClicked()
 {
-    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), ".", tr("OFF Files (*.off)"));
+    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), m_settings->value("lastDir", ".").toString() , tr("OFF Files (*.off)"));
     loadFile(filepath);
 }
 
@@ -205,4 +218,79 @@ void MainWindow::openclEngineClicked()
     {
         ui->statusBar->showMessage(tr("Unable to set OpenCL engine."));
     }
+}
+
+void MainWindow::readSettings()
+{
+    // Read recent files from last session
+    m_recentFilesList = m_settings->value("recentFiles", "").toStringList();
+}
+
+void MainWindow::writeSettings()
+{
+    // Save last opened files before closing
+    m_settings->setValue("recentFiles", m_recentFilesList);
+}
+
+void MainWindow::addRecentFile(QString path)
+{
+    QFileInfo info(path);
+
+    m_settings->setValue("lastDir", info.absoluteDir().absolutePath());
+    /* If we opened a file twice or more during the same session, we don't
+     * want it duplicated.
+     */
+    removeRecentFile(path);
+    m_recentFilesList.push_front(path);
+
+    while (m_recentFilesList.size() > m_recentFilesLimit)
+    {
+        m_recentFilesList.removeLast();
+    }
+}
+
+void MainWindow::removeRecentFile(QString path)
+{
+    if (!m_recentFilesList.isEmpty() and m_recentFilesList.contains(path))
+    {
+        m_recentFilesList.removeAll(path);
+    }
+}
+
+void MainWindow::updateRecentFiles()
+{
+    ui->menuRecentTriangulations->clear();
+    if (!m_recentFilesList.isEmpty())
+    {
+        ui->menuRecentTriangulations->setEnabled(true);
+
+        for (int i(0); i < m_recentFilesList.size(); i++)
+        {
+            QString recentFile(m_recentFilesList.at(i));
+            QAction *recentFileAction = ui->menuRecentTriangulations->addAction(QString("&%1 %2").arg(i + 1).arg(recentFile));
+            connect(recentFileAction, &QAction::triggered, this, [recentFile, this] () {loadFile(recentFile);});
+        }
+        ui->menuRecentTriangulations->addSeparator();
+
+        QIcon clearHistoryIcon;
+        QString iconThemeName = QStringLiteral("edit-clear-history");
+        if (QIcon::hasThemeIcon(iconThemeName)) {
+            clearHistoryIcon = QIcon::fromTheme(iconThemeName);
+        } else {
+            clearHistoryIcon.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
+        }
+
+        QAction *clearHistoryAction = ui->menuRecentTriangulations->addAction(clearHistoryIcon, tr("&Clear history"));
+        connect(clearHistoryAction, &QAction::triggered, this, &MainWindow::clearRecentFiles);
+    }
+    else
+    {
+        ui->menuRecentTriangulations->setDisabled(true);
+    }
+}
+
+void MainWindow::clearRecentFiles()
+{
+    m_recentFilesList.clear();
+    updateRecentFiles();
 }

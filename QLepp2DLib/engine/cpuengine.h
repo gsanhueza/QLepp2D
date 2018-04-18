@@ -64,7 +64,20 @@ public:
 
 private:
     /**
-    * @brief Returns the index to the "edges" vector in which the shared (or border) terminal edge was found.
+     * @brief Detects terminal edges for each bad triangle in the "triangles"
+     * vector.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    void detectTerminalEdges(std::vector<Triangle> &triangles,
+                             std::vector<Vertex> &vertices,
+                             std::vector<Edge> &edges);
+
+    /**
+    * @brief Returns the index to the "edges" vector in which the shared
+    * (or border) terminal edge was found in the "it" triangle.
     *
     * @param it p_it: Index of the starting "bad" triangle.
     * @param triangles p_triangles: Triangles vector.
