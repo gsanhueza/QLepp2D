@@ -22,7 +22,6 @@
 
 #include <QMainWindow>
 #include <QSettings>
-#include <QStack>
 #include "tutorial.h"
 #include "about.h"
 #include <model.h>
@@ -60,15 +59,21 @@ private slots:
 
 private:
     void loadFile(QString path);
+    void readSettings();
+    void writeSettings();
+    void addRecentFile(QString path);
+    void removeRecentFile(QString path);
+    void updateRecentFiles();
 
 private:
     Ui::MainWindow *ui;
     Tutorial *m_tutorial;
     About *m_about;
     QSettings *m_settings;
-    QStack<QString> m_recentFilesStack;
+    QStringList m_recentFilesList;
 
     QString m_currentFileName;
+    const int m_recentFilesLimit;
 };
 
 #endif // MAINWINDOW_H

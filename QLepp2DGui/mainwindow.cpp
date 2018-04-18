@@ -30,7 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_tutorial(new Tutorial(this)),
     m_about(new About(this)),
-    m_settings(new QSettings("QLepp2D", "qlepp2d", this))
+    m_settings(new QSettings("QLepp2D", "qlepp2d", this)),
+    m_recentFilesLimit(10)
 {
     ui->setupUi(this);
 
@@ -65,13 +66,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Default title
     setWindowTitle(windowTitle() + " (CPU)");
+
+    // Load recent files
+    readSettings();
 }
 
 MainWindow::~MainWindow()
 {
-    // Save last opened files before closing
-    m_settings->setValue("recentFiles", QStringList(m_recentFilesStack.toList()));
-
+    writeSettings();
     delete ui;
 }
 
@@ -98,8 +100,7 @@ void MainWindow::loadFile(QString path)
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
         m_currentFileName = fileinfo.completeBaseName();
-        m_recentFilesStack.push(fileinfo.absoluteFilePath());
-        m_settings->setValue("lastDir", fileinfo.absolutePath());
+        addRecentFile(path);
 
         qDebug() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage(tr("Loaded."));
@@ -110,6 +111,7 @@ void MainWindow::loadFile(QString path)
     else
     {
         qWarning() << "Could not open file" << path;
+        removeRecentFile(path);
         ui->statusBar->showMessage(tr("Unable to load."));
     }
 }
@@ -211,4 +213,46 @@ void MainWindow::openclEngineClicked()
     {
         ui->statusBar->showMessage(tr("Unable to set OpenCL engine."));
     }
+}
+
+void MainWindow::readSettings()
+{
+    // Read recent files from last session
+    m_recentFilesList = m_settings->value("recentFiles", "").toStringList();
+}
+
+void MainWindow::writeSettings()
+{
+    // Save last opened files before closing
+    m_settings->setValue("recentFiles", m_recentFilesList);
+}
+
+void MainWindow::addRecentFile(QString path)
+{
+    QFileInfo info(path);
+
+    m_settings->setValue("lastDir", info.absoluteDir().absolutePath());
+    /* If we opened a file twice or more during the same session, we don't
+     * want it duplicated.
+     */
+    removeRecentFile(path);
+    m_recentFilesList.push_front(path);
+
+    while (m_recentFilesList.size() > m_recentFilesLimit)
+    {
+        m_recentFilesList.removeLast();
+    }
+}
+
+void MainWindow::removeRecentFile(QString path)
+{
+    if (!m_recentFilesList.isEmpty() and m_recentFilesList.contains(path))
+    {
+        m_recentFilesList.removeAll(path);
+    }
+}
+
+void MainWindow::updateRecentFiles()
+{
+    qDebug() << "updateRecentFiles()";
 }
