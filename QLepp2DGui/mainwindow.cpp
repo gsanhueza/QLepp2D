@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tutorial(new Tutorial(this)),
     m_about(new About(this)),
     m_settings(new QSettings("QLepp2D", "qlepp2d", this)),
-    m_recentFilesLimit(10)
+    m_recentFilesLimit(9)
 {
     ui->setupUi(this);
 
@@ -264,13 +264,23 @@ void MainWindow::updateRecentFiles()
     {
         ui->menuRecentTriangulations->setEnabled(true);
 
-        for (QString &recentFile : m_recentFilesList)
+        for (int i(0); i < m_recentFilesList.size(); i++)
         {
-            QAction *recentFileAction = ui->menuRecentTriangulations->addAction(recentFile);
+            QString recentFile(m_recentFilesList.at(i));
+            QAction *recentFileAction = ui->menuRecentTriangulations->addAction(QString("&%1 %2").arg(i + 1).arg(recentFile));
             connect(recentFileAction, &QAction::triggered, this, [recentFile, this] () {loadFile(recentFile);});
         }
         ui->menuRecentTriangulations->addSeparator();
-        QAction *clearHistoryAction = ui->menuRecentTriangulations->addAction(tr("Clear history"));
+
+        QIcon clearHistoryIcon;
+        QString iconThemeName = QStringLiteral("edit-clear-history");
+        if (QIcon::hasThemeIcon(iconThemeName)) {
+            clearHistoryIcon = QIcon::fromTheme(iconThemeName);
+        } else {
+            clearHistoryIcon.addFile(QStringLiteral("."), QSize(), QIcon::Normal, QIcon::Off);
+        }
+
+        QAction *clearHistoryAction = ui->menuRecentTriangulations->addAction(clearHistoryIcon, tr("&Clear history"));
         connect(clearHistoryAction, &QAction::triggered, this, &MainWindow::clearRecentFiles);
     }
     else
