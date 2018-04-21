@@ -80,7 +80,7 @@ bool Model::loadOFF(QString &filepath)
 
 bool Model::saveOFF(QString &filepath)
 {
-    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_indices);
+    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
 }
 
 std::vector<Vertex>& Model::getVertices()

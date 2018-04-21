@@ -64,14 +64,14 @@ public:
     *
     * @param filepath p_filepath: Path of the OFF file.
     * @param metadata p_metadata: Metadata of the OFF file (i.e, how many vertices, faces and edges)
-    * @param vertices p_vertices:  Vector of vertices.
-    * @param indices p_indices:  Vector of indices.
+    * @param vertices p_vertices: Vector of vertices.
+    * @param indices p_triangles: Vector of triangles.
     * @return True if correctly saved.
     */
-    bool saveOffFile(   QString &filepath,
-                        OFFMetadata &metadata,
-                        std::vector<Vertex> &vertices,
-                        std::vector<int> &indices) const;
+    bool saveOffFile(QString &filepath,
+                     OFFMetadata &metadata,
+                     std::vector<Vertex> &vertices,
+                     std::vector<Triangle> &triangles) const;
 
 private:
     int m_numVertices;
