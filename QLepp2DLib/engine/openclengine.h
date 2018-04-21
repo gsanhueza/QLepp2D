@@ -81,16 +81,13 @@ private:
     /**
      * @brief Detects if an edge can be a terminal edge for bad triangles.
      *
-     * @param globalSize p_globalSize: Number of threads (edges).
-     * @param edges p_bufferEdges: Buffer to a vector of edges.
-     * @param vertices p_bufferVertices: Buffer to a vector of vertices.
-     * @param triangles p_bufferTriangles: Buffer to a vector of triangles.
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
      */
-    void detectTerminalEdgesBuffered(unsigned long globalSize,
-                                     cl::Buffer &bufferTriangles,
-                                     cl::Buffer &bufferVertices,
-                                     cl::Buffer &bufferEdges);
-
+    void detectTerminalEdges(std::vector<Triangle> &triangles,
+                             std::vector<Vertex> &vertices,
+                             std::vector<Edge> &edges);
 
 private:
     std::vector<cl::Platform> m_platforms;
@@ -98,6 +95,10 @@ private:
     cl::Context m_context;
     cl::CommandQueue m_queue;
     cl::Program m_program;
+
+    cl::Buffer m_bufferTriangles;
+    cl::Buffer m_bufferVertices;
+    cl::Buffer m_bufferEdges;
 };
 
 #endif // OPENCLENGINE_H
