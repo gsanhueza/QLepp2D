@@ -38,16 +38,17 @@ public:
     * @brief Non-abstract Constructor.
     *
     */
-    AbstractEngine() {};
+    AbstractEngine() = default;
 
     /**
     * @brief Virtual destructor.
     *
     */
-    virtual ~AbstractEngine() {};
+    virtual ~AbstractEngine() = default;
 
     /**
-    * @brief Detects every bad triangle in the vector of triangles. Implementations must override this.
+    * @brief Detects every bad triangle in the vector of triangles.
+    * Implementations must override this.
     *
     * @param angle p_angle: Tolerance angle.
     * @param triangles p_triangles: Vector of triangles.
@@ -60,7 +61,8 @@ public:
 
 
     /**
-    * @brief Improves the actual triangulation from the vector of triangles. Implementations must override this.
+    * @brief Improves the actual triangulation from the vector of triangles.
+    * Implementations must override this.
     *
     * @param triangles p_triangles: Vector of triangles.
     * @param vertices p_vertices: Vector of vertices.
@@ -74,12 +76,17 @@ public:
                                         std::vector<Edge> &edges,
                                         OFFMetadata &metadata) = 0;
 
-protected:
     /**
-    * @brief Convenience method that helps when an implementation needs something done before working.
-    *
-    */
-    virtual void setup() {};
+     * @brief Detects terminal edges for each bad triangle in the "triangles"
+     * vector.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
+                                     std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges) = 0;
 };
 
 #endif // OPENCLHANDLER_H

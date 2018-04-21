@@ -63,31 +63,30 @@ public:
     * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
     * @return True if improved without issues.
     */
-    virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata) override;
+    virtual bool improveTriangulation(std::vector<Triangle> &triangles,
+                                      std::vector<Vertex> &vertices,
+                                      std::vector<int> &indices,
+                                      std::vector<Edge> &edges,
+                                      OFFMetadata &metadata) override;
 
-protected:
     /**
-    * @brief Convenience method that helps when an implementation needs something done before working.
-    * Overridden method.
-    *
-    */
-    virtual void setup() override;
-
-private:
-    /**
-     * @brief Detects if an edge can be a terminal edge for bad triangles.
+     * @brief Detects terminal edges for each bad triangle in the "triangles"
+     * vector. Overridden method.
      *
      * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
      */
-    void detectTerminalEdges(std::vector<Triangle> &triangles,
-                             std::vector<Vertex> &vertices,
-                             std::vector<Edge> &edges);
+    virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
+                                     std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges) override;
+
+protected:
+    /**
+    * @brief Convenience method that sets variables up before work.
+    *
+    */
+    void setup();
 
 private:
     std::vector<cl::Platform> m_platforms;

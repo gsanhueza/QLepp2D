@@ -56,39 +56,39 @@ public:
     * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
     * @return True if improved without issues.
     */
-    virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata) override;
+    virtual bool improveTriangulation(std::vector<Triangle> &triangles,
+                                      std::vector<Vertex> &vertices,
+                                      std::vector<int> &indices,
+                                      std::vector<Edge> &edges,
+                                      OFFMetadata &metadata) override;
 
-private:
     /**
      * @brief Detects terminal edges for each bad triangle in the "triangles"
-     * vector.
+     * vector. Overridden method.
      *
      * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
      */
-    void detectTerminalEdges(std::vector<Triangle> &triangles,
-                             std::vector<Vertex> &vertices,
-                             std::vector<Edge> &edges);
+    virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
+                                     std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges) override;
 
+private:
     /**
     * @brief Returns the index to the "edges" vector in which the shared
     * (or border) terminal edge was found in the "it" triangle.
     *
     * @param it p_it: Index of the starting "bad" triangle.
-    * @param triangles p_triangles: Triangles vector.
-    * @param vertices p_vertices: Vertices vector.
-    * @param edges p_edges: Edges vector.
+    * @param triangles p_triangles: Vector of triangles.
+    * @param vertices p_vertices: Vector of vertices.
+    * @param edges p_edges: Vector of edges.
     * @return int Index of the terminal edge. -1 on error (Not expected to return an error).
     */
-    int getTerminalIEdge(   int it,
-                            std::vector<Triangle> &triangles,
-                            std::vector<Vertex> &vertices,
-                            std::vector<Edge> &edges) const;
+    int getTerminalIEdge(int it,
+                         std::vector<Triangle> &triangles,
+                         std::vector<Vertex> &vertices,
+                         std::vector<Edge> &edges) const;
 };
 
 #endif // CPUENGINE_H
