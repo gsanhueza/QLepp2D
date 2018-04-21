@@ -73,11 +73,10 @@ public:
      * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
      * @return True if improved without issues.
      */
-    virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata) = 0;
+    virtual bool improveTriangulation(std::vector<Triangle> &triangles,
+                                      std::vector<Vertex> &vertices,
+                                      std::vector<Edge> &edges,
+                                      OFFMetadata &metadata) = 0;
 
     // LIB Section
 

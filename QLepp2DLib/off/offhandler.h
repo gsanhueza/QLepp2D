@@ -47,17 +47,15 @@ public:
     * @param filepath p_filepath: Path of the OFF file.
     * @param metadata p_metadata: Metadata of the OFF file (i.e, how many vertices, faces and edges)
     * @param vertices p_vertices: Vector of vertices.
-    * @param indices p_indices: Vector of indices.
     * @param edges p_edges: Vector of edges.
     * @param triangles p_triangles: Vector of triangles.
     * @return True if correctly loaded.
     */
-    bool loadOffFile(   QString &filepath,
-                        OFFMetadata &metadata,
-                        std::vector<Vertex> &vertices,
-                        std::vector<int> &indices,
-                        std::vector<Edge> &edges,
-                        std::vector<Triangle> &triangles);
+    bool loadOffFile(QString &filepath,
+                     OFFMetadata &metadata,
+                     std::vector<Vertex> &vertices,
+                     std::vector<Edge> &edges,
+                     std::vector<Triangle> &triangles);
 
     /**
     * @brief Method that saves an OFF file according to the actual parameters.

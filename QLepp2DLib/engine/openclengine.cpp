@@ -26,9 +26,9 @@ OpenCLEngine::OpenCLEngine()
     setup();
 }
 
-bool OpenCLEngine::detectBadTriangles(  double &angle,
-                                        std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices)
+bool OpenCLEngine::detectBadTriangles(double &angle,
+                                      std::vector<Triangle> &triangles,
+                                      std::vector<Vertex> &vertices)
 {
     qDebug() << "OpenCLEngine::detectBadTriangles - angle =" << angle;
 
@@ -112,7 +112,6 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
 
 bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices,
                                         std::vector<Edge> &edges,
                                         OFFMetadata &metadata)
 {

@@ -24,12 +24,11 @@
 
 OFFHandler::OFFHandler() = default;
 
-bool OFFHandler::loadOffFile(   QString &filepath,
-                                OFFMetadata &metadata,
-                                std::vector<Vertex> &vertices,
-                                std::vector<int> &indices,
-                                std::vector<Edge> &edges,
-                                std::vector<Triangle> &triangles)
+bool OFFHandler::loadOffFile(QString &filepath,
+                             OFFMetadata &metadata,
+                             std::vector<Vertex> &vertices,
+                             std::vector<Edge> &edges,
+                             std::vector<Triangle> &triangles)
 {
     qDebug() << "Loading OFF file from" << filepath << endl;
 
@@ -49,7 +48,6 @@ bool OFFHandler::loadOffFile(   QString &filepath,
 
         // Old data cleanup
         vertices.clear();
-        indices.clear();
         triangles.clear();
         edges.clear();
 
@@ -112,10 +110,6 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             t.bad = 0;
             t.valid = 1;
             triangles.push_back(t);
-
-            indices.push_back(t.iv1);
-            indices.push_back(t.iv2);
-            indices.push_back(t.iv3);
 
             // Phase 2
             QVector<int> tmpIV; // Temporal vertices
