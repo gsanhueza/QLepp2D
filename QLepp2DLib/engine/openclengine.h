@@ -30,67 +30,63 @@
 #include "engine/abstractengine.h"
 
 /**
-* @brief OpenCL Implementation of the AbstractEngine.
-*
-*/
+ * @brief OpenCL Implementation of the AbstractEngine.
+ *
+ */
 class OpenCLEngine : public AbstractEngine
 {
 public:
     /**
-    * @brief OpenCLEngine constructor.
-    *
-    */
+     * @brief OpenCLEngine constructor.
+     *
+     */
     OpenCLEngine();
 
+
     /**
-    * @brief Detects every bad triangle in the vector of triangles. Overriden method.
-    *
-    * @param angle p_angle: Tolerance angle.
-    * @param triangles p_triangles: Vector of triangles.
-    * @param vertices p_vertices: Vector of vertices.
-    * @return True if detected without issues.
-    */
+     * @brief Detects every bad triangle in the vector of triangles. Overriden method.
+     *
+     * @param angle p_angle: Tolerance angle.
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @return True if detected without issues.
+     */
     virtual bool detectBadTriangles(double &angle,
                                     std::vector<Triangle> &triangles,
                                     std::vector<Vertex> &vertices) override;
 
     /**
-    * @brief Improves the actual triangulation from the vector of triangles. Overridden method.
-    *
-    * @param triangles p_triangles: Vector of triangles.
-    * @param vertices p_vertices: Vector of vertices.
-    * @param indices p_indices: Vector of indices.
-    * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
-    * @return True if improved without issues.
-    */
-    virtual bool improveTriangulation(  std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata) override;
+     * @brief Improves the actual triangulation from the vector of triangles. Overridden method.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param indices p_indices: Vector of indices.
+     * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
+     * @return True if improved without issues.
+     */
+    virtual bool improveTriangulation(std::vector<Triangle> &triangles,
+                                      std::vector<Vertex> &vertices,
+                                      std::vector<Edge> &edges,
+                                      OFFMetadata &metadata) override;
+
+    /**
+     * @brief Detects terminal edges for each bad triangle in the "triangles"
+     * vector. Overridden method.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
+                                     std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges) override;
 
 protected:
     /**
-    * @brief Convenience method that helps when an implementation needs something done before working.
-    * Overridden method.
-    *
-    */
-    virtual void setup() override;
-
-private:
-    /**
-     * @brief Detects if an edge can be a terminal edge for bad triangles.
+     * @brief Convenience method that sets variables up before work.
      *
-     * @param globalSize p_globalSize: Number of threads (edges).
-     * @param edges p_bufferEdges: Buffer to a vector of edges.
-     * @param vertices p_bufferVertices: Buffer to a vector of vertices.
-     * @param triangles p_bufferTriangles: Buffer to a vector of triangles.
      */
-    void detectTerminalEdgesBuffered(unsigned long globalSize,
-                                     cl::Buffer &bufferTriangles,
-                                     cl::Buffer &bufferVertices,
-                                     cl::Buffer &bufferEdges);
-
+    void setup();
 
 private:
     std::vector<cl::Platform> m_platforms;
@@ -98,6 +94,10 @@ private:
     cl::Context m_context;
     cl::CommandQueue m_queue;
     cl::Program m_program;
+
+    cl::Buffer m_bufferTriangles;
+    cl::Buffer m_bufferVertices;
+    cl::Buffer m_bufferEdges;
 };
 
 #endif // OPENCLENGINE_H

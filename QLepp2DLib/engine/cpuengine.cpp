@@ -26,9 +26,9 @@
 
 CPUEngine::CPUEngine() = default;
 
-bool CPUEngine::detectBadTriangles( double &angle,
-                                    std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices)
+bool CPUEngine::detectBadTriangles(double &angle,
+                                   std::vector<Triangle> &triangles,
+                                   std::vector<Vertex> &vertices)
 {
     qDebug() << "CPUEngine::detectBadTriangles - angle =" << angle;
 
@@ -169,11 +169,10 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
-bool CPUEngine::improveTriangulation(   std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<int> &indices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata)
+bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
+                                     std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges,
+                                     OFFMetadata &metadata)
 {
     // TODO
     // Each insertion does:

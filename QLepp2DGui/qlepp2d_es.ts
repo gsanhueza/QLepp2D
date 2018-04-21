@@ -16,9 +16,9 @@
     </message>
     <message>
         <location filename="about.ui" line="40"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Version 0.1.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Version 0.1.6&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Versión 0.1.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Version 0.1.8&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Version 0.1.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;QLepp2D&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Versión 0.1.8&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="about.ui" line="59"/>
@@ -295,7 +295,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.ui" line="323"/>
-        <location filename="mainwindow.cpp" line="284"/>
+        <location filename="mainwindow.cpp" line="287"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Limpiar historial</translation>
     </message>
@@ -318,74 +318,74 @@ p, li { white-space: pre-wrap; }
         <translation>Cargado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="119"/>
+        <location filename="mainwindow.cpp" line="120"/>
         <source>Unable to load.</source>
         <translation>No se puede cargar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="126"/>
-        <location filename="mainwindow.cpp" line="140"/>
+        <location filename="mainwindow.cpp" line="127"/>
+        <location filename="mainwindow.cpp" line="143"/>
         <source>OFF files</source>
         <translation>Archivos OFF</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="126"/>
-        <location filename="mainwindow.cpp" line="140"/>
+        <location filename="mainwindow.cpp" line="127"/>
+        <location filename="mainwindow.cpp" line="143"/>
         <source>OFF Files (*.off)</source>
         <translation>Archivos OFF (*.off)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="136"/>
+        <location filename="mainwindow.cpp" line="137"/>
         <source>Nothing to save.</source>
         <translation>Nada por guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="145"/>
+        <location filename="mainwindow.cpp" line="148"/>
         <source>Unable to save.</source>
         <translation>No se puede guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="150"/>
+        <location filename="mainwindow.cpp" line="153"/>
         <source>Saved.</source>
         <translation>Guardado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="180"/>
+        <location filename="mainwindow.cpp" line="183"/>
         <source>Bad triangles have been detected. You can now proceed to improve them.</source>
         <translation>Se han detectado los triángulos malos. Puede proceder a mejorarlos.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="190"/>
+        <location filename="mainwindow.cpp" line="193"/>
         <source>Triangulation has been modified.</source>
         <translation>La triangulación ha sido modificada.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="200"/>
+        <location filename="mainwindow.cpp" line="203"/>
         <source>CPU Engine has been set.</source>
         <translation>Se ha cargado el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="201"/>
+        <location filename="mainwindow.cpp" line="204"/>
         <source>QLepp2D (CPU)</source>
         <translation>QLepp2D (CPU)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="205"/>
+        <location filename="mainwindow.cpp" line="208"/>
         <source>Unable to set CPU engine.</source>
         <translation>No se puede cargar el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="214"/>
+        <location filename="mainwindow.cpp" line="217"/>
         <source>OpenCL Engine has been set.</source>
         <translation>Se ha cargado el motor de OpenCL.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="215"/>
+        <location filename="mainwindow.cpp" line="218"/>
         <source>QLepp2D (OpenCL)</source>
         <translation>QLepp2D (OpenCL)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="219"/>
+        <location filename="mainwindow.cpp" line="222"/>
         <source>Unable to set OpenCL engine.</source>
         <translation>No se puede cargar el motor de OpenCL.</translation>
     </message>

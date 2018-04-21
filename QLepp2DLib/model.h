@@ -140,7 +140,6 @@ private:
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
     std::vector<Triangle> m_triangles;
-    std::vector<int> m_indices;
 };
 
 #endif // MODEL_H

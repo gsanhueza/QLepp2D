@@ -24,12 +24,11 @@
 
 OFFHandler::OFFHandler() = default;
 
-bool OFFHandler::loadOffFile(   QString &filepath,
-                                OFFMetadata &metadata,
-                                std::vector<Vertex> &vertices,
-                                std::vector<int> &indices,
-                                std::vector<Edge> &edges,
-                                std::vector<Triangle> &triangles)
+bool OFFHandler::loadOffFile(QString &filepath,
+                             OFFMetadata &metadata,
+                             std::vector<Vertex> &vertices,
+                             std::vector<Edge> &edges,
+                             std::vector<Triangle> &triangles)
 {
     qDebug() << "Loading OFF file from" << filepath << endl;
 
@@ -49,7 +48,6 @@ bool OFFHandler::loadOffFile(   QString &filepath,
 
         // Old data cleanup
         vertices.clear();
-        indices.clear();
         triangles.clear();
         edges.clear();
 
@@ -63,11 +61,11 @@ bool OFFHandler::loadOffFile(   QString &filepath,
         QStringList parsedmetadata = line.split(" ");
 
         metadata.vertices = parsedmetadata.at(0).toInt();
-        metadata.indices = parsedmetadata.at(1).toInt();
+        metadata.faces = parsedmetadata.at(1).toInt();
         metadata.edges = parsedmetadata.at(2).toInt();
 
         qDebug() << "Number of vertices:" << metadata.vertices;
-        qDebug() << "Number of faces:" << metadata.indices;
+        qDebug() << "Number of faces:" << metadata.faces;
         qDebug() << "Number of edges:" << metadata.edges;
 
         // Read vertices data
@@ -95,7 +93,7 @@ bool OFFHandler::loadOffFile(   QString &filepath,
         QMap<QString, EdgeData> map;
 
         // Read faces data (indices)
-        for (int i(0); i < metadata.indices; i++)
+        for (int i(0); i < metadata.faces; i++)
         {
             line = in.readLine();
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
@@ -112,10 +110,6 @@ bool OFFHandler::loadOffFile(   QString &filepath,
             t.bad = 0;
             t.valid = 1;
             triangles.push_back(t);
-
-            indices.push_back(t.iv1);
-            indices.push_back(t.iv2);
-            indices.push_back(t.iv3);
 
             // Phase 2
             QVector<int> tmpIV; // Temporal vertices
@@ -212,13 +206,13 @@ bool OFFHandler::loadOffFile(   QString &filepath,
     return false;
 }
 
-bool OFFHandler::saveOffFile(   QString &filepath,
-                                OFFMetadata &metadata,
-                                std::vector<Vertex> &vertices,
-                                std::vector<int> &indices) const
+bool OFFHandler::saveOffFile(QString &filepath,
+                             OFFMetadata &metadata,
+                             std::vector<Vertex> &vertices,
+                             std::vector<Triangle> &triangles) const
 {
     qDebug() << "Saving OFF file to" << filepath << endl;
-    qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.indices << " " << metadata.edges;
+    qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.faces << " " << metadata.edges;
     qDebug() << "coordinatesPerVertex = " << static_cast<int>(vertices.size()) / metadata.vertices;
 
     QFile outputFile(filepath);
@@ -228,7 +222,7 @@ bool OFFHandler::saveOffFile(   QString &filepath,
         QTextStream out(&outputFile);
         out << "OFF" << endl;
         out << "# File created by QLepp2D." << endl;
-        out << metadata.vertices << " " << metadata.indices << " " << metadata.edges;
+        out << metadata.vertices << " " << metadata.faces << " " << metadata.edges;
 
         // Write vertices
         int coordinatesPerVertex = static_cast<int>(vertices.size()) / metadata.vertices;
@@ -243,16 +237,16 @@ bool OFFHandler::saveOffFile(   QString &filepath,
             out << vertices.at(static_cast<unsigned long>(i)).z;
         }
 
+        out << endl;
+
         // Write faces (indices)
-        int verticesPerFace = static_cast<int>(indices.size()) / metadata.indices;
-        for (int i(0); i < static_cast<int>(indices.size()); i++)
+        int verticesPerFace = 3;
+        for (const Triangle &t : triangles)
         {
-            if (i % verticesPerFace == 0)
-            {
-                out << endl;
-                out << verticesPerFace;
-            }
-            out << " " << indices.at(static_cast<unsigned long>(i));
+            out << verticesPerFace << " ";
+            out << t.iv1 << " ";
+            out << t.iv2 << " ";
+            out << t.iv3 << endl;
         }
 
         outputFile.close();

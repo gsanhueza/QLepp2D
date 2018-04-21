@@ -110,6 +110,7 @@ void MainWindow::loadFile(QString path)
         ui->statusBar->showMessage(tr("Loaded."));
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
+
         emit emitUpdateData();
     }
     else
@@ -137,7 +138,9 @@ void MainWindow::saveTriangulationClicked()
         return;
     }
 
-    QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), m_currentFileName, tr("OFF Files (*.off)"));
+    ui->actionSaveTriangulation->setEnabled(true);
+    QString outpath = QString("%1/%2_mod").arg(m_settings->value("lastDir", ".").toString()).arg(m_currentFileName);
+    QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), outpath , tr("OFF Files (*.off)"));
 
     if (not Model::getInstance().saveOFF(filepath))
     {
