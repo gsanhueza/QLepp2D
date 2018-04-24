@@ -96,17 +96,17 @@ int CPUEngine::getTerminalIEdge(int it,
         int longestIE;
         Edge longestEdge;
 
-        if (length_a2 >= length_b2 and length_a2 >= length_c2)
+        if (length_a2 > length_b2 and length_a2 > length_c2)
         {
             longestEdge = edges.at(t.ie1);
             longestIE = t.ie1;
         }
-        else if (length_b2 >= length_a2 and length_b2 >= length_c2)
+        else if (length_b2 > length_a2 and length_b2 > length_c2)
         {
             longestEdge = edges.at(t.ie2);
             longestIE = t.ie2;
         }
-        else
+        else // Unique longest Edge guaranteed here
         {
             longestEdge = edges.at(t.ie3);
             longestIE = t.ie3;
@@ -169,6 +169,106 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
+Vertex centroidOf(int &iva,
+                  int &ivb,
+                  int &ivc,
+                  int &ivd,
+                  std::vector<Vertex> &vertices)
+{
+    Vertex centroid;
+    centroid.x = (vertices.at(iva).x +
+                  vertices.at(ivb).x +
+                  vertices.at(ivc).x +
+                  vertices.at(ivd).x) / 4.0;
+    centroid.y = (vertices.at(iva).y +
+                  vertices.at(ivb).y +
+                  vertices.at(ivc).y +
+                  vertices.at(ivd).y) / 4.0;
+    centroid.z = (vertices.at(iva).z +
+                  vertices.at(ivb).z +
+                  vertices.at(ivc).z +
+                  vertices.at(ivd).z) / 4.0;
+
+    return centroid;
+}
+
+void insertCentroid(int iedge,
+                    std::vector<Triangle> &triangles,
+                    std::vector<Vertex> &vertices,
+                    std::vector<Edge> &edges)
+{
+    Edge &oldE(edges.at(iedge));
+    Triangle &oldTA(triangles.at(oldE.ita));
+    Triangle &oldTB(triangles.at(oldE.itb));
+
+    // Get indices to vertices, so we can easily check for duplicates.
+    int iva = oldTA.iv1;
+    int ivb = oldTA.iv2;
+    int ivc = oldTA.iv3;
+    int ivd = oldTB.iv1;
+
+    if (ivd == iva)
+    {
+        ivd = oldTB.iv2;
+    }
+    if (ivd == ivb)
+    {
+        ivd = oldTB.iv3;
+    }
+
+    // Centroid will be added to "vertices" vector
+    Vertex centroid = centroidOf(iva, ivb, ivc, ivd, vertices);
+    vertices.push_back(centroid);
+    int iCentroid = vertices.size() - 1; // Index of new Vertex
+
+    // Creating new Triangles
+    Triangle TA, TB, TC, TD;
+
+    TA.iv1 = iva;
+    TA.iv2 = ivb;
+    TA.iv3 = iCentroid;
+    TA.bad = 0;
+
+    TB.iv1 = ivb;
+    TB.iv2 = ivd;
+    TB.iv3 = iCentroid;
+    TB.bad = 0;
+
+    TC.iv1 = ivd;
+    TC.iv2 = ivc;
+    TC.iv3 = iCentroid;
+    TC.bad = 0;
+
+    TD.iv1 = ivc;
+    TD.iv2 = iva;
+    TD.iv3 = iCentroid;
+    TD.bad = 0;
+
+    // Creating new Edges
+    Edge EA, EB, EC, ED;
+
+    // TODO Insert "centroid" in vertices vector.
+    // TODO Recycle edge
+    // TODO Create 3 more edges
+    // TODO Recycle oldA and oldB
+    // TODO Create 2 more triangles
+    // TODO Update information from oldA and oldB neighbours
+}
+
+void insertCentroids(std::vector<Triangle> &triangles,
+                     std::vector<Vertex> &vertices,
+                     std::vector<Edge> &edges)
+{
+    for (unsigned int ie(0); ie < edges.size(); ie++)
+    {
+        Edge &e(edges.at(ie));
+        if (e.isTerminalEdge and not e.isBorderEdge)
+        {
+            insertCentroid(ie, triangles, vertices, edges);
+        }
+    }
+}
+
 bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                      std::vector<Vertex> &vertices,
                                      std::vector<Edge> &edges,
@@ -176,9 +276,9 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
 {
     // TODO
     // Each insertion does:
-    // +1 to metadata.vertices
-    // +2 to metadata.indices
-    // +3 to metadata.edges
+    // +1 to metadata.vertices (vertices.size())
+    // +2 to metadata.faces (triangles.size())
+    // +3 to metadata.edges (edges.size())
     qDebug() << "CPUEngine::improveTriangulation";
 
     /* We'll do this in 3 phases:
@@ -187,24 +287,24 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
      * Phase 3: Recalculate bad triangles.
      */
 
-    // Phase 1
-    detectTerminalEdges(triangles, vertices, edges);
-
-    // TODO Delete this
-    // Checking terminal edges
-//     for (int i(0); i < edges.size(); i++)
-//     {
-//         qDebug() << "Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
-//     }
-
-    // TODO Phase 2
-    // TODO Phase 3
-
-    // TODO Delete this
-    for (Triangle &t : triangles)
+    bool nonBorderTerminalEdgesRemaining = false;
+    do
     {
-        t.bad = 0;
+        // Phase 1
+        detectTerminalEdges(triangles, vertices, edges);
+
+        // Phase 2
+        insertCentroids(triangles, vertices, edges);
+
+        // TODO Phase 3
+
+        // TODO Delete this
+        for (Triangle &t : triangles)
+        {
+            t.bad = 0;
+        }
     }
+    while (nonBorderTerminalEdgesRemaining);
 
     return true;
 }

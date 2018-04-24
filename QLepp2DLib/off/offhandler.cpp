@@ -151,7 +151,10 @@ bool OFFHandler::loadOffFile(QString &filepath,
             Edge e;
             e.ita = i.value().ita;
             e.itb = i.value().itb;
+            e.iv1 = std::min(i.value().iv1, i.value().iv2);
+            e.iv2 = std::max(i.value().iv1, i.value().iv2);
             e.isTerminalEdge = 0;
+            e.isBorderEdge = 0;
             edges.push_back(e);
 
             // Phase 4
