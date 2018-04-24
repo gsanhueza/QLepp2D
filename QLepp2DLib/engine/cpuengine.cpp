@@ -245,14 +245,14 @@ void insertCentroid(int iedge,
 
     // Phase 2
     // Detect outer edges (the ones we don't share)
-    QVector<int> nonSharedEdges;
-    nonSharedEdges.append(oldTA.ie1);
-    nonSharedEdges.append(oldTA.ie2);
-    nonSharedEdges.append(oldTA.ie3);
-    nonSharedEdges.append(oldTB.ie1);
-    nonSharedEdges.append(oldTB.ie2);
-    nonSharedEdges.append(oldTB.ie3);
-    nonSharedEdges.removeAll(iedge);
+    QVector<int> nonSharedIEdges;
+    nonSharedIEdges.append(oldTA.ie1);
+    nonSharedIEdges.append(oldTA.ie2);
+    nonSharedIEdges.append(oldTA.ie3);
+    nonSharedIEdges.append(oldTB.ie1);
+    nonSharedIEdges.append(oldTB.ie2);
+    nonSharedIEdges.append(oldTB.ie3);
+    nonSharedIEdges.removeAll(iedge);
 
     // Create new Edges
     Edge EA, EB, EC, ED;
@@ -272,53 +272,53 @@ void insertCentroid(int iedge,
      */
     Triangle TA, TB, TC, TD;
     // NSC pattern will be used arbitrarily here.
-    QVector<int> everyVertex;
-    everyVertex.append(iva);
-    everyVertex.append(ivb);
-    everyVertex.append(ivc);
-    everyVertex.append(ivd);
+    QVector<int> everyIVertex;
+    everyIVertex.append(iva);
+    everyIVertex.append(ivb);
+    everyIVertex.append(ivc);
+    everyIVertex.append(ivd);
 
-    QVector<int> sharedEdgeVertices;
-    sharedEdgeVertices.append(oldE.iv1);
-    sharedEdgeVertices.append(oldE.iv2);
+    QVector<int> sharedIEdgeVertices;
+    sharedIEdgeVertices.append(oldE.iv1);
+    sharedIEdgeVertices.append(oldE.iv2);
 
-    QVector<int> nonSharedEdgeVertices;
-    for (int iv : everyVertex)
+    QVector<int> nonSharedEdgeIVertices;
+    for (int iv : everyIVertex)
     {
-        if (not sharedEdgeVertices.contains(iv))
+        if (not sharedIEdgeVertices.contains(iv))
         {
-            nonSharedEdgeVertices.append(iv);
+            nonSharedEdgeIVertices.append(iv);
         }
     }
 
-    QVector<int> vertexPattern;
-    vertexPattern.append(nonSharedEdgeVertices.at(0));
-    vertexPattern.append(sharedEdgeVertices.at(0));
-    vertexPattern.append(nonSharedEdgeVertices.at(1));
-    vertexPattern.append(sharedEdgeVertices.at(1));
+    QVector<int> iVertexPattern;
+    iVertexPattern.append(nonSharedEdgeIVertices.at(0));
+    iVertexPattern.append(sharedIEdgeVertices.at(0));
+    iVertexPattern.append(nonSharedEdgeIVertices.at(1));
+    iVertexPattern.append(sharedIEdgeVertices.at(1));
 
-    TA.iv1 = vertexPattern.at(0);
-    TA.iv2 = vertexPattern.at(1);
+    TA.iv1 = iVertexPattern.at(0);
+    TA.iv2 = iVertexPattern.at(1);
     TA.iv3 = iCentroid;
     TA.ie1 = TA.ie2 = TA.ie3 = -1;
     TA.bad = 0;
 
-    TB.iv1 = vertexPattern.at(1);
-    TB.iv2 = vertexPattern.at(2);
+    TB.iv1 = iVertexPattern.at(1);
+    TB.iv2 = iVertexPattern.at(2);
     TB.iv3 = iCentroid;
-    TB.ie1 = TA.ie2 = TA.ie3 = -1;
+    TB.ie1 = TB.ie2 = TB.ie3 = -1;
     TB.bad = 0;
 
-    TC.iv1 = vertexPattern.at(2);
-    TC.iv2 = vertexPattern.at(3);
+    TC.iv1 = iVertexPattern.at(2);
+    TC.iv2 = iVertexPattern.at(3);
     TC.iv3 = iCentroid;
-    TC.ie1 = TA.ie2 = TA.ie3 = -1;
+    TC.ie1 = TC.ie2 = TC.ie3 = -1;
     TC.bad = 0;
 
-    TD.iv1 = vertexPattern.at(3);
-    TD.iv2 = vertexPattern.at(0);
+    TD.iv1 = iVertexPattern.at(3);
+    TD.iv2 = iVertexPattern.at(0);
     TD.iv3 = iCentroid;
-    TD.ie1 = TA.ie2 = TA.ie3 = -1;
+    TD.ie1 = TD.ie2 = TD.ie3 = -1;
     TD.bad = 0;
 
     // Phase 4
@@ -344,23 +344,29 @@ void insertCentroid(int iedge,
      */
     EA.ita = ITA;
     EA.itb = ITB;
-    EA.iv1 = TA.iv2;
-    EA.iv2 = TA.iv3;
+    EA.iv1 = std::min(TA.iv2, TA.iv3);
+    EA.iv2 = std::max(TA.iv2, TA.iv3);
 
     EB.ita = ITB;
     EB.itb = ITC;
-    EB.iv1 = TB.iv2;
-    EB.iv2 = TB.iv3;
+    EB.iv1 = std::min(TB.iv2, TB.iv3);
+    EB.iv2 = std::max(TB.iv2, TB.iv3);
 
     EC.ita = ITC;
     EC.itb = ITD;
-    EC.iv1 = TC.iv2;
-    EC.iv2 = TC.iv3;
+    EC.iv1 = std::min(TC.iv2, TC.iv3);
+    EC.iv2 = std::max(TC.iv2, TC.iv3);
 
     ED.ita = ITD;
     ED.itb = ITA;
-    ED.iv1 = TD.iv2;
-    ED.iv2 = TD.iv3;
+    ED.iv1 = std::min(TD.iv2, TD.iv3);
+    ED.iv2 = std::max(TD.iv2, TD.iv3);
+
+    /* We still have to update information of triangles for the nonSharedEdges,
+     * so we'll change the index of the ita/itb that had the old triangle,
+     * and update it with our new triangles.
+     */
+    // TODO Update nonSharedIEdges
 
     // Phase 6
     int IEA, IEB, IEC, IED; // Indices of edges (A is recycled)
@@ -374,21 +380,13 @@ void insertCentroid(int iedge,
     IED = edges.size() - 1;
 
     // TODO Phase 7
-    triangles.at(ITA).ie1 = -1;
-    triangles.at(ITA).ie2 = -1;
-    triangles.at(ITA).ie3 = -1;
-
-    triangles.at(ITB).ie1 = -1;
-    triangles.at(ITB).ie2 = -1;
-    triangles.at(ITB).ie3 = -1;
-
-    triangles.at(ITC).ie1 = -1;
-    triangles.at(ITC).ie2 = -1;
-    triangles.at(ITC).ie3 = -1;
-
-    triangles.at(ITD).ie1 = -1;
-    triangles.at(ITD).ie2 = -1;
-    triangles.at(ITD).ie3 = -1;
+    /* Available edges are nonSharedIEdges[4], EA, EB, EC, ED.
+     * Note: Because we deliberately put our centroid in iv3, we know that ie3
+     * will be one of the "nonSharedEdges".
+     *
+     * Example of detection:
+     *   TA.ie1 = Index of Edge whose iv1 and iv2 are TA.iv2 and TA.iv3
+     */
 }
 
 void insertCentroids(std::vector<Triangle> &triangles,
