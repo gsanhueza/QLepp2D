@@ -200,8 +200,8 @@ void insertCentroid(int iedge,
     /* This is the difficult part of the project.
      * The algorithm is divided in 7 "phases", that will be documented here.
      *
-     * Phase 1: Detect the 4 vertices in the triangles marked by edges[iedge]
-     * and get the centroid.
+     * Phase 1: Detect the 4 vertices in the triangles marked by edges[iedge],
+     * get the centroid and insert it in the "vertices" vector.
      * Phase 2: Detect the 4 non-shared edges of the 2 triangles and create
      * 4 more edges.
      * Phase 3: Create 4 triangles with the 4 vertices plus the centroid.
@@ -219,10 +219,12 @@ void insertCentroid(int iedge,
      * vector), update their indices to edges (by reference).
      */
 
-    Edge &oldE(edges.at(iedge));
-    Triangle &oldTA(triangles.at(oldE.ita));
-    Triangle &oldTB(triangles.at(oldE.itb));
+    // Note: These are copies (not references) because we'll replace them at the end.
+    Edge oldE(edges.at(iedge));
+    Triangle oldTA(triangles.at(oldE.ita));
+    Triangle oldTB(triangles.at(oldE.itb));
 
+    // Phase 1
     // Get indices to vertices, so we can easily check for duplicates.
     int iva = oldTA.iv1;
     int ivb = oldTA.iv2;
@@ -237,44 +239,102 @@ void insertCentroid(int iedge,
     {
         ivd = oldTB.iv3;
     }
-
-    // Centroid will be added to "vertices" vector
     Vertex centroid = centroidOf(iva, ivb, ivc, ivd, vertices);
     vertices.push_back(centroid);
     int iCentroid = vertices.size() - 1; // Index of new Vertex
 
-    // Creating new Triangles
-    Triangle TA, TB, TC, TD;
+    // Phase 2
+    // Detect outer edges (the ones we don't share)
+    QVector<int> nonSharedEdges;
+    nonSharedEdges.append(oldTA.ie1);
+    nonSharedEdges.append(oldTA.ie2);
+    nonSharedEdges.append(oldTA.ie3);
+    nonSharedEdges.append(oldTB.ie1);
+    nonSharedEdges.append(oldTB.ie2);
+    nonSharedEdges.append(oldTB.ie3);
+    nonSharedEdges.removeAll(iedge);
 
-    TA.iv1 = iva;
-    TA.iv2 = ivb;
-    TA.iv3 = iCentroid;
-    TA.bad = 0;
-
-    TB.iv1 = ivb;
-    TB.iv2 = ivd;
-    TB.iv3 = iCentroid;
-    TB.bad = 0;
-
-    TC.iv1 = ivd;
-    TC.iv2 = ivc;
-    TC.iv3 = iCentroid;
-    TC.bad = 0;
-
-    TD.iv1 = ivc;
-    TD.iv2 = iva;
-    TD.iv3 = iCentroid;
-    TD.bad = 0;
-
-    // Creating new Edges
+    // Create new Edges
     Edge EA, EB, EC, ED;
 
-    // TODO Insert "centroid" in vertices vector.
-    // TODO Recycle edge
-    // TODO Create 3 more edges
-    // TODO Recycle oldA and oldB
-    // TODO Create 2 more triangles
-    // TODO Update information from oldA and oldB neighbours
+    // Phase 3
+    // Create new Triangles
+
+    /* Note: If we want to create correct triangles (and not a broken line),
+     * we need to use a combination of vertices "in the shared edge" and "not in
+     * the shared edge".
+     * A triangle is correct if it follows the SNC or NSC pattern, where:
+     *   S = Vertex that is in the shared edge.
+     *   N = Vertex that isn't in the shared edge.
+     *   C = Centroid.
+     *
+     * Thus, we'll create a triangle with Pattern[i], Pattern[(i + 1) % 4], Centroid.
+     */
+    Triangle TA, TB, TC, TD;
+    // NSC pattern will be used arbitrarily here.
+    QVector<int> everyVertex;
+    everyVertex.append(iva);
+    everyVertex.append(ivb);
+    everyVertex.append(ivc);
+    everyVertex.append(ivd);
+
+    QVector<int> sharedEdgeVertices;
+    sharedEdgeVertices.append(oldE.iv1);
+    sharedEdgeVertices.append(oldE.iv2);
+
+    QVector<int> nonSharedEdgeVertices;
+    for (int iv : everyVertex)
+    {
+        if (not sharedEdgeVertices.contains(iv))
+        {
+            nonSharedEdgeVertices.append(iv);
+        }
+    }
+
+    QVector<int> vertexPattern;
+    vertexPattern.append(nonSharedEdgeVertices.at(0));
+    vertexPattern.append(sharedEdgeVertices.at(0));
+    vertexPattern.append(nonSharedEdgeVertices.at(1));
+    vertexPattern.append(sharedEdgeVertices.at(1));
+
+    TA.iv1 = vertexPattern.at(0);
+    TA.iv2 = vertexPattern.at(1);
+    TA.iv3 = iCentroid;
+    TA.ie1 = TA.ie2 = TA.ie3 = -1;
+    TA.bad = 0;
+
+    TB.iv1 = vertexPattern.at(1);
+    TB.iv2 = vertexPattern.at(2);
+    TB.iv3 = iCentroid;
+    TB.ie1 = TA.ie2 = TA.ie3 = -1;
+    TB.bad = 0;
+
+    TC.iv1 = vertexPattern.at(2);
+    TC.iv2 = vertexPattern.at(3);
+    TC.iv3 = iCentroid;
+    TC.ie1 = TA.ie2 = TA.ie3 = -1;
+    TC.bad = 0;
+
+    TD.iv1 = vertexPattern.at(3);
+    TD.iv2 = vertexPattern.at(0);
+    TD.iv3 = iCentroid;
+    TD.ie1 = TA.ie2 = TA.ie3 = -1;
+    TD.bad = 0;
+
+    // Phase 4
+    int ITA, ITB, ITC, ITD; // Indices of triangles (A and B are recycled)
+    ITA = oldE.ita;
+    ITB = oldE.itb;
+    triangles.at(ITA) = TA;
+    triangles.at(ITB) = TB;
+    triangles.push_back(TC);
+    ITC = triangles.size() - 1;
+    triangles.push_back(TD);
+    ITD = triangles.size() - 1;
+
+    // TODO Phase 5
+    // TODO Phase 6
+    // TODO Phase 7
 }
 
 void insertCentroids(std::vector<Triangle> &triangles,
