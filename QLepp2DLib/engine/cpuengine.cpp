@@ -197,6 +197,28 @@ void insertCentroid(int iedge,
                     std::vector<Vertex> &vertices,
                     std::vector<Edge> &edges)
 {
+    /* This is the difficult part of the project.
+     * The algorithm is divided in 7 "phases", that will be documented here.
+     *
+     * Phase 1: Detect the 4 vertices in the triangles marked by edges[iedge]
+     * and get the centroid.
+     * Phase 2: Detect the 4 non-shared edges of the 2 triangles and create
+     * 4 more edges.
+     * Phase 3: Create 4 triangles with the 4 vertices plus the centroid.
+     * (Note: These triangles have incomplete data at the moment, they only know
+     * their vertices, not the indices of their edges.)
+     * Phase 4: Recycle 2 positions and create 2 more positions in the "triangles"
+     * vector, so triangles are now inserted. Remember their positions!
+     * Phase 5: For each 2 neighbour triangles (from the new triangles that we
+     * created in Phase 3), assign one of the created edges and update the
+     * indices of the triangles for that edge. (We repeat this 4 times, as we
+     * need to update the 4 new edges with this information.)
+     * Phase 6: Recycle 1 position and create 3 more positions in the "edges"
+     * vector, so edges are now inserted, and with complete information.
+     * Phase 7: For each of the new triangles (that are already in "triangles"
+     * vector), update their indices to edges (by reference).
+     */
+
     Edge &oldE(edges.at(iedge));
     Triangle &oldTA(triangles.at(oldE.ita));
     Triangle &oldTB(triangles.at(oldE.itb));
