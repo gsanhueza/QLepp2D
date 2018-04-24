@@ -332,9 +332,63 @@ void insertCentroid(int iedge,
     triangles.push_back(TD);
     ITD = triangles.size() - 1;
 
-    // TODO Phase 5
-    // TODO Phase 6
+    // Phase 5
+    /* We'll work with our new triangles. We'll take two of them that share one
+     * of the new edges and assign them to one of our new edges.
+     * (If we study how we decided the order of the vertices in "vertexPattern",
+     * we'll notice that our new triangles are always neighbours.
+     * We cannot know if they're CCW or CW neighbours, but the triangle n and the
+     * triangle n + 1 will always share one of the new edges.)
+     * We'll update the information of this edge, but the triangles will keep
+     * incomplete data at the moment, because we need to insert these new edges first.
+     */
+    EA.ita = ITA;
+    EA.itb = ITB;
+    EA.iv1 = TA.iv2;
+    EA.iv2 = TA.iv3;
+
+    EB.ita = ITB;
+    EB.itb = ITC;
+    EB.iv1 = TB.iv2;
+    EB.iv2 = TB.iv3;
+
+    EC.ita = ITC;
+    EC.itb = ITD;
+    EC.iv1 = TC.iv2;
+    EC.iv2 = TC.iv3;
+
+    ED.ita = ITD;
+    ED.itb = ITA;
+    ED.iv1 = TD.iv2;
+    ED.iv2 = TD.iv3;
+
+    // Phase 6
+    int IEA, IEB, IEC, IED; // Indices of edges (A is recycled)
+    IEA = iedge;
+    edges.at(IEA) = EA;
+    edges.push_back(EB);
+    IEB = edges.size() - 1;
+    edges.push_back(EC);
+    IEC = edges.size() - 1;
+    edges.push_back(ED);
+    IED = edges.size() - 1;
+
     // TODO Phase 7
+    triangles.at(ITA).ie1 = -1;
+    triangles.at(ITA).ie2 = -1;
+    triangles.at(ITA).ie3 = -1;
+
+    triangles.at(ITB).ie1 = -1;
+    triangles.at(ITB).ie2 = -1;
+    triangles.at(ITB).ie3 = -1;
+
+    triangles.at(ITC).ie1 = -1;
+    triangles.at(ITC).ie2 = -1;
+    triangles.at(ITC).ie3 = -1;
+
+    triangles.at(ITD).ie1 = -1;
+    triangles.at(ITD).ie2 = -1;
+    triangles.at(ITD).ie3 = -1;
 }
 
 void insertCentroids(std::vector<Triangle> &triangles,
