@@ -170,10 +170,10 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
-Vertex centroidOf(int &iva,
-                  int &ivb,
-                  int &ivc,
-                  int &ivd,
+Vertex centroidOf(int iva,
+                  int ivb,
+                  int ivc,
+                  int ivd,
                   std::vector<Vertex> &vertices)
 {
     Vertex centroid;
@@ -227,20 +227,37 @@ void insertCentroid(int iedge,
 
     // Phase 1
     // Get indices to vertices, so we can easily check for duplicates.
-    int iva = oldTA.iv1;
-    int ivb = oldTA.iv2;
-    int ivc = oldTA.iv3;
-    int ivd = oldTB.iv1;
 
-    if (ivd == iva or ivd == ivb or ivd == ivc)
+    /* Note: If we want to create correct triangles (and not a broken line),
+     * we need to use a combination of vertices "in the shared edge" and "not in
+     * the shared edge".
+     * A triangle is correct if it follows the SNC or NSC pattern, where:
+     *   S = Vertex that is in the shared edge.
+     *   N = Vertex that isn't in the shared edge.
+     *   C = Centroid.
+     *
+     * Thus, we'll create a triangle with Pattern[i], Pattern[(i + 1) % 4], Centroid.
+     */
+
+    // NSC pattern will be used arbitrarily here.
+    QVector<int> iVertexPattern;
+    iVertexPattern.push_back(-1);
+    iVertexPattern.push_back(oldE.iv1);
+    iVertexPattern.push_back(-1);
+    iVertexPattern.push_back(oldE.iv2);
+
+    int i = 0;
+    for (int iv : {oldTA.iv1, oldTA.iv2, oldTA.iv3, oldTB.iv1, oldTB.iv2, oldTB.iv3})
     {
-        ivd = oldTB.iv2;
+        if (not iVertexPattern.contains(iv))
+        {
+            iVertexPattern[i] = iv;
+            i = 2;
+        }
     }
-    if (ivd == iva or ivd == ivb or ivd == ivc)
-    {
-        ivd = oldTB.iv3;
-    }
-    Vertex centroid = centroidOf(iva, ivb, ivc, ivd, vertices);
+
+    // Create our centroid
+    Vertex centroid = centroidOf(iVertexPattern.at(0), iVertexPattern.at(1), iVertexPattern.at(2), iVertexPattern.at(3), vertices);
     vertices.push_back(centroid);
     int iCentroid = vertices.size() - 1; // Index of new Vertex
 
@@ -260,43 +277,7 @@ void insertCentroid(int iedge,
 
     // Phase 3
     // Create new Triangles
-
-    /* Note: If we want to create correct triangles (and not a broken line),
-     * we need to use a combination of vertices "in the shared edge" and "not in
-     * the shared edge".
-     * A triangle is correct if it follows the SNC or NSC pattern, where:
-     *   S = Vertex that is in the shared edge.
-     *   N = Vertex that isn't in the shared edge.
-     *   C = Centroid.
-     *
-     * Thus, we'll create a triangle with Pattern[i], Pattern[(i + 1) % 4], Centroid.
-     */
     Triangle TA, TB, TC, TD;
-    // NSC pattern will be used arbitrarily here.
-    QVector<int> everyIVertex;
-    everyIVertex.append(iva);
-    everyIVertex.append(ivb);
-    everyIVertex.append(ivc);
-    everyIVertex.append(ivd);
-
-    QVector<int> sharedIEdgeVertices;
-    sharedIEdgeVertices.append(oldE.iv1);
-    sharedIEdgeVertices.append(oldE.iv2);
-
-    QVector<int> nonSharedEdgeIVertices;
-    for (int iv : everyIVertex)
-    {
-        if (not sharedIEdgeVertices.contains(iv))
-        {
-            nonSharedEdgeIVertices.append(iv);
-        }
-    }
-
-    QVector<int> iVertexPattern;
-    iVertexPattern.append(nonSharedEdgeIVertices.at(0));
-    iVertexPattern.append(sharedIEdgeVertices.at(0));
-    iVertexPattern.append(nonSharedEdgeIVertices.at(1));
-    iVertexPattern.append(sharedIEdgeVertices.at(1));
 
     TA.iv1 = iVertexPattern.at(0);
     TA.iv2 = iVertexPattern.at(1);
