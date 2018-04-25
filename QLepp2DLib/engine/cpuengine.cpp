@@ -257,20 +257,24 @@ void insertCentroid(int iedge,
     }
 
     // Create our centroid
-    Vertex centroid = centroidOf(iVertexPattern.at(0), iVertexPattern.at(1), iVertexPattern.at(2), iVertexPattern.at(3), vertices);
+    Vertex centroid = centroidOf(iVertexPattern.at(0),
+                                 iVertexPattern.at(1),
+                                 iVertexPattern.at(2),
+                                 iVertexPattern.at(3),
+                                 vertices);
     vertices.push_back(centroid);
     int iCentroid = vertices.size() - 1; // Index of new Vertex
 
     // Phase 2
     // Detect outer edges (the ones we don't share)
     QVector<int> nonSharedIEdges;
-    nonSharedIEdges.append(oldTA.ie1);
-    nonSharedIEdges.append(oldTA.ie2);
-    nonSharedIEdges.append(oldTA.ie3);
-    nonSharedIEdges.append(oldTB.ie1);
-    nonSharedIEdges.append(oldTB.ie2);
-    nonSharedIEdges.append(oldTB.ie3);
-    nonSharedIEdges.removeAll(iedge);
+    for (int ie : {oldTA.ie1, oldTA.ie2, oldTA.ie3, oldTB.ie1, oldTB.ie2, oldTB.ie3})
+    {
+        if (ie != iedge)
+        {
+            nonSharedIEdges.append(ie);
+        }
+    }
 
     // Create new Edges
     Edge EA, EB, EC, ED;
