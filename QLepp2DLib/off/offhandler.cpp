@@ -61,11 +61,11 @@ bool OFFHandler::loadOffFile(QString &filepath,
         QStringList parsedmetadata = line.split(" ");
 
         metadata.vertices = parsedmetadata.at(0).toInt();
-        metadata.faces = parsedmetadata.at(1).toInt();
+        metadata.triangles = parsedmetadata.at(1).toInt();
         metadata.edges = parsedmetadata.at(2).toInt();
 
         qDebug() << "Number of vertices:" << metadata.vertices;
-        qDebug() << "Number of faces:" << metadata.faces;
+        qDebug() << "Number of faces:" << metadata.triangles;
         qDebug() << "Number of edges:" << metadata.edges;
 
         // Read vertices data
@@ -93,7 +93,7 @@ bool OFFHandler::loadOffFile(QString &filepath,
         QMap<QString, EdgeData> map;
 
         // Read faces data (indices)
-        for (int i(0); i < metadata.faces; i++)
+        for (int i(0); i < metadata.triangles; i++)
         {
             line = in.readLine();
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
@@ -215,7 +215,7 @@ bool OFFHandler::saveOffFile(QString &filepath,
                              std::vector<Triangle> &triangles) const
 {
     qDebug() << "Saving OFF file to" << filepath << endl;
-    qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.faces << " " << metadata.edges;
+    qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.triangles << " " << metadata.edges;
     qDebug() << "coordinatesPerVertex = " << static_cast<int>(vertices.size()) / metadata.vertices;
 
     QFile outputFile(filepath);
@@ -225,7 +225,7 @@ bool OFFHandler::saveOffFile(QString &filepath,
         QTextStream out(&outputFile);
         out << "OFF" << endl;
         out << "# File created by QLepp2D." << endl;
-        out << metadata.vertices << " " << metadata.faces << " " << metadata.edges;
+        out << metadata.vertices << " " << metadata.triangles << " " << metadata.edges;
 
         // Write vertices
         int coordinatesPerVertex = static_cast<int>(vertices.size()) / metadata.vertices;

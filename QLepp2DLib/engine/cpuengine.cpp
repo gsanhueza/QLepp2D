@@ -31,6 +31,7 @@ bool CPUEngine::detectBadTriangles(double &angle,
                                    std::vector<Vertex> &vertices)
 {
     qDebug() << "CPUEngine::detectBadTriangles - angle =" << angle;
+    m_angle = angle;
 
     QElapsedTimer timer;
     timer.start();
@@ -65,7 +66,8 @@ bool CPUEngine::detectBadTriangles(double &angle,
 int CPUEngine::getTerminalIEdge(int it,
                                 std::vector<Triangle> &triangles,
                                 std::vector<Vertex> &vertices,
-                                std::vector<Edge> &edges) const
+                                std::vector<Edge> &edges,
+                                bool &flag) const
 {
     QVector<int> triangleHistory;
     int k = 0;                                              // Index of triangleHistory
@@ -125,6 +127,7 @@ int CPUEngine::getTerminalIEdge(int it,
         // If I was here before, then I found the final edge of Lepp.
         if (it == triangleHistory.at((k + 1) % 3))          // Equivalent of (k - 2)
         {
+            flag = true;
             return longestIE;
         }
 
@@ -139,7 +142,8 @@ int CPUEngine::getTerminalIEdge(int it,
 
 void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
                                     std::vector<Vertex> &vertices,
-                                    std::vector<Edge> &edges)
+                                    std::vector<Edge> &edges,
+                                    bool &flag)
 {
     QElapsedTimer timer;
     timer.start();
@@ -161,7 +165,7 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
              * to calculate the required here in CPU, as there's no need for
              * everyone right now.
              */
-            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges);
+            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges, flag);
             edges.at(longestIEdge).isTerminalEdge = 1;
         }
     }
@@ -420,11 +424,12 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                      std::vector<Edge> &edges,
                                      OFFMetadata &metadata)
 {
-    // TODO
-    // Each insertion does:
-    // +1 to metadata.vertices (vertices.size())
-    // +2 to metadata.faces (triangles.size())
-    // +3 to metadata.edges (edges.size())
+    /* Relevant information: Each insertion does
+     *   +1 to metadata.vertices (vertices.size())
+     *   +2 to metadata.triangles (triangles.size())
+     *   +3 to metadata.edges (edges.size())
+     */
+
     qDebug() << "CPUEngine::improveTriangulation";
 
     /* We'll do this in 3 phases:
@@ -433,24 +438,29 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
      * Phase 3: Recalculate bad triangles.
      */
 
-    bool nonBorderTerminalEdgesRemaining = false;
-    do
+    int iterationLimit = 10;
+    while (iterationLimit > 0)
     {
         // Phase 1
-        detectTerminalEdges(triangles, vertices, edges);
+        bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
+        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+
+        if (not nonBTERemaining)
+        {
+            break;
+        }
 
         // Phase 2
         insertCentroids(triangles, vertices, edges);
 
-        // TODO Phase 3
-
-        // TODO Delete this
-        for (Triangle &t : triangles)
-        {
-            t.bad = 0;
-        }
+        // Phase 3
+        detectBadTriangles(m_angle, triangles, vertices);
+        break; // TODO Delete this
+        iterationLimit--;
     }
-    while (nonBorderTerminalEdgesRemaining);
+    metadata.vertices = vertices.size();
+    metadata.triangles = triangles.size();
+    metadata.edges = edges.size();
 
     return true;
 }

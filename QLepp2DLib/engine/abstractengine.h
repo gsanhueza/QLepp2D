@@ -62,7 +62,6 @@ public:
                                     std::vector<Triangle> &triangles,
                                     std::vector<Vertex> &vertices) = 0;
 
-
     /**
      * @brief Improves the actual triangulation from the vector of triangles.
      * Implementations must override this.
@@ -90,7 +89,8 @@ public:
      */
     virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
                                      std::vector<Vertex> &vertices,
-                                     std::vector<Edge> &edges) = 0;
+                                     std::vector<Edge> &edges,
+                                     bool &flag) = 0;
 };
 
 #endif // ABSTRACTENGINE_H

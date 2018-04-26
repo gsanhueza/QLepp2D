@@ -79,7 +79,8 @@ public:
      */
     virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
                                      std::vector<Vertex> &vertices,
-                                     std::vector<Edge> &edges) override;
+                                     std::vector<Edge> &edges,
+                                     bool &flag) override;
 
 protected:
     /**

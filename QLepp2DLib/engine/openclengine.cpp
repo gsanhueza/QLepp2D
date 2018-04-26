@@ -75,7 +75,8 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
 
 void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
                                        std::vector<Vertex> &vertices,
-                                       std::vector<Edge> &edges)
+                                       std::vector<Edge> &edges,
+                                       bool &flag)
 {
     cl_ulong time_start = 0;
     cl_ulong time_end = 0;
@@ -136,7 +137,8 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
          */
 
         // Phase 1
-        detectTerminalEdges(triangles, vertices, edges);
+        bool nonBTERemaining; // Flag that shows if we still have Non-border Terminal Edges.
+        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
 
         // Copy the output data back to the host
         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());

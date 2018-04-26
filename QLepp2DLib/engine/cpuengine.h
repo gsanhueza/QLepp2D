@@ -71,7 +71,8 @@ public:
      */
     virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
                                      std::vector<Vertex> &vertices,
-                                     std::vector<Edge> &edges) override;
+                                     std::vector<Edge> &edges,
+                                     bool &flag) override;
 
 private:
     /**
@@ -82,12 +83,17 @@ private:
      * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
+     * @param flag p_flag: Flag that shows if we still have Non-border Terminal Edges.
      * @return int Index of the terminal edge. -1 on error (Not expected to return an error).
      */
     int getTerminalIEdge(int it,
                          std::vector<Triangle> &triangles,
                          std::vector<Vertex> &vertices,
-                         std::vector<Edge> &edges) const;
+                         std::vector<Edge> &edges,
+                         bool &flag) const;
+
+private:
+    double m_angle;
 };
 
 #endif // CPUENGINE_H

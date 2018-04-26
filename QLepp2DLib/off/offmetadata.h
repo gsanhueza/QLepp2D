@@ -22,7 +22,7 @@
 
 typedef struct {
     int vertices;
-    int faces;
+    int triangles;
     int edges;
 } OFFMetadata;
 
