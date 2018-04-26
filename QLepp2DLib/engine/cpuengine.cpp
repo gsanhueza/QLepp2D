@@ -235,8 +235,6 @@ void insertCentroid(int iedge,
      *   S = Vertex that is in the shared edge.
      *   N = Vertex that isn't in the shared edge.
      *   C = Centroid.
-     *
-     * Thus, we'll create a triangle with Pattern[i], Pattern[(i + 1) % 4], Centroid.
      */
 
     // NSC pattern will be used arbitrarily here.
@@ -277,46 +275,85 @@ void insertCentroid(int iedge,
     }
 
     // Create new Edges
-    Edge EA, EB, EC, ED;
+//    Edge EA, EB, EC, ED;
+
+    QVector<Edge> newEdges;
+    for (int ie(0); ie < 4; ie++)
+    {
+        Edge e;
+        e.ita = e.itb = e.iv1 = e.iv2 = -1;
+        e.isTerminalEdge = e.isBorderEdge = 0;
+
+        newEdges.append(e);
+    }
 
     // Phase 3
     // Create new Triangles
-    Triangle TA, TB, TC, TD;
+    QVector<Triangle> newTriangles;
+    for (int it(0); it < 4; it++)
+    {
+        // We'll create triangles with iVertexPattern[i], iVertexPattern[(i + 1) % 4], Centroid.
+        Triangle t;
+        t.iv1 = iVertexPattern.at(it);
+        t.iv2 = iVertexPattern.at((it + 1) % 4);
+        t.iv3 = iCentroid;
+        t.ie1 = t.ie2 = t.ie3 = -1;
+        t.bad = 0;
+        t.valid = 1;
 
-    TA.iv1 = iVertexPattern.at(0);
-    TA.iv2 = iVertexPattern.at(1);
-    TA.iv3 = iCentroid;
-    TA.ie1 = TA.ie2 = TA.ie3 = -1;
-    TA.bad = 0;
+        newTriangles.append(t);
+    }
 
-    TB.iv1 = iVertexPattern.at(1);
-    TB.iv2 = iVertexPattern.at(2);
-    TB.iv3 = iCentroid;
-    TB.ie1 = TB.ie2 = TB.ie3 = -1;
-    TB.bad = 0;
+    // BEGIN DEPRECATED
+//    Triangle TA, TB, TC, TD;
 
-    TC.iv1 = iVertexPattern.at(2);
-    TC.iv2 = iVertexPattern.at(3);
-    TC.iv3 = iCentroid;
-    TC.ie1 = TC.ie2 = TC.ie3 = -1;
-    TC.bad = 0;
+//    TA.iv1 = iVertexPattern.at(0);
+//    TA.iv2 = iVertexPattern.at(1);
+//    TA.iv3 = iCentroid;
+//    TA.ie1 = TA.ie2 = TA.ie3 = -1;
+//    TA.bad = 0;
 
-    TD.iv1 = iVertexPattern.at(3);
-    TD.iv2 = iVertexPattern.at(0);
-    TD.iv3 = iCentroid;
-    TD.ie1 = TD.ie2 = TD.ie3 = -1;
-    TD.bad = 0;
+//    TB.iv1 = iVertexPattern.at(1);
+//    TB.iv2 = iVertexPattern.at(2);
+//    TB.iv3 = iCentroid;
+//    TB.ie1 = TB.ie2 = TB.ie3 = -1;
+//    TB.bad = 0;
+
+//    TC.iv1 = iVertexPattern.at(2);
+//    TC.iv2 = iVertexPattern.at(3);
+//    TC.iv3 = iCentroid;
+//    TC.ie1 = TC.ie2 = TC.ie3 = -1;
+//    TC.bad = 0;
+
+//    TD.iv1 = iVertexPattern.at(3);
+//    TD.iv2 = iVertexPattern.at(0);
+//    TD.iv3 = iCentroid;
+//    TD.ie1 = TD.ie2 = TD.ie3 = -1;
+//    TD.bad = 0;
+    // END DEPRECATED
 
     // Phase 4
-    int ITA, ITB, ITC, ITD; // Indices of triangles (A and B are recycled)
-    ITA = oldE.ita;
-    ITB = oldE.itb;
-    triangles.at(ITA) = TA;
-    triangles.at(ITB) = TB;
-    triangles.push_back(TC);
-    ITC = triangles.size() - 1;
-    triangles.push_back(TD);
-    ITD = triangles.size() - 1;
+    QVector<int> newITriangles; // Indices of triangles (A and B are recycled)
+    newITriangles.append(oldE.ita);
+    newITriangles.append(oldE.itb);
+    triangles.at(newITriangles.at(0)) = newTriangles.at(0);
+    triangles.at(newITriangles.at(1)) = newTriangles.at(1);
+    triangles.push_back(newTriangles.at(2));
+    newITriangles.append(triangles.size() - 1);
+    triangles.push_back(newTriangles.at(3));
+    newITriangles.append(triangles.size() - 1);
+
+    // BEGIN DEPRECATED
+//    int ITA, ITB, ITC, ITD; // Indices of triangles (A and B are recycled)
+//    ITA = oldE.ita;
+//    ITB = oldE.itb;
+//    triangles.at(ITA) = TA;
+//    triangles.at(ITB) = TB;
+//    triangles.push_back(TC);
+//    ITC = triangles.size() - 1;
+//    triangles.push_back(TD);
+//    ITD = triangles.size() - 1;
+    // END DEPRECATED
 
     // Phase 5
     /* We'll work with our new triangles. We'll take two of them that share one
@@ -328,29 +365,40 @@ void insertCentroid(int iedge,
      * We'll update the information of this edge, but the triangles will keep
      * incomplete data at the moment, because we need to insert these new edges first.
      */
-    EA.ita = ITA;
-    EA.itb = ITB;
-    EA.iv1 = std::min(TA.iv2, TA.iv3);
-    EA.iv2 = std::max(TA.iv2, TA.iv3);
-    EA.isTerminalEdge = EA.isBorderEdge = 0;
 
-    EB.ita = ITB;
-    EB.itb = ITC;
-    EB.iv1 = std::min(TB.iv2, TB.iv3);
-    EB.iv2 = std::max(TB.iv2, TB.iv3);
-    EB.isTerminalEdge = EB.isBorderEdge = 0;
+    for (int i(0); i < 4; i++)
+    {
+        newEdges[i].ita = newITriangles.at(i);
+        newEdges[i].itb = newITriangles.at((i + 1) % 4);
+        newEdges[i].iv1 = std::min(newTriangles.at(i).iv2, newTriangles.at(i).iv3);
+        newEdges[i].iv2 = std::max(newTriangles.at(i).iv2, newTriangles.at(i).iv3);
+    }
 
-    EC.ita = ITC;
-    EC.itb = ITD;
-    EC.iv1 = std::min(TC.iv2, TC.iv3);
-    EC.iv2 = std::max(TC.iv2, TC.iv3);
-    EC.isTerminalEdge = EC.isBorderEdge = 0;
+    // BEGIN DEPRECATED
+//    EA.ita = ITA;
+//    EA.itb = ITB;
+//    EA.iv1 = std::min(TA.iv2, TA.iv3);
+//    EA.iv2 = std::max(TA.iv2, TA.iv3);
+//    EA.isTerminalEdge = EA.isBorderEdge = 0;
 
-    ED.ita = ITD;
-    ED.itb = ITA;
-    ED.iv1 = std::min(TD.iv2, TD.iv3);
-    ED.iv2 = std::max(TD.iv2, TD.iv3);
-    ED.isTerminalEdge = ED.isBorderEdge = 0;
+//    EB.ita = ITB;
+//    EB.itb = ITC;
+//    EB.iv1 = std::min(TB.iv2, TB.iv3);
+//    EB.iv2 = std::max(TB.iv2, TB.iv3);
+//    EB.isTerminalEdge = EB.isBorderEdge = 0;
+
+//    EC.ita = ITC;
+//    EC.itb = ITD;
+//    EC.iv1 = std::min(TC.iv2, TC.iv3);
+//    EC.iv2 = std::max(TC.iv2, TC.iv3);
+//    EC.isTerminalEdge = EC.isBorderEdge = 0;
+
+//    ED.ita = ITD;
+//    ED.itb = ITA;
+//    ED.iv1 = std::min(TD.iv2, TD.iv3);
+//    ED.iv2 = std::max(TD.iv2, TD.iv3);
+//    ED.isTerminalEdge = ED.isBorderEdge = 0;
+    // END DEPRECATED
 
     /* We still have to update information of triangles for the nonSharedEdges,
      * so we'll change the index of the ita/itb that had the old triangle,
@@ -359,76 +407,107 @@ void insertCentroid(int iedge,
     for (int ie : nonSharedIEdges)
     {
         Edge &e(edges.at(ie));
+
+        for (int it(0); it < 4; it++)
+        {
+            if (e.iv1 == std::min(triangles.at(newITriangles.at(it)).iv1, triangles.at(newITriangles.at(it)).iv2) and
+                e.iv2 == std::max(triangles.at(newITriangles.at(it)).iv1, triangles.at(newITriangles.at(it)).iv2))
+            {
+                triangles.at(newITriangles.at(it)).ie3 = ie;
+                if (e.ita == oldE.ita or e.ita == oldE.itb)
+                {
+                    e.ita = newITriangles.at(it);
+                }
+                else if (e.itb == oldE.ita or e.itb == oldE.itb)
+                {
+                    e.itb = newITriangles.at(it);
+                }
+            }
+        }
+
+        // BEGIN DEPRECATED
         // Triangle A
-        if (e.iv1 == std::min(triangles.at(ITA).iv1, triangles.at(ITA).iv2) and e.iv2 == std::max(triangles.at(ITA).iv1, triangles.at(ITA).iv2))
-        {
-            triangles.at(ITA).ie3 = ie;
-            if (e.ita == oldE.ita or e.ita == oldE.itb)
-            {
-                e.ita = ITA;
-            }
-            else if (e.itb == oldE.ita or e.itb == oldE.itb)
-            {
-                e.itb = ITA;
-            }
-        }
+//        if (e.iv1 == std::min(triangles.at(ITA).iv1, triangles.at(ITA).iv2) and e.iv2 == std::max(triangles.at(ITA).iv1, triangles.at(ITA).iv2))
+//        {
+//            triangles.at(ITA).ie3 = ie;
+//            if (e.ita == oldE.ita or e.ita == oldE.itb)
+//            {
+//                e.ita = ITA;
+//            }
+//            else if (e.itb == oldE.ita or e.itb == oldE.itb)
+//            {
+//                e.itb = ITA;
+//            }
+//        }
 
-        // Triangle B
-        if (e.iv1 == std::min(triangles.at(ITB).iv1, triangles.at(ITB).iv2) and e.iv2 == std::max(triangles.at(ITB).iv1, triangles.at(ITB).iv2))
-        {
-            triangles.at(ITB).ie3 = ie;
-            if (e.ita == oldE.ita or e.ita == oldE.itb)
-            {
-                e.ita = ITB;
-            }
-            else if (e.itb == oldE.ita or e.itb == oldE.itb)
-            {
-                e.itb = ITB;
-            }
-        }
+//        // Triangle B
+//        if (e.iv1 == std::min(triangles.at(ITB).iv1, triangles.at(ITB).iv2) and e.iv2 == std::max(triangles.at(ITB).iv1, triangles.at(ITB).iv2))
+//        {
+//            triangles.at(ITB).ie3 = ie;
+//            if (e.ita == oldE.ita or e.ita == oldE.itb)
+//            {
+//                e.ita = ITB;
+//            }
+//            else if (e.itb == oldE.ita or e.itb == oldE.itb)
+//            {
+//                e.itb = ITB;
+//            }
+//        }
 
-        // Triangle C
-        if (e.iv1 == std::min(triangles.at(ITC).iv1, triangles.at(ITC).iv2) and e.iv2 == std::max(triangles.at(ITC).iv1, triangles.at(ITC).iv2))
-        {
-            triangles.at(ITC).ie3 = ie;
-            if (e.ita == oldE.ita or e.ita == oldE.itb)
-            {
-                e.ita = ITC;
-            }
-            else if (e.itb == oldE.ita or e.itb == oldE.itb)
-            {
-                e.itb = ITC;
-            }
-        }
+//        // Triangle C
+//        if (e.iv1 == std::min(triangles.at(ITC).iv1, triangles.at(ITC).iv2) and e.iv2 == std::max(triangles.at(ITC).iv1, triangles.at(ITC).iv2))
+//        {
+//            triangles.at(ITC).ie3 = ie;
+//            if (e.ita == oldE.ita or e.ita == oldE.itb)
+//            {
+//                e.ita = ITC;
+//            }
+//            else if (e.itb == oldE.ita or e.itb == oldE.itb)
+//            {
+//                e.itb = ITC;
+//            }
+//        }
 
-        // Triangle D
-        if (e.iv1 == std::min(triangles.at(ITD).iv1, triangles.at(ITD).iv2) and e.iv2 == std::max(triangles.at(ITD).iv1, triangles.at(ITD).iv2))
-        {
-            triangles.at(ITD).ie3 = ie;
-            if (e.ita == oldE.ita or e.ita == oldE.itb)
-            {
-                e.ita = ITD;
-            }
-            else if (e.itb == oldE.ita or e.itb == oldE.itb)
-            {
-                e.itb = ITD;
-            }
-        }
-
+//        // Triangle D
+//        if (e.iv1 == std::min(triangles.at(ITD).iv1, triangles.at(ITD).iv2) and e.iv2 == std::max(triangles.at(ITD).iv1, triangles.at(ITD).iv2))
+//        {
+//            triangles.at(ITD).ie3 = ie;
+//            if (e.ita == oldE.ita or e.ita == oldE.itb)
+//            {
+//                e.ita = ITD;
+//            }
+//            else if (e.itb == oldE.ita or e.itb == oldE.itb)
+//            {
+//                e.itb = ITD;
+//            }
+//        }
+        // END DEPRECATED
     }
 
     // Phase 6
-    int IEA, IEB, IEC, IED; // Indices of edges (A is recycled)
-    IEA = iedge;
-    edges.at(IEA) = EA;
-    edges.push_back(EB);
-    IEB = edges.size() - 1;
-    edges.push_back(EC);
-    IEC = edges.size() - 1;
-    edges.push_back(ED);
-    IED = edges.size() - 1;
+    QVector<int> newIEdges;
+    newIEdges.append(iedge);
+    edges.at(newIEdges.at(0)) = newEdges.at(0);
+    edges.push_back(newEdges.at(1));
+    newIEdges.append(edges.size() - 1);
+    edges.push_back(newEdges.at(2));
+    newIEdges.append(edges.size() - 1);
+    edges.push_back(newEdges.at(3));
+    newIEdges.append(edges.size() - 1);
 
-    // TODO Phase 7
+    // BEGIN DEPRECATED
+//    int IEA, IEB, IEC, IED; // Indices of edges (A is recycled)
+//    IEA = iedge;
+//    edges.at(IEA) = EA;
+//    edges.push_back(EB);
+//    IEB = edges.size() - 1;
+//    edges.push_back(EC);
+//    IEC = edges.size() - 1;
+//    edges.push_back(ED);
+//    IED = edges.size() - 1;
+    // END DEPRECATED
+
+    // Phase 7
     /* Available edges are EA, EB, EC, ED.
      * Note: Because we deliberately put our centroid in iv3, we know that ie3
      * is one of the "nonSharedEdges".
@@ -437,63 +516,81 @@ void insertCentroid(int iedge,
      *   TA.ie1 = Index of Edge whose iv1 and iv2 are TA.iv2 and TA.iv3
      */
 
-    QVector<int> availableIEdges = {IEA, IEB, IEC, IED};
+//    QVector<int> availableIEdges = {IEA, IEB, IEC, IED};
 
-    for (int ie : availableIEdges)
+    for (int ie : newIEdges)
     {
         Edge &e(edges.at(ie));
 
-        // Triangle A (ie1)
-        if (e.iv1 == std::min(triangles.at(ITA).iv2, triangles.at(ITA).iv3) and
-            e.iv2 == std::max(triangles.at(ITA).iv2, triangles.at(ITA).iv3))
+        for (int it(0); it < 4; it++)
         {
-            triangles.at(ITA).ie1 = ie;
-        }
-        // Triangle A (ie2)
-        if (e.iv1 == std::min(triangles.at(ITA).iv1, triangles.at(ITA).iv3) and
-            e.iv2 == std::max(triangles.at(ITA).iv1, triangles.at(ITA).iv3))
-        {
-            triangles.at(ITA).ie2 = ie;
-        }
+            // Triangle "it" (ie1)
+            if (e.iv1 == std::min(triangles.at(newITriangles.at(it)).iv2, triangles.at(newITriangles.at(it)).iv3) and
+                e.iv2 == std::max(triangles.at(newITriangles.at(it)).iv2, triangles.at(newITriangles.at(it)).iv3))
+            {
+                triangles.at(newITriangles.at(it)).ie1 = ie;
+            }
 
-        // Triangle B (ie1)
-        if (e.iv1 == std::min(triangles.at(ITB).iv2, triangles.at(ITB).iv3) and
-            e.iv2 == std::max(triangles.at(ITB).iv2, triangles.at(ITB).iv3))
-        {
-            triangles.at(ITB).ie1 = ie;
+            // Triangle "it" (ie2)
+            if (e.iv1 == std::min(triangles.at(newITriangles.at(it)).iv1, triangles.at(newITriangles.at(it)).iv3) and
+                e.iv2 == std::max(triangles.at(newITriangles.at(it)).iv1, triangles.at(newITriangles.at(it)).iv3))
+            {
+                triangles.at(newITriangles.at(it)).ie2 = ie;
+            }
         }
-        // Triangle B (ie2)
-        if (e.iv1 == std::min(triangles.at(ITB).iv1, triangles.at(ITB).iv3) and
-            e.iv2 == std::max(triangles.at(ITB).iv1, triangles.at(ITB).iv3))
-        {
-            triangles.at(ITB).ie2 = ie;
-        }
+        // BEGIN DEPRECATED
+//        // Triangle A (ie1)
+//        if (e.iv1 == std::min(triangles.at(ITA).iv2, triangles.at(ITA).iv3) and
+//            e.iv2 == std::max(triangles.at(ITA).iv2, triangles.at(ITA).iv3))
+//        {
+//            triangles.at(ITA).ie1 = ie;
+//        }
+//        // Triangle A (ie2)
+//        if (e.iv1 == std::min(triangles.at(ITA).iv1, triangles.at(ITA).iv3) and
+//            e.iv2 == std::max(triangles.at(ITA).iv1, triangles.at(ITA).iv3))
+//        {
+//            triangles.at(ITA).ie2 = ie;
+//        }
 
-        // Triangle C (ie1)
-        if (e.iv1 == std::min(triangles.at(ITC).iv2, triangles.at(ITC).iv3) and
-            e.iv2 == std::max(triangles.at(ITC).iv2, triangles.at(ITC).iv3))
-        {
-            triangles.at(ITC).ie1 = ie;
-        }
-        // Triangle C (ie2)
-        if (e.iv1 == std::min(triangles.at(ITC).iv1, triangles.at(ITC).iv3) and
-            e.iv2 == std::max(triangles.at(ITC).iv1, triangles.at(ITC).iv3))
-        {
-            triangles.at(ITC).ie2 = ie;
-        }
+//        // Triangle B (ie1)
+//        if (e.iv1 == std::min(triangles.at(ITB).iv2, triangles.at(ITB).iv3) and
+//            e.iv2 == std::max(triangles.at(ITB).iv2, triangles.at(ITB).iv3))
+//        {
+//            triangles.at(ITB).ie1 = ie;
+//        }
+//        // Triangle B (ie2)
+//        if (e.iv1 == std::min(triangles.at(ITB).iv1, triangles.at(ITB).iv3) and
+//            e.iv2 == std::max(triangles.at(ITB).iv1, triangles.at(ITB).iv3))
+//        {
+//            triangles.at(ITB).ie2 = ie;
+//        }
 
-        // Triangle D (ie1)
-        if (e.iv1 == std::min(triangles.at(ITD).iv2, triangles.at(ITD).iv3) and
-            e.iv2 == std::max(triangles.at(ITD).iv2, triangles.at(ITD).iv3))
-        {
-            triangles.at(ITD).ie1 = ie;
-        }
-        // Triangle D (ie2)
-        if (e.iv1 == std::min(triangles.at(ITD).iv1, triangles.at(ITD).iv3) and
-            e.iv2 == std::max(triangles.at(ITD).iv1, triangles.at(ITD).iv3))
-        {
-            triangles.at(ITD).ie2 = ie;
-        }
+//        // Triangle C (ie1)
+//        if (e.iv1 == std::min(triangles.at(ITC).iv2, triangles.at(ITC).iv3) and
+//            e.iv2 == std::max(triangles.at(ITC).iv2, triangles.at(ITC).iv3))
+//        {
+//            triangles.at(ITC).ie1 = ie;
+//        }
+//        // Triangle C (ie2)
+//        if (e.iv1 == std::min(triangles.at(ITC).iv1, triangles.at(ITC).iv3) and
+//            e.iv2 == std::max(triangles.at(ITC).iv1, triangles.at(ITC).iv3))
+//        {
+//            triangles.at(ITC).ie2 = ie;
+//        }
+
+//        // Triangle D (ie1)
+//        if (e.iv1 == std::min(triangles.at(ITD).iv2, triangles.at(ITD).iv3) and
+//            e.iv2 == std::max(triangles.at(ITD).iv2, triangles.at(ITD).iv3))
+//        {
+//            triangles.at(ITD).ie1 = ie;
+//        }
+//        // Triangle D (ie2)
+//        if (e.iv1 == std::min(triangles.at(ITD).iv1, triangles.at(ITD).iv3) and
+//            e.iv2 == std::max(triangles.at(ITD).iv1, triangles.at(ITD).iv3))
+//        {
+//            triangles.at(ITD).ie2 = ie;
+//        }
+        // END DEPRECATED
     }
 }
 
