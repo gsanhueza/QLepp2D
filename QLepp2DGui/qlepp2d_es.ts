@@ -134,174 +134,180 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Archivo</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="124"/>
+        <location filename="mainwindow.ui" line="127"/>
+        <source>Presents the most recently loaded triangulations.</source>
+        <translation>Presenta las triangulaciones más recientemente cargadas.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="130"/>
         <source>&amp;Recent Triangulations</source>
         <translation>&amp;Triangulaciones Recientes</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="140"/>
+        <location filename="mainwindow.ui" line="149"/>
         <source>Opens the Help menu.</source>
         <translation>Abre el menú de Ayuda.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="143"/>
+        <location filename="mainwindow.ui" line="152"/>
         <source>&amp;Help</source>
         <translation>A&amp;yuda</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="151"/>
+        <location filename="mainwindow.ui" line="160"/>
         <source>Opens the View menu.</source>
         <translation>Abre el menú de Vista.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="154"/>
+        <location filename="mainwindow.ui" line="163"/>
         <source>&amp;View</source>
         <translation>&amp;Vista</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="160"/>
+        <location filename="mainwindow.ui" line="169"/>
         <source>&amp;Engine</source>
         <translation>&amp;Motor</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="173"/>
+        <location filename="mainwindow.ui" line="182"/>
         <source>Show Toolbar</source>
         <translation>Mostrar caja de herramientas</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="197"/>
+        <location filename="mainwindow.ui" line="206"/>
         <source>&amp;Load Triangulation</source>
         <translation>&amp;Cargar Triangulación</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="200"/>
+        <location filename="mainwindow.ui" line="209"/>
         <source>Loads an OFF file containing a triangulation.</source>
         <translation>Carga un archivo OFF que contiene una triangulación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="203"/>
+        <location filename="mainwindow.ui" line="212"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="212"/>
+        <location filename="mainwindow.ui" line="221"/>
         <source>&amp;Save Triangulation</source>
         <translation>&amp;Guardar Triangulación</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="215"/>
+        <location filename="mainwindow.ui" line="224"/>
         <source>Saves your triangulation in an OFF file.</source>
         <translation>Guarda su triangulación en un archivo OFF.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="218"/>
+        <location filename="mainwindow.ui" line="227"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="227"/>
+        <location filename="mainwindow.ui" line="236"/>
         <source>&amp;Quit</source>
         <translation>&amp;Salir</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="230"/>
+        <location filename="mainwindow.ui" line="239"/>
         <source>Quits this application.</source>
         <translation>Cierra la aplicación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="233"/>
+        <location filename="mainwindow.ui" line="242"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="242"/>
+        <location filename="mainwindow.ui" line="251"/>
         <source>&amp;Tutorial</source>
         <translation>&amp;Tutorial</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="245"/>
+        <location filename="mainwindow.ui" line="254"/>
         <source>Tutorial</source>
         <translation>Tutorial</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="248"/>
+        <location filename="mainwindow.ui" line="257"/>
         <source>Shows how to use this application.</source>
         <translation>Muestra cómo usar esta aplicación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="251"/>
+        <location filename="mainwindow.ui" line="260"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="260"/>
+        <location filename="mainwindow.ui" line="269"/>
         <source>&amp;About</source>
         <translation>&amp;Acerca de</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="263"/>
+        <location filename="mainwindow.ui" line="272"/>
         <source>Shows an About window.</source>
         <translation>Muestra una ventana de &quot;Acerca de&quot;.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="272"/>
+        <location filename="mainwindow.ui" line="281"/>
         <source>&amp;Reset View</source>
         <translation>&amp;Restaurar Vista</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="275"/>
+        <location filename="mainwindow.ui" line="284"/>
         <source>Resets the view to an initial state. Does not modify the triangulation.</source>
         <translation>Restaura la vista a un estado inicial. No modifica la triangulación.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="278"/>
+        <location filename="mainwindow.ui" line="287"/>
         <source>Ctrl+R</source>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="287"/>
+        <location filename="mainwindow.ui" line="296"/>
         <source>Use &amp;CPU Engine</source>
         <translation>Usar motor de &amp;CPU</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="290"/>
+        <location filename="mainwindow.ui" line="299"/>
         <source>Use CPU Engine.</source>
         <translation>Usa el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="293"/>
+        <location filename="mainwindow.ui" line="302"/>
         <source>Loads the CPU Engine.</source>
         <translation>Carga el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="296"/>
+        <location filename="mainwindow.ui" line="305"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="305"/>
+        <location filename="mainwindow.ui" line="314"/>
         <source>Use &amp;OpenCL Engine</source>
         <translation>Usar motor de &amp;OpenCL</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="308"/>
+        <location filename="mainwindow.ui" line="317"/>
         <source>Loads the OpenCL Engine.</source>
         <translation>Carga el motor de OpenCL.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="311"/>
+        <location filename="mainwindow.ui" line="320"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="323"/>
+        <location filename="mainwindow.ui" line="332"/>
         <location filename="mainwindow.cpp" line="287"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Limpiar historial</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="124"/>
         <source>Recent Triangulations</source>
-        <translation type="vanished">Triangulaciones recientes</translation>
+        <translation>Triangulaciones recientes</translation>
     </message>
     <message>
         <source>Shows the most recently opened OFF files.</source>

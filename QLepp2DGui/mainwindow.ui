@@ -120,12 +120,21 @@
      <property name="enabled">
       <bool>false</bool>
      </property>
+     <property name="toolTip">
+      <string>Recent Triangulations</string>
+     </property>
+     <property name="statusTip">
+      <string>Presents the most recently loaded triangulations.</string>
+     </property>
      <property name="title">
       <string>&amp;Recent Triangulations</string>
      </property>
      <property name="icon">
       <iconset theme="document-open-recent">
        <normaloff>.</normaloff>.</iconset>
+     </property>
+     <property name="toolTipsVisible">
+      <bool>true</bool>
      </property>
     </widget>
     <addaction name="actionLoadTriangulation"/>
