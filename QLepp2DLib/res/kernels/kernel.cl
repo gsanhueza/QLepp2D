@@ -45,7 +45,10 @@ typedef struct {
 typedef struct {
     int ita;
     int itb;
+    int iv1;
+    int iv2;
     int isTerminalEdge;
+    int isBorderEdge;
 } Edge;
 
 #if 0
@@ -130,17 +133,17 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             int longestIE;
             Edge longestEdge;
 
-            if (length_a2 >= length_b2 && length_a2 >= length_c2)
+            if (length_a2 > length_b2 && length_a2 > length_c2)
             {
                 longestEdge = edges[t.ie1];
                 longestIE = t.ie1;
             }
-            else if (length_b2 >= length_a2 && length_b2 >= length_c2)
+            else if (length_b2 > length_a2 && length_b2 > length_c2)
             {
                 longestEdge = edges[t.ie2];
                 longestIE = t.ie2;
             }
-            else
+            else // Unique longest Edge guaranteed here
             {
                 longestEdge = edges[t.ie3];
                 longestIE = t.ie3;
@@ -153,6 +156,7 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             if (neighbourIT < 0)
             {
                 edges[longestIE].isTerminalEdge = 1;
+                edges[longestIE].isBorderEdge = 1;
                 return;
             }
 
@@ -160,6 +164,7 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
                 edges[longestIE].isTerminalEdge = 1;
+                edges[longestIE].isBorderEdge = 0;
                 return;
             }
 
