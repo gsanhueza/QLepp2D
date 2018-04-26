@@ -98,7 +98,8 @@ kernel void improveTriangulation(global Triangle *triangles, global Vertex *vert
 /* Each thread is a Triangle */
 kernel void detectTerminalEdges(global Triangle *triangles,
                                 global Vertex *vertices,
-                                global Edge *edges)
+                                global Edge *edges,
+                                global int *flag)
 {
     int idx = get_global_id(0);
 
@@ -165,6 +166,7 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             {
                 edges[longestIE].isTerminalEdge = 1;
                 edges[longestIE].isBorderEdge = 0;
+                flag[0] = 1;
                 return;
             }
 

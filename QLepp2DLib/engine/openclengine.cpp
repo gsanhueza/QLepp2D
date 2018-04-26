@@ -92,16 +92,25 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
     m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 
+    // Hack to allow flag to be modified by kernel
+    std::vector<int> flagVector;
+    flagVector.push_back(flag);
+    cl::Buffer bufferFlag(m_context, flagVector.begin(), flagVector.end(), false, USE_HOST_PTR);
+
     // Set dimensions
     cl::NDRange global(globalSize);
     //cl::NDRange local(256);
     cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
     // Make kernel
-    cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_edges_kernel(m_program, "detectTerminalEdges");
+    cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_terminal_edges_kernel(m_program, "detectTerminalEdges");
 
     // Execute the kernel
-    cl::Event event = detect_terminal_edges_kernel(eargs, m_bufferTriangles, m_bufferVertices, m_bufferEdges);
+    cl::Event event = detect_terminal_edges_kernel(eargs, m_bufferTriangles, m_bufferVertices, m_bufferEdges, bufferFlag);
+
+    // Copy the flag!
+    cl::copy(m_queue, bufferFlag, flagVector.begin(), flagVector.end());
+    flag = (flagVector.at(0) != 0);
 
     event.wait();
 
@@ -137,7 +146,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
          */
 
         // Phase 1
-        bool nonBTERemaining; // Flag that shows if we still have Non-border Terminal Edges.
+        bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
         detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
 
         // Copy the output data back to the host
@@ -148,18 +157,9 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
 //         cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "improveTriangulation");
 //         detect_kernel(eargs, bufferTriangles, bufferVertices, bufferIndices);
 
-        // TODO Delete this
-        // Checking terminal edges
-//         for (int i(0); i < edges.size(); i++)
-//         {
-//             qDebug() << "[OPENCL] Edge" << i << ": isTerminalEdge = " << edges.at(i).isTerminalEdge;
-//         }
-
-        // TODO Delete this
-        for (Triangle &t : triangles)
-        {
-            t.bad = 0;
-        }
+        metadata.vertices = vertices.size();
+        metadata.triangles = triangles.size();
+        metadata.edges = edges.size();
     }
     catch (cl::Error err)
     {
