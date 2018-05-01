@@ -22,6 +22,7 @@
 #include <QFileDialog>
 #include <QMenu>
 #include <QMimeData>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -183,6 +184,13 @@ void MainWindow::detectClicked()
         ui->statusBar->showMessage(tr("Bad triangles have been detected. You can now proceed to improve them."));
         emit emitUpdateData();
     }
+    else
+    {
+        ui->statusBar->showMessage(tr("Unable to detect bad triangles. Is your file corrupted?"));
+        QMessageBox::critical(this,
+                              tr("QLepp2D"),
+                              tr("Unable to detect bad triangles. Your file may be corrupted."));
+    }
 }
 
 void MainWindow::improveClicked()
@@ -192,6 +200,13 @@ void MainWindow::improveClicked()
     {
         ui->statusBar->showMessage(tr("Triangulation has been modified."));
         emit emitUpdateData();
+    }
+    else
+    {
+        ui->statusBar->showMessage(tr("Unable to improve triangulation. Is your file corrupted?"));
+        QMessageBox::critical(this,
+                              tr("QLepp2D"),
+                              tr("Unable to improve triangulation. Your file may be corrupted."));
     }
 }
 
