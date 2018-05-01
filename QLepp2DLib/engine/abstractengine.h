@@ -91,6 +91,17 @@ public:
                                      std::vector<Vertex> &vertices,
                                      std::vector<Edge> &edges,
                                      bool &flag) = 0;
+
+    /**
+     * @brief Inserts centroids on every region that has a terminal edge.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    virtual void insertCentroids(std::vector<Triangle> &triangles,
+                                 std::vector<Vertex> &vertices,
+                                 std::vector<Edge> &edges) = 0;
 };
 
 #endif // ABSTRACTENGINE_H

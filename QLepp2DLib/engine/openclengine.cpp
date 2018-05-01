@@ -76,6 +76,65 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
     return true;
 }
 
+bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
+                                        std::vector<Vertex> &vertices,
+                                        std::vector<Edge> &edges,
+                                        OFFMetadata &metadata)
+{
+    /* We'll do this in 3 phases:
+     * Phase 1: Detect the terminal edges for each bad triangle.
+     * Phase 2: Insert new triangle(s) at each terminal edge.
+     * Phase 3: Recalculate bad triangles.
+     */
+    try
+    {
+        int iterationLimit = 10;
+        while (iterationLimit > 0)
+        {
+            // Phase 1
+            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
+            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+
+            if (not nonBTERemaining)
+            {
+                break;
+            }
+
+            // Phase 2
+            insertCentroids(triangles, vertices, edges);
+
+            // Phase 3
+            detectBadTriangles(m_angle, triangles, vertices);
+            break; // TODO Delete this
+            iterationLimit--;
+        }
+        // Copy the output data back to the host
+        /* FIXME Each helper function should do this automatically
+         * If we get a correct GPU insertion algorithm, we can do this manually once
+         * instead of copying back the results for each function.
+
+         * cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
+         * cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
+         * cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
+         */
+
+        metadata.vertices = vertices.size();
+        metadata.triangles = triangles.size();
+        metadata.edges = edges.size();
+    }
+    catch (cl::Error err)
+    {
+        qDebug() << err.err();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
+        return false;
+    }
+    catch (...)
+    {
+        return false;
+    }
+    return true;
+}
+
 void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
                                        std::vector<Vertex> &vertices,
                                        std::vector<Edge> &edges,
@@ -137,64 +196,12 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "+ OpenCL: Terminal edges detected in" << time_end - time_start << "nanoseconds.";
 }
 
-bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata)
+void OpenCLEngine::insertCentroids(std::vector<Triangle> &triangles,
+                                   std::vector<Vertex> &vertices,
+                                   std::vector<Edge> &edges)
 {
-    /* We'll do this in 3 phases:
-     * Phase 1: Detect the terminal edges for each bad triangle.
-     * Phase 2: Insert new triangle(s) at each terminal edge.
-     * Phase 3: Recalculate bad triangles.
-     */
-    try
-    {
-        int iterationLimit = 10;
-        while (iterationLimit > 0)
-        {
-            // Phase 1
-            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
-
-            if (not nonBTERemaining)
-            {
-                break;
-            }
-
-            // Phase 2
-            CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
-            cpuengine.insertCentroids(triangles, vertices, edges);
-
-            // Phase 3
-            detectBadTriangles(m_angle, triangles, vertices);
-            break; // TODO Delete this
-            iterationLimit--;
-        }
-        // Copy the output data back to the host
-        /* FIXME Each helper function should do this automatically
-         * If we get a correct GPU insertion algorithm, we can do this manually once
-         * instead of copying back the results for each function.
-
-         * cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
-         * cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
-         * cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
-         */
-
-        metadata.vertices = vertices.size();
-        metadata.triangles = triangles.size();
-        metadata.edges = edges.size();
-    }
-    catch (cl::Error err)
-    {
-        qDebug() << err.err();
-        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
-        return false;
-    }
-    catch (...)
-    {
-        return false;
-    }
-    return true;
+    CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
+    cpuengine.insertCentroids(triangles, vertices, edges);
 }
 
 void OpenCLEngine::setup()

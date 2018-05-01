@@ -63,6 +63,113 @@ bool CPUEngine::detectBadTriangles(double &angle,
     return true;
 }
 
+bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
+                                     std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges,
+                                     OFFMetadata &metadata)
+{
+    /* Relevant information: Each insertion does
+     *   +1 to metadata.vertices (vertices.size())
+     *   +2 to metadata.triangles (triangles.size())
+     *   +3 to metadata.edges (edges.size())
+     */
+
+    qDebug() << "CPUEngine::improveTriangulation";
+
+    /* We'll do this in 3 phases:
+     * Phase 1: Detect the terminal edges for each bad triangle.
+     * Phase 2: Insert new triangle(s) at each terminal edge.
+     * Phase 3: Recalculate bad triangles.
+     */
+
+    try
+    {
+        int iterationLimit = 10;
+        while (iterationLimit > 0)
+        {
+            // Phase 1
+            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
+            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+
+            if (not nonBTERemaining)
+            {
+                break;
+            }
+
+            // Phase 2
+            insertCentroids(triangles, vertices, edges);
+
+            // Phase 3
+            detectBadTriangles(m_angle, triangles, vertices);
+            break; // TODO Delete this
+            iterationLimit--;
+        }
+        metadata.vertices = vertices.size();
+        metadata.triangles = triangles.size();
+        metadata.edges = edges.size();
+
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
+void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
+                                    std::vector<Vertex> &vertices,
+                                    std::vector<Edge> &edges,
+                                    bool &flag)
+{
+    QElapsedTimer timer;
+    timer.start();
+
+    for (int i(0); i < static_cast<int>(triangles.size()); i++)
+    {
+        Triangle &t(triangles.at(i));
+
+        /* Since we need to find the longest edges to get the Lepp, we can
+         * just create a protected method "int getTerminalIEdge(...)" that returns
+         * the index of the edge that is a terminal edge.
+         *
+         * From here, we can update the "edges" vector, and each of these edges
+         * will know if it's a terminal edge that has to be modified or not.
+         */
+        if (t.bad)
+        {
+            /* We can just calculate every triangle's lepp in GPU, but only have
+             * to calculate the required here in CPU, as there's no need for
+             * everyone right now.
+             */
+            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges, flag);
+            edges.at(longestIEdge).isTerminalEdge = 1;
+        }
+    }
+
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "* CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
+}
+
+void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
+                     std::vector<Vertex> &vertices,
+                     std::vector<Edge> &edges)
+{
+    QElapsedTimer timer;
+    timer.start();
+
+    for (unsigned int ie(0); ie < edges.size(); ie++)
+    {
+        Edge &e(edges.at(ie));
+        if (e.isTerminalEdge and not e.isBorderEdge)
+        {
+            insertCentroid(ie, triangles, vertices, edges);
+        }
+    }
+
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "* CPU: Centroids inserted in" << elapsed << "nanoseconds.";
+}
+
 int CPUEngine::getTerminalIEdge(int it,
                                 std::vector<Triangle> &triangles,
                                 std::vector<Vertex> &vertices,
@@ -138,40 +245,6 @@ int CPUEngine::getTerminalIEdge(int it,
 
     }
     return -1;
-}
-
-void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices,
-                                    std::vector<Edge> &edges,
-                                    bool &flag)
-{
-    QElapsedTimer timer;
-    timer.start();
-
-    for (int i(0); i < static_cast<int>(triangles.size()); i++)
-    {
-        Triangle &t(triangles.at(i));
-
-        /* Since we need to find the longest edges to get the Lepp, we can
-         * just create a protected method "int getTerminalIEdge(...)" that returns
-         * the index of the edge that is a terminal edge.
-         *
-         * From here, we can update the "edges" vector, and each of these edges
-         * will know if it's a terminal edge that has to be modified or not.
-         */
-        if (t.bad)
-        {
-            /* We can just calculate every triangle's lepp in GPU, but only have
-             * to calculate the required here in CPU, as there's no need for
-             * everyone right now.
-             */
-            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges, flag);
-            edges.at(longestIEdge).isTerminalEdge = 1;
-        }
-    }
-
-    qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "* CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
 Vertex CPUEngine::centroidOf(int iva,
@@ -405,75 +478,3 @@ void CPUEngine::insertCentroid(int iedge,
     }
 }
 
-void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
-                     std::vector<Vertex> &vertices,
-                     std::vector<Edge> &edges)
-{
-    QElapsedTimer timer;
-    timer.start();
-
-    for (unsigned int ie(0); ie < edges.size(); ie++)
-    {
-        Edge &e(edges.at(ie));
-        if (e.isTerminalEdge and not e.isBorderEdge)
-        {
-            insertCentroid(ie, triangles, vertices, edges);
-        }
-    }
-
-    qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "* CPU: Centroids inserted in" << elapsed << "nanoseconds.";
-}
-
-bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
-                                     std::vector<Vertex> &vertices,
-                                     std::vector<Edge> &edges,
-                                     OFFMetadata &metadata)
-{
-    /* Relevant information: Each insertion does
-     *   +1 to metadata.vertices (vertices.size())
-     *   +2 to metadata.triangles (triangles.size())
-     *   +3 to metadata.edges (edges.size())
-     */
-
-    qDebug() << "CPUEngine::improveTriangulation";
-
-    /* We'll do this in 3 phases:
-     * Phase 1: Detect the terminal edges for each bad triangle.
-     * Phase 2: Insert new triangle(s) at each terminal edge.
-     * Phase 3: Recalculate bad triangles.
-     */
-
-    try
-    {
-        int iterationLimit = 10;
-        while (iterationLimit > 0)
-        {
-            // Phase 1
-            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
-
-            if (not nonBTERemaining)
-            {
-                break;
-            }
-
-            // Phase 2
-            insertCentroids(triangles, vertices, edges);
-
-            // Phase 3
-            detectBadTriangles(m_angle, triangles, vertices);
-            break; // TODO Delete this
-            iterationLimit--;
-        }
-        metadata.vertices = vertices.size();
-        metadata.triangles = triangles.size();
-        metadata.edges = edges.size();
-
-        return true;
-    }
-    catch (...)
-    {
-        return false;
-    }
-}

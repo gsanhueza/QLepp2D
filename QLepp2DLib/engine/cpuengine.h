@@ -81,9 +81,9 @@ public:
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
      */
-    void insertCentroids(std::vector<Triangle> &triangles,
-                         std::vector<Vertex> &vertices,
-                         std::vector<Edge> &edges);
+    virtual void insertCentroids(std::vector<Triangle> &triangles,
+                                 std::vector<Vertex> &vertices,
+                                 std::vector<Edge> &edges) override;
 
 private:
     /**

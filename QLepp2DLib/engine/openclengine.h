@@ -82,6 +82,17 @@ public:
                                      std::vector<Edge> &edges,
                                      bool &flag) override;
 
+    /**
+     * @brief Inserts centroids on every region that has a terminal edge.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    virtual void insertCentroids(std::vector<Triangle> &triangles,
+                                 std::vector<Vertex> &vertices,
+                                 std::vector<Edge> &edges) override;
+
 protected:
     /**
      * @brief Convenience method that sets variables up before work.
