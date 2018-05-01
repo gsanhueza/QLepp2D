@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QFile>
 #include "engine/openclengine.h"
+#include "engine/cpuengine.h"
 
 OpenCLEngine::OpenCLEngine()
 {
@@ -38,8 +39,8 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
         const bool USE_HOST_PTR = true;
 
         // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
-        cl::Buffer bufferTriangles(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
-        cl::Buffer bufferVertices(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+        m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
+        m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
 
         // Make kernel
         cl::make_kernel<double&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "detectBadTriangles");
@@ -54,15 +55,16 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
         // Execute the kernel
-        cl::Event event = detect_kernel(eargs, angle, bufferTriangles, bufferVertices);
+        cl::Event event = detect_kernel(eargs, angle, m_bufferTriangles, m_bufferVertices);
         event.wait();
 
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
         qDebug() << "OpenCL: Bad Triangles detected in" << time_end - time_start << "nanoseconds.";
+
         // Copy the output data back to the host
-        cl::copy(m_queue, bufferTriangles, triangles.begin(), triangles.end());
+        cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
     }
     catch (cl::Error err)
     {
@@ -88,8 +90,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     unsigned long globalSize(triangles.size());
 
     // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
-    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
-    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
+    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
+    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
     m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 
     // Hack to allow flag to be modified by kernel
@@ -108,7 +110,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     // Execute the kernel
     cl::Event event = detect_terminal_edges_kernel(eargs, m_bufferTriangles, m_bufferVertices, m_bufferEdges, bufferFlag);
 
-    // Copy the flag!
+    // Copy the modified edges and the flag
+    cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
     cl::copy(m_queue, bufferFlag, flagVector.begin(), flagVector.end());
     flag = (flagVector.at(0) != 0);
 
@@ -149,13 +152,20 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
         detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
 
-        // Copy the output data back to the host
-        cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
-        cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
-        cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
+        // TODO Phase 2
+        CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
+        cpuengine.insertCentroids(triangles, vertices, edges);
+        // TODO Phase 3
 
-//         cl::make_kernel<cl::Buffer&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "improveTriangulation");
-//         detect_kernel(eargs, bufferTriangles, bufferVertices, bufferIndices);
+        // Copy the output data back to the host
+        /* FIXME Each helper function should do this automatically
+         * If we get a correct GPU insertion algorithm, we can do this manually once
+         * instead of copying back the results for each function.
+
+         * cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
+         * cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
+         * cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
+         */
 
         metadata.vertices = vertices.size();
         metadata.triangles = triangles.size();

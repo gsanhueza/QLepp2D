@@ -74,6 +74,17 @@ public:
                                      std::vector<Edge> &edges,
                                      bool &flag) override;
 
+    /**
+     * @brief Inserts centroids on every region that has a terminal edge.
+     *
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    void insertCentroids(std::vector<Triangle> &triangles,
+                         std::vector<Vertex> &vertices,
+                         std::vector<Edge> &edges);
+
 private:
     /**
      * @brief Returns the index to the "edges" vector in which the shared
@@ -91,6 +102,35 @@ private:
                          std::vector<Vertex> &vertices,
                          std::vector<Edge> &edges,
                          bool &flag) const;
+
+    /**
+     * @brief Returns the centroid of the 4 vertices.
+     *
+     * @param iva p_iva: Index of vertex a.
+     * @param ivb p_ivb: Index of vertex b.
+     * @param ivc p_ivc: Index of vertex c.
+     * @param ivd p_ivd: Index of vertex d.
+     * @param vertices p_vertices: Vector of vertices.
+     * @return The centroid Vertex.
+     */
+    Vertex centroidOf(int iva,
+                      int ivb,
+                      int ivc,
+                      int ivd,
+                      std::vector<Vertex> &vertices);
+
+    /**
+     * @brief Inserts the centroid of the 2 triangles marked by index "iedge".
+     *
+     * @param iedge p_iedge: Index of terminal edge.
+     * @param triangles p_triangles: Vector of triangles.
+     * @param vertices p_vertices: Vector of vertices.
+     * @param edges p_edges: Vector of edges.
+     */
+    void insertCentroid(int iedge,
+                        std::vector<Triangle> &triangles,
+                        std::vector<Vertex> &vertices,
+                        std::vector<Edge> &edges);
 
 private:
     double m_angle;

@@ -174,11 +174,11 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
-Vertex centroidOf(int iva,
-                  int ivb,
-                  int ivc,
-                  int ivd,
-                  std::vector<Vertex> &vertices)
+Vertex CPUEngine::centroidOf(int iva,
+                             int ivb,
+                             int ivc,
+                             int ivd,
+                             std::vector<Vertex> &vertices)
 {
     Vertex centroid;
     centroid.x = (vertices.at(iva).x +
@@ -197,7 +197,7 @@ Vertex centroidOf(int iva,
     return centroid;
 }
 
-void insertCentroid(int iedge,
+void CPUEngine::insertCentroid(int iedge,
                     std::vector<Triangle> &triangles,
                     std::vector<Vertex> &vertices,
                     std::vector<Edge> &edges)
@@ -405,7 +405,7 @@ void insertCentroid(int iedge,
     }
 }
 
-void insertCentroids(std::vector<Triangle> &triangles,
+void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
                      std::vector<Vertex> &vertices,
                      std::vector<Edge> &edges)
 {
