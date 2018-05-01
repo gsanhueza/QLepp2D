@@ -33,6 +33,7 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
 {
     qDebug() << "OpenCLEngine::detectBadTriangles - angle =" << angle;
 
+    m_angle = angle;
     try
     {
         // Create the memory buffers (Implicit copy to buffers when using iterators)
@@ -61,7 +62,7 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-        qDebug() << "OpenCL: Bad Triangles detected in" << time_end - time_start << "nanoseconds.";
+        qDebug() << "+ OpenCL: Bad Triangles detected in" << time_end - time_start << "nanoseconds.";
 
         // Copy the output data back to the host
         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
@@ -80,6 +81,19 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
                                        std::vector<Edge> &edges,
                                        bool &flag)
 {
+    /* As we're using GPU, we can use CRCW in this particular situation,
+     * because when a terminal (index of) edge is found, we can update
+     * the information of the edge, so it knows that it's a terminal edge by
+     * updating isTerminalEdge with 0 or 1, and each thread will write the
+     * same value. Thus, we can avoid duplicated terminal edges like we
+     * could've had if we had used a vector of triangles in which each
+     * triangle had its terminal iedge.
+     *
+     * This means that "detect_terminal_edges_kernel" will concurrently
+     * update the "edges" vector so we can know which edges from the
+     * bad triangles are terminals.
+     */
+
     cl_ulong time_start = 0;
     cl_ulong time_end = 0;
 
@@ -120,7 +134,7 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
     event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-    qDebug() << "OpenCL: Terminal edges detected in" << time_end - time_start << "nanoseconds.";
+    qDebug() << "+ OpenCL: Terminal edges detected in" << time_end - time_start << "nanoseconds.";
 }
 
 bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
@@ -135,28 +149,27 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
      */
     try
     {
-        /* As we're using GPU, we can use CRCW in this particular situation,
-         * because when a terminal (index of) edge is found, we can update
-         * the information of the edge, so it knows that it's a terminal edge by
-         * updating isTerminalEdge with 0 or 1, and each thread will write the
-         * same value. Thus, we can avoid duplicated terminal edges like we
-         * could've had if we had used a vector of triangles in which each
-         * triangle had its terminal iedge.
-         *
-         * This means that "detect_terminal_edges_kernel" will concurrently
-         * update the "edges" vector so we can know which edges from the
-         * bad triangles are terminals.
-         */
+        int iterationLimit = 10;
+        while (iterationLimit > 0)
+        {
+            // Phase 1
+            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
+            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
 
-        // Phase 1
-        bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+            if (not nonBTERemaining)
+            {
+                break;
+            }
 
-        // TODO Phase 2
-        CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
-        cpuengine.insertCentroids(triangles, vertices, edges);
-        // TODO Phase 3
+            // Phase 2
+            CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
+            cpuengine.insertCentroids(triangles, vertices, edges);
 
+            // Phase 3
+            detectBadTriangles(m_angle, triangles, vertices);
+            break; // TODO Delete this
+            iterationLimit--;
+        }
         // Copy the output data back to the host
         /* FIXME Each helper function should do this automatically
          * If we get a correct GPU insertion algorithm, we can do this manually once
@@ -175,6 +188,10 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     {
         qDebug() << err.err();
         qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
+        return false;
+    }
+    catch (...)
+    {
         return false;
     }
     return true;

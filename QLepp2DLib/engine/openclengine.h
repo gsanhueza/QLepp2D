@@ -99,6 +99,9 @@ private:
     cl::Buffer m_bufferTriangles;
     cl::Buffer m_bufferVertices;
     cl::Buffer m_bufferEdges;
+
+private:
+    double m_angle;
 };
 
 #endif // OPENCLENGINE_H

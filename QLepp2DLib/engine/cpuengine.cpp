@@ -59,7 +59,7 @@ bool CPUEngine::detectBadTriangles(double &angle,
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
     }
     qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "CPU: Bad Triangles detected in" << elapsed << "nanoseconds.";
+    qDebug() << "* CPU: Bad Triangles detected in" << elapsed << "nanoseconds.";
     return true;
 }
 
@@ -171,7 +171,7 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     }
 
     qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
+    qDebug() << "* CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
 Vertex CPUEngine::centroidOf(int iva,
@@ -409,6 +409,9 @@ void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
                      std::vector<Vertex> &vertices,
                      std::vector<Edge> &edges)
 {
+    QElapsedTimer timer;
+    timer.start();
+
     for (unsigned int ie(0); ie < edges.size(); ie++)
     {
         Edge &e(edges.at(ie));
@@ -417,6 +420,9 @@ void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
             insertCentroid(ie, triangles, vertices, edges);
         }
     }
+
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "* CPU: Centroids inserted in" << elapsed << "nanoseconds.";
 }
 
 bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
