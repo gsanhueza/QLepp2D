@@ -35,6 +35,7 @@ bool CPUEngine::detectBadTriangles(double &angle,
 
     QElapsedTimer timer;
     timer.start();
+
     for (Triangle &t : triangles)
     {
         Vertex A, B, C;
@@ -84,26 +85,21 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
 
     try
     {
-        int iterationLimit = 10;
-        while (iterationLimit > 0)
+        // Phase 1
+        bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
+        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+
+        if (not nonBTERemaining)
         {
-            // Phase 1
-            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
-
-            if (not nonBTERemaining)
-            {
-                break;
-            }
-
-            // Phase 2
-            insertCentroids(triangles, vertices, edges);
-
-            // Phase 3
-            detectBadTriangles(m_angle, triangles, vertices);
-            break; // TODO Delete this
-            iterationLimit--;
+            return true;
         }
+
+        // Phase 2
+        insertCentroids(triangles, vertices, edges);
+
+        // Phase 3
+        detectBadTriangles(m_angle, triangles, vertices);
+
         metadata.vertices = vertices.size();
         metadata.triangles = triangles.size();
         metadata.edges = edges.size();
@@ -151,8 +147,8 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
 }
 
 void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
-                     std::vector<Vertex> &vertices,
-                     std::vector<Edge> &edges)
+                                std::vector<Vertex> &vertices,
+                                std::vector<Edge> &edges)
 {
     QElapsedTimer timer;
     timer.start();
