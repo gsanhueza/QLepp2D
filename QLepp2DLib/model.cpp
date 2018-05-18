@@ -73,12 +73,12 @@ bool Model::setOpenCLEngine()
     }
 }
 
-bool Model::loadOFF(QString &filepath)
+bool Model::loadOFF(std::string &filepath)
 {
     return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_edges, m_triangles);
 }
 
-bool Model::saveOFF(QString &filepath)
+bool Model::saveOFF(std::string &filepath)
 {
     return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
 }

@@ -18,6 +18,7 @@
  */
 
 #include <QDebug>
+#include <QElapsedTimer>
 #include <QFile>
 #include "engine/openclengine.h"
 #include "engine/cpuengine.h"
@@ -36,6 +37,9 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
     m_angle = angle;
     try
     {
+        QElapsedTimer timer;
+        timer.start();
+
         // Create the memory buffers (Implicit copy to buffers when using iterators)
         const bool USE_HOST_PTR = true;
 
@@ -62,10 +66,13 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-        qDebug() << "+ OpenCL: Bad Triangles detected in" << time_end - time_start << "nanoseconds.";
+        qDebug() << (time_end - time_start);
 
         // Copy the output data back to the host
         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
+
+        qint64 elapsed = timer.nsecsElapsed();
+        qDebug() << "+ OpenCL: Bad Triangles detected in" << elapsed << "nanoseconds.";
     }
     catch (cl::Error err)
     {
@@ -88,29 +95,24 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
      */
     try
     {
-        int iterationLimit = 10;
-        while (iterationLimit > 0)
+        // Phase 1
+        bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
+        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+
+        if (not nonBTERemaining)
         {
-            // Phase 1
-            bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-            detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
-
-            if (not nonBTERemaining)
-            {
-                break;
-            }
-
-            // Phase 2
-            insertCentroids(triangles, vertices, edges);
-
-            // Phase 3
-            detectBadTriangles(m_angle, triangles, vertices);
-            break; // TODO Delete this
-            iterationLimit--;
+            return true;
         }
+
+        // Phase 2
+        insertCentroids(triangles, vertices, edges);
+
+        // Phase 3
+        detectBadTriangles(m_angle, triangles, vertices);
+
         // Copy the output data back to the host
         /* FIXME Each helper function should do this automatically
-         * If we get a correct GPU insertion algorithm, we can do this manually once
+         * If we get a correct GPU insertion algorithm, we can do this only once
          * instead of copying back the results for each function.
 
          * cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
@@ -153,6 +155,9 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
      * bad triangles are terminals.
      */
 
+    QElapsedTimer timer;
+    timer.start();
+
     cl_ulong time_start = 0;
     cl_ulong time_end = 0;
 
@@ -163,8 +168,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     unsigned long globalSize(triangles.size());
 
     // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
-    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
-    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+//    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
+//    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
     m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 
     // Hack to allow flag to be modified by kernel
@@ -193,13 +198,17 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
     event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-    qDebug() << "+ OpenCL: Terminal edges detected in" << time_end - time_start << "nanoseconds.";
+    qint64 elapsed = timer.nsecsElapsed();
+    qDebug() << "+ OpenCL: Terminal edges detected in" << elapsed << "nanoseconds.";
 }
 
 void OpenCLEngine::insertCentroids(std::vector<Triangle> &triangles,
                                    std::vector<Vertex> &vertices,
                                    std::vector<Edge> &edges)
 {
+    /* At the moment we'll use a mixed approach.
+     * Timing will be done in CPUEngine.
+     */
     CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
     cpuengine.insertCentroids(triangles, vertices, edges);
 }

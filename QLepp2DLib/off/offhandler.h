@@ -20,7 +20,7 @@
 #ifndef OFFHANDLER_H
 #define OFFHANDLER_H
 
-#include <QString>
+#include <string>
 #include <vector>
 #include "off/offmetadata.h"
 #include "structs/triangle.h"
@@ -51,7 +51,7 @@ public:
     * @param triangles p_triangles: Vector of triangles.
     * @return True if correctly loaded.
     */
-    bool loadOffFile(QString &filepath,
+    bool loadOffFile(std::string &filepath,
                      OFFMetadata &metadata,
                      std::vector<Vertex> &vertices,
                      std::vector<Edge> &edges,
@@ -66,7 +66,7 @@ public:
     * @param indices p_triangles: Vector of triangles.
     * @return True if correctly saved.
     */
-    bool saveOffFile(QString &filepath,
+    bool saveOffFile(std::string &filepath,
                      OFFMetadata &metadata,
                      std::vector<Vertex> &vertices,
                      std::vector<Triangle> &triangles) const;
