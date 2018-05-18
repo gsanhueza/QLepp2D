@@ -36,7 +36,7 @@ HEADERS += \
         off/offmetadata.h
 
 # Installable headers
-header_files.path   =   /usr/include
+header_files.path   =   /usr/include/QLepp2D
 header_files.files +=   model.h \
                         qlepp2dlib_global.h
 INSTALLS += header_files

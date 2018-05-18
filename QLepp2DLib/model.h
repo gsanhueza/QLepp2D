@@ -20,7 +20,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <QString>
+#include <string>
 #include "off/offhandler.h"
 #include "off/offmetadata.h"
 
@@ -74,7 +74,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly loaded.
     */
-    bool loadOFF(QString &filepath);
+    bool loadOFF(std::string &filepath);
 
     /**
     * @brief Saves an OFF file in the provided filepath.
@@ -82,7 +82,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly saved.
     */
-    bool saveOFF(QString &filepath);
+    bool saveOFF(std::string &filepath);
 
     /**
     * @brief Gets a vector of Vertex which are being used by the implementation.

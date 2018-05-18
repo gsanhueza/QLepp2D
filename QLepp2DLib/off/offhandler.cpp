@@ -24,15 +24,16 @@
 
 OFFHandler::OFFHandler() = default;
 
-bool OFFHandler::loadOffFile(QString &filepath,
+bool OFFHandler::loadOffFile(std::string &filepath,
                              OFFMetadata &metadata,
                              std::vector<Vertex> &vertices,
                              std::vector<Edge> &edges,
                              std::vector<Triangle> &triangles)
 {
-    qDebug() << "Loading OFF file from" << filepath << endl;
+    QString qfilepath = QString::fromStdString(filepath);
+    qDebug() << "Loading OFF file from" << QString(qfilepath) << endl;
 
-    QFile inputFile(filepath);
+    QFile inputFile(qfilepath);
 
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -209,16 +210,17 @@ bool OFFHandler::loadOffFile(QString &filepath,
     return false;
 }
 
-bool OFFHandler::saveOffFile(QString &filepath,
+bool OFFHandler::saveOffFile(std::string &filepath,
                              OFFMetadata &metadata,
                              std::vector<Vertex> &vertices,
                              std::vector<Triangle> &triangles) const
 {
-    qDebug() << "Saving OFF file to" << filepath << endl;
+    QString qfilepath = QString::fromStdString(filepath);
+    qDebug() << "Saving OFF file to" << qfilepath << endl;
     qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.triangles << " " << metadata.edges;
     qDebug() << "coordinatesPerVertex = " << static_cast<int>(vertices.size()) / metadata.vertices;
 
-    QFile outputFile(filepath);
+    QFile outputFile(qfilepath);
 
     if (outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {

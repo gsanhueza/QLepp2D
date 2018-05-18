@@ -100,7 +100,8 @@ void MainWindow::dropEvent(QDropEvent *event)
 void MainWindow::loadFile(QString path)
 {
     ui->statusBar->showMessage(tr("Loading..."));
-    if (Model::getInstance().loadOFF(path))
+    std::string spath = path.toStdString();
+    if (Model::getInstance().loadOFF(spath))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
@@ -143,7 +144,8 @@ void MainWindow::saveTriangulationClicked()
     QString outpath = QString("%1/%2_mod").arg(m_settings->value("lastDir", ".").toString()).arg(m_currentFileName);
     QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), outpath , tr("OFF Files (*.off)"));
 
-    if (not Model::getInstance().saveOFF(filepath))
+    std::string fspath = filepath.toStdString();
+    if (not Model::getInstance().saveOFF(fspath))
     {
         qWarning() << "Could not save file" << filepath;
         ui->statusBar->showMessage(tr("Unable to save."));

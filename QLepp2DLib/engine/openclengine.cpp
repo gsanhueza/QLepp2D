@@ -66,6 +66,8 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
+        qDebug() << (time_end - time_start);
+
         // Copy the output data back to the host
         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
 
@@ -166,8 +168,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     unsigned long globalSize(triangles.size());
 
     // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
-    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
-    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+//    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
+//    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
     m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 
     // Hack to allow flag to be modified by kernel
