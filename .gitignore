@@ -8,5 +8,8 @@
 # Build folder
 build/
 
+# Library example
+QLepp2DLib/examples/lepp
+
 # Compiled translations
 QLepp2DGui/res/i18n/
