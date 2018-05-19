@@ -21,10 +21,10 @@
 #define ABSTRACTENGINE_H
 
 #include <vector>
-#include "off/offmetadata.h"
-#include "structs/triangle.h"
-#include "structs/vertex.h"
-#include "structs/edge.h"
+#include <off/offmetadata.h>
+#include <structs/triangle.h>
+#include <structs/vertex.h>
+#include <structs/edge.h>
 
 /**
  * @brief Abstract class for engines.
@@ -58,7 +58,7 @@ public:
      * @param vertices p_vertices: Vector of vertices.
      * @return True if detected without issues.
      */
-    virtual bool detectBadTriangles(double &angle,
+    virtual bool detectBadTriangles(double angle,
                                     std::vector<Triangle> &triangles,
                                     std::vector<Vertex> &vertices) = 0;
 

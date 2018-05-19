@@ -20,7 +20,7 @@
 #ifndef CPUENGINE_H
 #define CPUENGINE_H
 
-#include "engine/abstractengine.h"
+#include <engine/abstractengine.h>
 
 /**
  * @brief CPU Implementation of the AbstractEngine.
@@ -43,7 +43,7 @@ public:
      * @param vertices p_vertices: Vector of vertices.
      * @return True if detected without issues.
      */
-    virtual bool detectBadTriangles(double &angle,
+    virtual bool detectBadTriangles(double angle,
                                     std::vector<Triangle> &triangles,
                                     std::vector<Vertex> &vertices) override;
 

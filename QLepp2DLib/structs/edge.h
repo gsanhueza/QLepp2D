@@ -26,7 +26,7 @@
 #   include <CL/cl.hpp>
 # endif
 
-#include "vertex.h"
+#include <structs/vertex.h>
 
 typedef struct {
     cl_int ita;

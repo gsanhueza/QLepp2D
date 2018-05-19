@@ -20,13 +20,13 @@
 #include <QDebug>
 #include <QElapsedTimer>
 #include <cmath>
-#include "engine/cpuengine.h"
-#include "structs/triangle.h"
-#include "structs/edge.h"
+#include <engine/cpuengine.h>
+#include <structs/triangle.h>
+#include <structs/edge.h>
 
 CPUEngine::CPUEngine() = default;
 
-bool CPUEngine::detectBadTriangles(double &angle,
+bool CPUEngine::detectBadTriangles(double angle,
                                    std::vector<Triangle> &triangles,
                                    std::vector<Vertex> &vertices)
 {

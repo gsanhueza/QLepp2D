@@ -72,7 +72,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly loaded.
     */
-    bool loadOFF(std::string &filepath);
+    bool loadOFF(std::string filepath);
 
     /**
     * @brief Saves an OFF file in the provided filepath.
@@ -80,7 +80,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly saved.
     */
-    bool saveOFF(std::string &filepath);
+    bool saveOFF(std::string filepath);
 
     /**
     * @brief Gets a vector of Vertex which are being used by the implementation.
@@ -109,7 +109,7 @@ public:
     * @param angle p_angle: Provided angle.
     * @return True if method has run without issues.
     */
-    bool detectBadTriangles(double &angle);
+    bool detectBadTriangles(double angle);
 
     /**
     * @brief Improves the actual triangulation, modifying the vectors in the Model.

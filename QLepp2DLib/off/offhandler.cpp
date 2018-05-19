@@ -24,7 +24,7 @@
 
 OFFHandler::OFFHandler() = default;
 
-bool OFFHandler::loadOffFile(std::string &filepath,
+bool OFFHandler::loadOffFile(std::string filepath,
                              OFFMetadata &metadata,
                              std::vector<Vertex> &vertices,
                              std::vector<Edge> &edges,
@@ -210,7 +210,7 @@ bool OFFHandler::loadOffFile(std::string &filepath,
     return false;
 }
 
-bool OFFHandler::saveOffFile(std::string &filepath,
+bool OFFHandler::saveOffFile(std::string filepath,
                              OFFMetadata &metadata,
                              std::vector<Vertex> &vertices,
                              std::vector<Triangle> &triangles) const
