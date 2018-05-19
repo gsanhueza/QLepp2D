@@ -83,8 +83,8 @@ p, li { white-space: pre-wrap; }
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.ui" line="14"/>
-        <location filename="mainwindow.cpp" line="191"/>
-        <location filename="mainwindow.cpp" line="208"/>
+        <location filename="mainwindow.cpp" line="193"/>
+        <location filename="mainwindow.cpp" line="210"/>
         <source>QLepp2D</source>
         <translation>QLepp2D</translation>
     </message>
@@ -302,7 +302,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.ui" line="332"/>
-        <location filename="mainwindow.cpp" line="302"/>
+        <location filename="mainwindow.cpp" line="304"/>
         <source>&amp;Clear history</source>
         <translation>&amp;Limpiar historial</translation>
     </message>
@@ -321,99 +321,99 @@ p, li { white-space: pre-wrap; }
         <translation>Cargando...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="111"/>
+        <location filename="mainwindow.cpp" line="112"/>
         <source>Loaded.</source>
         <translation>Cargado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="121"/>
+        <location filename="mainwindow.cpp" line="122"/>
         <source>Unable to load.</source>
         <translation>No se puede cargar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="128"/>
-        <location filename="mainwindow.cpp" line="144"/>
+        <location filename="mainwindow.cpp" line="129"/>
+        <location filename="mainwindow.cpp" line="145"/>
         <source>OFF files</source>
         <translation>Archivos OFF</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="128"/>
-        <location filename="mainwindow.cpp" line="144"/>
+        <location filename="mainwindow.cpp" line="129"/>
+        <location filename="mainwindow.cpp" line="145"/>
         <source>OFF Files (*.off)</source>
         <translation>Archivos OFF (*.off)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="138"/>
+        <location filename="mainwindow.cpp" line="139"/>
         <source>Nothing to save.</source>
         <translation>Nada por guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="149"/>
+        <location filename="mainwindow.cpp" line="151"/>
         <source>Unable to save.</source>
         <translation>No se puede guardar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="154"/>
+        <location filename="mainwindow.cpp" line="156"/>
         <source>Saved.</source>
         <translation>Guardado.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="184"/>
+        <location filename="mainwindow.cpp" line="186"/>
         <source>Bad triangles have been detected. You can now proceed to improve them.</source>
         <translation>Se han detectado los triángulos malos. Puede proceder a mejorarlos.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="189"/>
+        <location filename="mainwindow.cpp" line="191"/>
         <source>Unable to detect bad triangles. Is your file corrupted?</source>
         <translation>No se pueden detectar triángulos malos. ¿Está su archivo corrupto?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="192"/>
+        <location filename="mainwindow.cpp" line="194"/>
         <source>Unable to detect bad triangles. Your file may be corrupted.</source>
         <translation>No se pueden detectar triángulos malos. Su archivo podría estar corrupto.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="201"/>
+        <location filename="mainwindow.cpp" line="203"/>
         <source>Triangulation has been modified.</source>
         <translation>La triangulación ha sido modificada.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="206"/>
+        <location filename="mainwindow.cpp" line="208"/>
         <source>Unable to improve triangulation. Is your file corrupted?</source>
         <translation>No se puede mejorar la triangulación. ¿Está su archivo corrupto?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="209"/>
+        <location filename="mainwindow.cpp" line="211"/>
         <source>Unable to improve triangulation. Your file may be corrupted.</source>
         <translation>No se puede mejorar la triangulación. Su archivo podría estar corrupto.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="218"/>
+        <location filename="mainwindow.cpp" line="220"/>
         <source>CPU Engine has been set.</source>
         <translation>Se ha cargado el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="219"/>
+        <location filename="mainwindow.cpp" line="221"/>
         <source>QLepp2D (CPU)</source>
         <translation>QLepp2D (CPU)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="223"/>
+        <location filename="mainwindow.cpp" line="225"/>
         <source>Unable to set CPU engine.</source>
         <translation>No se puede cargar el motor de CPU.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="232"/>
+        <location filename="mainwindow.cpp" line="234"/>
         <source>OpenCL Engine has been set.</source>
         <translation>Se ha cargado el motor de OpenCL.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="233"/>
+        <location filename="mainwindow.cpp" line="235"/>
         <source>QLepp2D (OpenCL)</source>
         <translation>QLepp2D (OpenCL)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="237"/>
+        <location filename="mainwindow.cpp" line="239"/>
         <source>Unable to set OpenCL engine.</source>
         <translation>No se puede cargar el motor de OpenCL.</translation>
     </message>

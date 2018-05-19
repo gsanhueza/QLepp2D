@@ -17,88 +17,59 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "model.h"
-#include "engine/cpuengine.h"
-#include "engine/openclengine.h"
-
-Model& Model::getInstance(void)
-{
-    static Model instance;
-    return instance;
-}
+#include <model.h>
+#include <model_impl.h>
 
 Model::Model()
-    : m_offhandler(new OFFHandler)
 {
-    setEngine(new CPUEngine);
+    *m_ptr = ModelImpl::getInstance();
 }
 
-Model::Model(AbstractEngine *engine)
-    : m_offhandler(new OFFHandler)
+Model::~Model()
 {
-    setEngine(engine);
+    delete m_ptr;
 }
 
-void Model::setEngine(AbstractEngine *engine)
+ModelImpl& Model::getInstance(void)
 {
-    if (m_engine != nullptr)
-    {
-        delete m_engine;
-    }
-    m_engine = engine;
+    return ModelImpl::getInstance();
 }
 
 bool Model::setCPUEngine()
 {
-    try
-    {
-        setEngine(new CPUEngine);
-        return true;
-    }
-    catch (...)
-    {
-        return false;
-    }
+    return m_ptr->setCPUEngine();
 }
 bool Model::setOpenCLEngine()
 {
-    try
-    {
-        setEngine(new OpenCLEngine);
-        return true;
-    }
-    catch (...)
-    {
-        return false;
-    }
+    return m_ptr->setOpenCLEngine();
 }
 
 bool Model::loadOFF(std::string &filepath)
 {
-    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_edges, m_triangles);
+    return m_ptr->loadOFF(filepath);
 }
 
 bool Model::saveOFF(std::string &filepath)
 {
-    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
+    return m_ptr->saveOFF(filepath);
 }
 
 std::vector<Vertex>& Model::getVertices()
 {
-    return m_vertices;
+    return m_ptr->getVertices();
 }
 
 std::vector<Triangle>& Model::getTriangles()
 {
-    return m_triangles;
+    return m_ptr->getTriangles();
 }
 
 bool Model::detectBadTriangles(double &angle)
 {
-    return m_engine->detectBadTriangles(angle, m_triangles, m_vertices);
+    return m_ptr->detectBadTriangles(angle);
 }
 
 bool Model::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges, m_offmetadata);
+    return m_ptr->improveTriangulation();
 }

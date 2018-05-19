@@ -24,7 +24,7 @@
 #include <QSettings>
 #include "tutorial.h"
 #include "about.h"
-#include <model.h>
+#include <model_impl.h>
 
 namespace Ui {
 class MainWindow;

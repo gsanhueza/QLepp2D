@@ -17,23 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef MODELIMPL_H
+#define MODELIMPL_H
 
-#include <qlepp2dlib_global.h>
 #include <string>
-#include <vector>
+#include <off/offhandler.h>
+#include <off/offmetadata.h>
 
 #include <structs/vertex.h>
 #include <structs/triangle.h>
+#include <structs/edge.h>
 
-class ModelImpl;
+#include <engine/abstractengine.h>
 
 /**
-* @brief API for QLepp2D.
+* @brief Facade class for GUI/Library interaction.
+* Singleton Pattern is used here.
 *
 */
-class QLEPP2DLIBSHARED_EXPORT Model
+class ModelImpl
 {
 public:
     /**
@@ -42,6 +44,13 @@ public:
      * @return Instance of Model.
      */
     static ModelImpl& getInstance();
+
+    /**
+    * @brief Sets the engine that will be used by the Model.
+    *
+    * @param engine p_engine: Engine.
+    */
+    void setEngine(AbstractEngine *engine);
 
     /**
     * @brief Convenience method that sets the CPU Engine.
@@ -110,9 +119,25 @@ public:
     bool improveTriangulation();
 
 private:
-    Model();
-    ~Model();
-    ModelImpl *m_ptr;
+    /**
+    * @brief Basic constructor. Creates a Model instance with the CPU engine.
+    *
+    */
+    ModelImpl();
+
+    /**
+    * @brief Constructor that creates a Model instance with the selected engine.
+    *
+    * @param engine p_engine: Engine used by the Model.
+    */
+    ModelImpl(AbstractEngine *engine);
+
+    OFFHandler *m_offhandler = nullptr;
+    OFFMetadata m_offmetadata;
+    AbstractEngine *m_engine = nullptr;
+    std::vector<Vertex> m_vertices;
+    std::vector<Edge> m_edges;
+    std::vector<Triangle> m_triangles;
 };
 
-#endif // MODEL_H
+#endif // MODELIMPL_H

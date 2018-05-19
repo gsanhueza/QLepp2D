@@ -17,14 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        model.cpp \
         off/offhandler.cpp \
         engine/cpuengine.cpp \
-        engine/openclengine.cpp
+        engine/openclengine.cpp \
+        model.cpp \
+        model_impl.cpp
 
 HEADERS += \
         qlepp2dlib_global.h \
-        model.h \
         structs/triangle.h \
         structs/vertex.h \
         structs/edge.h \
@@ -33,7 +33,9 @@ HEADERS += \
         engine/cpuengine.h \
         engine/openclengine.h \
         off/offhandler.h \
-        off/offmetadata.h
+        off/offmetadata.h \
+        model.h \
+        model_impl.h
 
 # Installable headers
 header_files.path   =   /usr/include/QLepp2D
