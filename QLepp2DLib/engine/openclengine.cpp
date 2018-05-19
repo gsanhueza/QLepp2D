@@ -20,15 +20,15 @@
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QFile>
-#include "engine/openclengine.h"
-#include "engine/cpuengine.h"
+#include <engine/openclengine.h>
+#include <engine/cpuengine.h>
 
 OpenCLEngine::OpenCLEngine()
 {
     setup();
 }
 
-bool OpenCLEngine::detectBadTriangles(double &angle,
+bool OpenCLEngine::detectBadTriangles(double angle,
                                       std::vector<Triangle> &triangles,
                                       std::vector<Vertex> &vertices)
 {

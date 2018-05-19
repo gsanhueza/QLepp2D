@@ -20,10 +20,7 @@
 #include <model.h>
 #include <model_impl.h>
 
-ModelImpl& Model::getInstance(void)
-{
-    return ModelImpl::getInstance();
-}
+Model::Model() = default;
 
 bool Model::setCPUEngine()
 {
@@ -34,12 +31,12 @@ bool Model::setOpenCLEngine()
     return ModelImpl::getInstance().setOpenCLEngine();
 }
 
-bool Model::loadOFF(std::string &filepath)
+bool Model::loadOFF(std::string filepath)
 {
     return ModelImpl::getInstance().loadOFF(filepath);
 }
 
-bool Model::saveOFF(std::string &filepath)
+bool Model::saveOFF(std::string filepath)
 {
     return ModelImpl::getInstance().saveOFF(filepath);
 }
@@ -54,7 +51,7 @@ std::vector<Triangle>& Model::getTriangles()
     return ModelImpl::getInstance().getTriangles();
 }
 
-bool Model::detectBadTriangles(double &angle)
+bool Model::detectBadTriangles(double angle)
 {
     return ModelImpl::getInstance().detectBadTriangles(angle);
 }

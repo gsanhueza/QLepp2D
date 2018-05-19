@@ -73,12 +73,12 @@ bool ModelImpl::setOpenCLEngine()
     }
 }
 
-bool ModelImpl::loadOFF(std::string &filepath)
+bool ModelImpl::loadOFF(std::string filepath)
 {
     return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_edges, m_triangles);
 }
 
-bool ModelImpl::saveOFF(std::string &filepath)
+bool ModelImpl::saveOFF(std::string filepath)
 {
     return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
 }
@@ -93,7 +93,7 @@ std::vector<Triangle>& ModelImpl::getTriangles()
     return m_triangles;
 }
 
-bool ModelImpl::detectBadTriangles(double &angle)
+bool ModelImpl::detectBadTriangles(double angle)
 {
     return m_engine->detectBadTriangles(angle, m_triangles, m_vertices);
 }

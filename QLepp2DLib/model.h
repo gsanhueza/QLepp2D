@@ -20,7 +20,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <qlepp2dlib_global.h>
+//#include <qlepp2dlib_global.h>
 #include <string>
 #include <vector>
 
@@ -33,15 +33,15 @@ class ModelImpl;
 * @brief API for QLepp2D.
 *
 */
-class QLEPP2DLIBSHARED_EXPORT Model
+//class QLEPP2DLIBSHARED_EXPORT Model
+class Model
 {
 public:
     /**
-     * @brief Gets the actual instance of the Model.
+     * @brief Model Constructor.
      *
-     * @return Instance of Model.
      */
-    static ModelImpl& getInstance();
+    Model();
 
     /**
     * @brief Convenience method that sets the CPU Engine.
@@ -63,7 +63,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly loaded.
     */
-    bool loadOFF(std::string &filepath);
+    bool loadOFF(std::string filepath);
 
     /**
     * @brief Saves an OFF file in the provided filepath.
@@ -71,7 +71,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly saved.
     */
-    bool saveOFF(std::string &filepath);
+    bool saveOFF(std::string filepath);
 
     /**
     * @brief Gets a vector of Vertex which are being used by the implementation.
@@ -100,7 +100,7 @@ public:
     * @param angle p_angle: Provided angle.
     * @return True if method has run without issues.
     */
-    bool detectBadTriangles(double &angle);
+    bool detectBadTriangles(double angle);
 
     /**
     * @brief Improves the actual triangulation, modifying the vectors in the Model.
