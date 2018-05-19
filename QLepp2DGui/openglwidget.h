@@ -29,7 +29,7 @@
 #include <QMouseEvent>
 #include <QStringRef>
 
-#include <model.h>
+#include <model_impl.h>
 
 class OpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {

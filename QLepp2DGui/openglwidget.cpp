@@ -60,7 +60,7 @@ void OpenGLWidget::setupVertexAttribs()
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * Model::getInstance().getTriangles().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * ModelImpl::getInstance().getTriangles().size()));
     m_vbo.release();
 }
 
@@ -107,8 +107,8 @@ void OpenGLWidget::loadData()
     m_data.clear();
 
     // Load vertices
-    std::vector<Vertex> vertices(Model::getInstance().getVertices());
-    std::vector<Triangle> triangles(Model::getInstance().getTriangles());
+    std::vector<Vertex> vertices(ModelImpl::getInstance().getVertices());
+    std::vector<Triangle> triangles(ModelImpl::getInstance().getTriangles());
 
     for (Triangle &t : triangles)
     {

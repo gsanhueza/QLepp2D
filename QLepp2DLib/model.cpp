@@ -17,88 +17,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "model.h"
-#include "engine/cpuengine.h"
-#include "engine/openclengine.h"
+#include <model.h>
+#include <model_impl.h>
 
-Model& Model::getInstance(void)
+ModelImpl& Model::getInstance(void)
 {
-    static Model instance;
-    return instance;
-}
-
-Model::Model()
-    : m_offhandler(new OFFHandler)
-{
-    setEngine(new CPUEngine);
-}
-
-Model::Model(AbstractEngine *engine)
-    : m_offhandler(new OFFHandler)
-{
-    setEngine(engine);
-}
-
-void Model::setEngine(AbstractEngine *engine)
-{
-    if (m_engine != nullptr)
-    {
-        delete m_engine;
-    }
-    m_engine = engine;
+    return ModelImpl::getInstance();
 }
 
 bool Model::setCPUEngine()
 {
-    try
-    {
-        setEngine(new CPUEngine);
-        return true;
-    }
-    catch (...)
-    {
-        return false;
-    }
+    return ModelImpl::getInstance().setCPUEngine();
 }
 bool Model::setOpenCLEngine()
 {
-    try
-    {
-        setEngine(new OpenCLEngine);
-        return true;
-    }
-    catch (...)
-    {
-        return false;
-    }
+    return ModelImpl::getInstance().setOpenCLEngine();
 }
 
 bool Model::loadOFF(std::string &filepath)
 {
-    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_edges, m_triangles);
+    return ModelImpl::getInstance().loadOFF(filepath);
 }
 
 bool Model::saveOFF(std::string &filepath)
 {
-    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
+    return ModelImpl::getInstance().saveOFF(filepath);
 }
 
 std::vector<Vertex>& Model::getVertices()
 {
-    return m_vertices;
+    return ModelImpl::getInstance().getVertices();
 }
 
 std::vector<Triangle>& Model::getTriangles()
 {
-    return m_triangles;
+    return ModelImpl::getInstance().getTriangles();
 }
 
 bool Model::detectBadTriangles(double &angle)
 {
-    return m_engine->detectBadTriangles(angle, m_triangles, m_vertices);
+    return ModelImpl::getInstance().detectBadTriangles(angle);
 }
 
 bool Model::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges, m_offmetadata);
+    return ModelImpl::getInstance().improveTriangulation();
 }
