@@ -20,16 +20,6 @@
 #include <model.h>
 #include <model_impl.h>
 
-Model::Model()
-{
-    *m_ptr = ModelImpl::getInstance();
-}
-
-Model::~Model()
-{
-    delete m_ptr;
-}
-
 ModelImpl& Model::getInstance(void)
 {
     return ModelImpl::getInstance();
@@ -37,39 +27,39 @@ ModelImpl& Model::getInstance(void)
 
 bool Model::setCPUEngine()
 {
-    return m_ptr->setCPUEngine();
+    return ModelImpl::getInstance().setCPUEngine();
 }
 bool Model::setOpenCLEngine()
 {
-    return m_ptr->setOpenCLEngine();
+    return ModelImpl::getInstance().setOpenCLEngine();
 }
 
 bool Model::loadOFF(std::string &filepath)
 {
-    return m_ptr->loadOFF(filepath);
+    return ModelImpl::getInstance().loadOFF(filepath);
 }
 
 bool Model::saveOFF(std::string &filepath)
 {
-    return m_ptr->saveOFF(filepath);
+    return ModelImpl::getInstance().saveOFF(filepath);
 }
 
 std::vector<Vertex>& Model::getVertices()
 {
-    return m_ptr->getVertices();
+    return ModelImpl::getInstance().getVertices();
 }
 
 std::vector<Triangle>& Model::getTriangles()
 {
-    return m_ptr->getTriangles();
+    return ModelImpl::getInstance().getTriangles();
 }
 
 bool Model::detectBadTriangles(double &angle)
 {
-    return m_ptr->detectBadTriangles(angle);
+    return ModelImpl::getInstance().detectBadTriangles(angle);
 }
 
 bool Model::improveTriangulation()
 {
-    return m_ptr->improveTriangulation();
+    return ModelImpl::getInstance().improveTriangulation();
 }
