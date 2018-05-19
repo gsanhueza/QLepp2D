@@ -74,7 +74,7 @@ bool OpenCLEngine::detectBadTriangles(double &angle,
         qint64 elapsed = timer.nsecsElapsed();
         qDebug() << "+ OpenCL: Bad Triangles detected in" << elapsed << "nanoseconds.";
     }
-    catch (cl::Error err)
+    catch (cl::Error &err)
     {
         qDebug() << err.err();
         qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
@@ -124,7 +124,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         metadata.triangles = triangles.size();
         metadata.edges = edges.size();
     }
-    catch (cl::Error err)
+    catch (cl::Error &err)
     {
         qDebug() << err.err();
         qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();

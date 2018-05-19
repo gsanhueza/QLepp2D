@@ -21,16 +21,16 @@
 #define MODEL_H
 
 #include <string>
-#include "off/offhandler.h"
-#include "off/offmetadata.h"
+#include <off/offhandler.h>
+#include <off/offmetadata.h>
 
-#include "structs/vertex.h"
-#include "structs/triangle.h"
-#include "structs/edge.h"
+#include <structs/vertex.h>
+#include <structs/triangle.h>
+#include <structs/edge.h>
 
-#include "engine/abstractengine.h"
+#include <engine/abstractengine.h>
 
-#include "qlepp2dlib_global.h"
+#include <qlepp2dlib_global.h>
 
 /**
 * @brief Facade class for GUI/Library interaction.
