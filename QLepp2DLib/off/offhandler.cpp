@@ -218,7 +218,6 @@ bool OFFHandler::saveOffFile(std::string filepath,
     QString qfilepath = QString::fromStdString(filepath);
     qDebug() << "Saving OFF file to" << qfilepath << endl;
     qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.triangles << " " << metadata.edges;
-    qDebug() << "coordinatesPerVertex = " << static_cast<int>(vertices.size()) / metadata.vertices;
 
     QFile outputFile(qfilepath);
 
