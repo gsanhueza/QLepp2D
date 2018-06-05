@@ -364,13 +364,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.cpp" line="191"/>
-        <source>Unable to detect bad triangles. Is your file corrupted?</source>
-        <translation>No se pueden detectar triángulos malos. ¿Está su archivo corrupto?</translation>
-    </message>
-    <message>
         <location filename="mainwindow.cpp" line="194"/>
-        <source>Unable to detect bad triangles. Your file may be corrupted.</source>
-        <translation>No se pueden detectar triángulos malos. Su archivo podría estar corrupto.</translation>
+        <source>Unable to detect bad triangles.</source>
+        <oldsource>Unable to detect bad triangles. Is your file corrupted?</oldsource>
+        <translation>No se pueden detectar triángulos malos.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="203"/>
@@ -379,13 +376,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.cpp" line="208"/>
-        <source>Unable to improve triangulation. Is your file corrupted?</source>
-        <translation>No se puede mejorar la triangulación. ¿Está su archivo corrupto?</translation>
-    </message>
-    <message>
         <location filename="mainwindow.cpp" line="211"/>
-        <source>Unable to improve triangulation. Your file may be corrupted.</source>
-        <translation>No se puede mejorar la triangulación. Su archivo podría estar corrupto.</translation>
+        <source>Unable to improve triangulation.</source>
+        <oldsource>Unable to improve triangulation. Is your file corrupted?</oldsource>
+        <translation>No se puede mejorar la triangulación.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="220"/>

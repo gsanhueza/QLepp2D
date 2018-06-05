@@ -108,6 +108,7 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
     }
     catch (...)
     {
+        qWarning() << "Unknown error in CPUEngine::improveTriangulation";
         return false;
     }
 }
@@ -125,7 +126,7 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
         Triangle &t(triangles.at(i));
 
         /* Since we need to find the longest edges to get the Lepp, we can
-         * just create a protected method "int getTerminalIEdge(...)" that returns
+         * just create a protected method "int getTerminalIEdge()" that returns
          * the index of the edge that is a terminal edge.
          *
          * From here, we can update the "edges" vector, and each of these edges

@@ -14,8 +14,8 @@ endif
 
 printf("Creating %d random points...\n", V);
 
-x = rand (1, V);
-y = rand (1, V);
+x = 2 * (rand(1, V) - 0.5);
+y = 2 * (rand(1, V) - 0.5);
 z = zeros(1, V);
 
 printf("Creating Delaunay mesh...\n");

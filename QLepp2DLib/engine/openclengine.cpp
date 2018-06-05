@@ -132,6 +132,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     }
     catch (...)
     {
+        qWarning() << "Unknown error in OpenCLEngine::improveTriangulation";
         return false;
     }
     return true;
@@ -229,14 +230,14 @@ void OpenCLEngine::setup()
 
         // Get a list of devices on this platform
         // Select the platform.
-        m_platforms[platform_id].getDevices(CL_DEVICE_TYPE_GPU | CL_DEVICE_TYPE_CPU, &m_devices);
+        m_platforms.at(platform_id).getDevices(CL_DEVICE_TYPE_GPU | CL_DEVICE_TYPE_CPU, &m_devices);
 
         // Create a context
         m_context = cl::Context(m_devices);
 
         // Create a command queue with profiling enabled.
         // Select the device.
-        m_queue = cl::CommandQueue(m_context, m_devices[device_id], CL_QUEUE_PROFILING_ENABLE);
+        m_queue = cl::CommandQueue(m_context, m_devices.at(device_id), CL_QUEUE_PROFILING_ENABLE);
 
         // Read the program source from QRC, to avoid loading it from the relative path of the GUI executable
         QFile kernelfile(":/kernels/kernel.cl");
@@ -257,7 +258,7 @@ void OpenCLEngine::setup()
     catch (cl::Error &e)
     {
         qDebug() << e.err();
-        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices.at(0).c_str());
         throw e;
     }
 }

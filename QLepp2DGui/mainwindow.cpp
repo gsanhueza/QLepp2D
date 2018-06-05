@@ -188,10 +188,10 @@ void MainWindow::detectClicked()
     }
     else
     {
-        ui->statusBar->showMessage(tr("Unable to detect bad triangles. Is your file corrupted?"));
+        ui->statusBar->showMessage(tr("Unable to detect bad triangles."));
         QMessageBox::critical(this,
                               tr("QLepp2D"),
-                              tr("Unable to detect bad triangles. Your file may be corrupted."));
+                              tr("Unable to detect bad triangles."));
     }
 }
 
@@ -205,10 +205,10 @@ void MainWindow::improveClicked()
     }
     else
     {
-        ui->statusBar->showMessage(tr("Unable to improve triangulation. Is your file corrupted?"));
+        ui->statusBar->showMessage(tr("Unable to improve triangulation."));
         QMessageBox::critical(this,
                               tr("QLepp2D"),
-                              tr("Unable to improve triangulation. Your file may be corrupted."));
+                              tr("Unable to improve triangulation."));
     }
 }
 
