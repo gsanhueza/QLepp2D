@@ -9,10 +9,10 @@ int main()
 {
     Model model;
     model.setOpenCLEngine();
-    model.loadOFF("/home/user/A.off");
+    model.loadFile("/home/user/A.off");
     model.detectBadTriangles(25.0);
     model.improveTriangulation();
-    model.saveOFF("/home/user/B.off");
+    model.saveFile("/home/user/B.off");
     return 0;
 }
 
