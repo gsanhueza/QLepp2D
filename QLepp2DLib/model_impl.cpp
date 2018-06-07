@@ -28,16 +28,12 @@ ModelImpl& ModelImpl::getInstance(void)
     return instance;
 }
 
-// TODO Create a FileHandlerFactory
-
 ModelImpl::ModelImpl()
-    : m_fileHandler(new OFFHandler)
 {
     setEngine(new CPUEngine);
 }
 
 ModelImpl::ModelImpl(Engine *engine)
-    : m_fileHandler(new OFFHandler)
 {
     setEngine(engine);
 }
@@ -78,12 +74,12 @@ bool ModelImpl::setOpenCLEngine()
 
 bool ModelImpl::loadFile(std::string filepath)
 {
-    return m_fileHandler->load(filepath, m_vertices, m_edges, m_triangles);
+    return m_fileManager.load(filepath, m_vertices, m_edges, m_triangles);
 }
 
 bool ModelImpl::saveFile(std::string filepath)
 {
-    return m_fileHandler->save(filepath, m_vertices, m_edges, m_triangles);
+    return m_fileManager.save(filepath, m_vertices, m_edges, m_triangles);
 }
 
 std::vector<Vertex>& ModelImpl::getVertices()
