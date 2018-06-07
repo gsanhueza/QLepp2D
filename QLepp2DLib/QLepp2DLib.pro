@@ -31,12 +31,12 @@ HEADERS += \
         structs/vertex.h \
         structs/edge.h \
         structs/edgedata.h \
-        engine/abstractengine.h \
         engine/cpuengine.h \
         engine/openclengine.h \
         filehandlers/offhandler.h \
         model.h \
-        model_impl.h
+        model_impl.h \
+        engine/engine.h
 
 # Installable headers
 header_files.path   = /usr/include/QLepp2D

@@ -20,13 +20,13 @@
 #ifndef CPUENGINE_H
 #define CPUENGINE_H
 
-#include <engine/abstractengine.h>
+#include <engine/engine.h>
 
 /**
  * @brief CPU Implementation of the AbstractEngine.
  *
  */
-class CPUEngine : public AbstractEngine
+class CPUEngine : public Engine
 {
 public:
     /**

@@ -27,13 +27,13 @@
 # include <CL/cl.hpp>
 #endif
 
-#include <engine/abstractengine.h>
+#include <engine/engine.h>
 
 /**
  * @brief OpenCL Implementation of the AbstractEngine.
  *
  */
-class OpenCLEngine : public AbstractEngine
+class OpenCLEngine : public Engine
 {
 public:
     /**

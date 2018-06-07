@@ -27,7 +27,7 @@
 #include <structs/triangle.h>
 #include <structs/edge.h>
 
-#include <engine/abstractengine.h>
+#include <engine/engine.h>
 
 /**
 * @brief Implementation file of facade class for GUI/Library interaction.
@@ -49,7 +49,7 @@ public:
     *
     * @param engine p_engine: Engine.
     */
-    void setEngine(AbstractEngine *engine);
+    void setEngine(Engine *engine);
 
     /**
     * @brief Convenience method that sets the CPU Engine.
@@ -129,10 +129,10 @@ private:
     *
     * @param engine p_engine: Engine used by the Model.
     */
-    ModelImpl(AbstractEngine *engine);
+    ModelImpl(Engine *engine);
 
     OFFHandler *m_fileHandler = nullptr;
-    AbstractEngine *m_engine = nullptr;
+    Engine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
     std::vector<Triangle> m_triangles;

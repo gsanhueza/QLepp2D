@@ -33,13 +33,13 @@ ModelImpl::ModelImpl()
     setEngine(new CPUEngine);
 }
 
-ModelImpl::ModelImpl(AbstractEngine *engine)
+ModelImpl::ModelImpl(Engine *engine)
     : m_fileHandler(new OFFHandler)
 {
     setEngine(engine);
 }
 
-void ModelImpl::setEngine(AbstractEngine *engine)
+void ModelImpl::setEngine(Engine *engine)
 {
     if (m_engine != nullptr)
     {
