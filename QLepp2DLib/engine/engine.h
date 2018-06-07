@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABSTRACTENGINE_H
-#define ABSTRACTENGINE_H
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include <vector>
 #include <structs/triangle.h>
@@ -26,10 +26,11 @@
 #include <structs/edge.h>
 
 /**
- * @brief Abstract class for engines.
+ * @brief Interface for engines.
  * Each implementation must override detectBadTriangles and improveTriangulation.
  * Other methods must be overridden to allow fine-grained control over the
  * triangulation improvements.
+ * (Strategy Pattern)
  *
  */
 class Engine
@@ -54,27 +55,26 @@ public:
      * Implementations must override this.
      *
      * @param angle p_angle: Tolerance angle.
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
+     * @param triangles p_triangles: Vector of triangles.
      * @return True if detected without issues.
      */
     virtual bool detectBadTriangles(double angle,
-                                    std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices) = 0;
+                                    std::vector<Vertex> &vertices,
+                                    std::vector<Triangle> &triangles) = 0;
 
     /**
      * @brief Improves the actual triangulation from the vector of triangles.
      * Implementations must override this.
      *
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
-     * @param indices p_indices: Vector of indices.
-     * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
+     * @param edges p_edges: Vector of edges.
+     * @param triangles p_triangles: Vector of triangles.
      * @return True if improved without issues.
      */
-    virtual bool improveTriangulation(std::vector<Triangle> &triangles,
-                                      std::vector<Vertex> &vertices,
-                                      std::vector<Edge> &edges) = 0;
+    virtual bool improveTriangulation(std::vector<Vertex> &vertices,
+                                      std::vector<Edge> &edges,
+                                      std::vector<Triangle> &triangles) = 0;
 
     // Available for API
 
@@ -82,25 +82,25 @@ public:
      * @brief Detects terminal edges for each bad triangle in the "triangles"
      * vector.
      *
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
+     * @param triangles p_triangles: Vector of triangles.
      */
-    virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
-                                     std::vector<Vertex> &vertices,
+    virtual void detectTerminalEdges(std::vector<Vertex> &vertices,
                                      std::vector<Edge> &edges,
+                                     std::vector<Triangle> &triangles,
                                      bool &flag) = 0;
 
     /**
      * @brief Inserts centroids on every region that has a terminal edge.
      *
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
+     * @param triangles p_triangles: Vector of triangles.
      */
-    virtual void insertCentroids(std::vector<Triangle> &triangles,
-                                 std::vector<Vertex> &vertices,
-                                 std::vector<Edge> &edges) = 0;
+    virtual void insertCentroids(std::vector<Vertex> &vertices,
+                                 std::vector<Edge> &edges,
+                                 std::vector<Triangle> &triangles) = 0;
 };
 
-#endif // ABSTRACTENGINE_H
+#endif // ENGINE_H

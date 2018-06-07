@@ -94,10 +94,10 @@ std::vector<Triangle>& ModelImpl::getTriangles()
 
 bool ModelImpl::detectBadTriangles(double angle)
 {
-    return m_engine->detectBadTriangles(angle, m_triangles, m_vertices);
+    return m_engine->detectBadTriangles(angle, m_vertices, m_triangles);
 }
 
 bool ModelImpl::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges);
+    return m_engine->improveTriangulation(m_vertices, m_edges, m_triangles);
 }

@@ -29,7 +29,7 @@
 #include <structs/edgedata.h>
 
 /**
-* @brief Abstract files handling module.
+* @brief Interface for files handling module.
 * (Strategy Pattern)
 *
 */
