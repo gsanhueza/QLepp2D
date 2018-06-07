@@ -30,7 +30,7 @@
 #include <engine/engine.h>
 
 /**
- * @brief OpenCL Implementation of the AbstractEngine.
+ * @brief OpenCL Implementation of the Engine.
  *
  */
 class OpenCLEngine : public Engine
@@ -42,55 +42,53 @@ public:
      */
     OpenCLEngine();
 
-
     /**
      * @brief Detects every bad triangle in the vector of triangles. Overriden method.
      *
      * @param angle p_angle: Tolerance angle.
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
+     * @param triangles p_triangles: Vector of triangles.
      * @return True if detected without issues.
      */
     virtual bool detectBadTriangles(double angle,
-                                    std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices) override;
+                                    std::vector<Vertex> &vertices,
+                                    std::vector<Triangle> &triangles) override;
 
     /**
      * @brief Improves the actual triangulation from the vector of triangles. Overridden method.
      *
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
-     * @param indices p_indices: Vector of indices.
-     * @param metadata p_metadata: Metadata for the (potentially saved) OFF file.
+     * @param edges p_edges: Vector of edges.
+     * @param triangles p_triangles: Vector of triangles.
      * @return True if improved without issues.
      */
-    virtual bool improveTriangulation(std::vector<Triangle> &triangles,
-                                      std::vector<Vertex> &vertices,
-                                      std::vector<Edge> &edges) override;
+    virtual bool improveTriangulation(std::vector<Vertex> &vertices,
+                                      std::vector<Edge> &edges,
+                                      std::vector<Triangle> &triangles) override;
 
     /**
      * @brief Detects terminal edges for each bad triangle in the "triangles"
      * vector. Overridden method.
      *
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
+     * @param triangles p_triangles: Vector of triangles.
      */
-    virtual void detectTerminalEdges(std::vector<Triangle> &triangles,
-                                     std::vector<Vertex> &vertices,
+    virtual void detectTerminalEdges(std::vector<Vertex> &vertices,
                                      std::vector<Edge> &edges,
+                                     std::vector<Triangle> &triangles,
                                      bool &flag) override;
 
     /**
      * @brief Inserts centroids on every region that has a terminal edge.
      *
-     * @param triangles p_triangles: Vector of triangles.
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
+     * @param triangles p_triangles: Vector of triangles.
      */
-    virtual void insertCentroids(std::vector<Triangle> &triangles,
-                                 std::vector<Vertex> &vertices,
-                                 std::vector<Edge> &edges) override;
+    virtual void insertCentroids(std::vector<Vertex> &vertices,
+                                 std::vector<Edge> &edges,
+                                 std::vector<Triangle> &triangles) override;
 
 protected:
     /**
@@ -106,9 +104,9 @@ private:
     cl::CommandQueue m_queue;
     cl::Program m_program;
 
-    cl::Buffer m_bufferTriangles;
     cl::Buffer m_bufferVertices;
     cl::Buffer m_bufferEdges;
+    cl::Buffer m_bufferTriangles;
 
 private:
     double m_angle;

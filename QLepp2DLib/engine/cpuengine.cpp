@@ -27,8 +27,8 @@
 CPUEngine::CPUEngine() = default;
 
 bool CPUEngine::detectBadTriangles(double angle,
-                                   std::vector<Triangle> &triangles,
-                                   std::vector<Vertex> &vertices)
+                                   std::vector<Vertex> &vertices,
+                                   std::vector<Triangle> &triangles)
 {
     qDebug() << "CPUEngine::detectBadTriangles - angle =" << angle;
     m_angle = angle;
@@ -64,9 +64,9 @@ bool CPUEngine::detectBadTriangles(double angle,
     return true;
 }
 
-bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
-                                     std::vector<Vertex> &vertices,
-                                     std::vector<Edge> &edges)
+bool CPUEngine::improveTriangulation(std::vector<Vertex> &vertices,
+                                     std::vector<Edge> &edges,
+                                     std::vector<Triangle> &triangles)
 {
     /* Relevant information: Each insertion does
      *   +1 to vertices.size()
@@ -86,7 +86,7 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
     {
         // Phase 1
         bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+        detectTerminalEdges(vertices, edges, triangles, nonBTERemaining);
 
         if (not nonBTERemaining)
         {
@@ -94,10 +94,10 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
         }
 
         // Phase 2
-        insertCentroids(triangles, vertices, edges);
+        insertCentroids(vertices, edges, triangles);
 
         // Phase 3
-        detectBadTriangles(m_angle, triangles, vertices);
+        detectBadTriangles(m_angle, vertices, triangles);
 
         return true;
     }
@@ -108,9 +108,9 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
     }
 }
 
-void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
-                                    std::vector<Vertex> &vertices,
+void CPUEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
                                     std::vector<Edge> &edges,
+                                    std::vector<Triangle> &triangles,
                                     bool &flag)
 {
     QElapsedTimer timer;
@@ -133,7 +133,7 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
              * to calculate the required here in CPU, as there's no need for
              * everyone right now.
              */
-            int longestIEdge = getTerminalIEdge(i, triangles, vertices, edges, flag);
+            int longestIEdge = getTerminalIEdge(i, vertices, edges, triangles, flag);
             edges.at(longestIEdge).isTerminalEdge = 1;
         }
     }
@@ -142,9 +142,9 @@ void CPUEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "* CPU: Terminal Edges detected in" << elapsed << "nanoseconds.";
 }
 
-void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
-                                std::vector<Vertex> &vertices,
-                                std::vector<Edge> &edges)
+void CPUEngine::insertCentroids(std::vector<Vertex> &vertices,
+                                std::vector<Edge> &edges,
+                                std::vector<Triangle> &triangles)
 {
     QElapsedTimer timer;
     timer.start();
@@ -154,7 +154,7 @@ void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
         Edge &e(edges.at(ie));
         if (e.isTerminalEdge and not e.isBorderEdge)
         {
-            insertCentroid(ie, triangles, vertices, edges);
+            insertCentroid(ie, vertices, edges, triangles);
         }
     }
 
@@ -163,9 +163,9 @@ void CPUEngine::insertCentroids(std::vector<Triangle> &triangles,
 }
 
 int CPUEngine::getTerminalIEdge(int it,
-                                std::vector<Triangle> &triangles,
                                 std::vector<Vertex> &vertices,
                                 std::vector<Edge> &edges,
+                                std::vector<Triangle> &triangles,
                                 bool &flag) const
 {
     QVector<int> triangleHistory;
@@ -263,9 +263,9 @@ Vertex CPUEngine::centroidOf(int iva,
 }
 
 void CPUEngine::insertCentroid(int iedge,
-                    std::vector<Triangle> &triangles,
-                    std::vector<Vertex> &vertices,
-                    std::vector<Edge> &edges)
+                               std::vector<Vertex> &vertices,
+                               std::vector<Edge> &edges,
+                               std::vector<Triangle> &triangles)
 {
     /* This is the difficult part of the project.
      * The algorithm is divided in 7 "phases", that will be documented here.
@@ -469,4 +469,3 @@ void CPUEngine::insertCentroid(int iedge,
         }
     }
 }
-

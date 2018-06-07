@@ -20,6 +20,7 @@
 #include <model_impl.h>
 #include <engine/cpuengine.h>
 #include <engine/openclengine.h>
+#include <filehandlers/offhandler.h>
 
 ModelImpl& ModelImpl::getInstance(void)
 {
@@ -28,13 +29,11 @@ ModelImpl& ModelImpl::getInstance(void)
 }
 
 ModelImpl::ModelImpl()
-    : m_fileHandler(new OFFHandler)
 {
     setEngine(new CPUEngine);
 }
 
 ModelImpl::ModelImpl(Engine *engine)
-    : m_fileHandler(new OFFHandler)
 {
     setEngine(engine);
 }
@@ -75,12 +74,12 @@ bool ModelImpl::setOpenCLEngine()
 
 bool ModelImpl::loadFile(std::string filepath)
 {
-    return m_fileHandler->load(filepath, m_vertices, m_edges, m_triangles);
+    return m_fileManager.load(filepath, m_vertices, m_edges, m_triangles);
 }
 
 bool ModelImpl::saveFile(std::string filepath)
 {
-    return m_fileHandler->save(filepath, m_vertices, m_edges, m_triangles);
+    return m_fileManager.save(filepath, m_vertices, m_edges, m_triangles);
 }
 
 std::vector<Vertex>& ModelImpl::getVertices()
@@ -95,10 +94,10 @@ std::vector<Triangle>& ModelImpl::getTriangles()
 
 bool ModelImpl::detectBadTriangles(double angle)
 {
-    return m_engine->detectBadTriangles(angle, m_triangles, m_vertices);
+    return m_engine->detectBadTriangles(angle, m_vertices, m_triangles);
 }
 
 bool ModelImpl::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges);
+    return m_engine->improveTriangulation(m_vertices, m_edges, m_triangles);
 }

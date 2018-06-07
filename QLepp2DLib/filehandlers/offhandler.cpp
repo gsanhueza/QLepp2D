@@ -22,12 +22,10 @@
 #include <QMap>
 #include <filehandlers/offhandler.h>
 
-OFFHandler::OFFHandler() = default;
-
 bool OFFHandler::load(std::string filepath,
-                             std::vector<Vertex> &vertices,
-                             std::vector<Edge> &edges,
-                             std::vector<Triangle> &triangles)
+                      std::vector<Vertex> &vertices,
+                      std::vector<Edge> &edges,
+                      std::vector<Triangle> &triangles)
 {
     QString qfilepath = QString::fromStdString(filepath);
     qDebug() << "Loading OFF file from" << QString(qfilepath) << endl;
@@ -210,9 +208,9 @@ bool OFFHandler::load(std::string filepath,
 }
 
 bool OFFHandler::save(std::string filepath,
-                             std::vector<Vertex> &vertices,
-                             std::vector<Edge> &edges,
-                             std::vector<Triangle> &triangles) const
+                      std::vector<Vertex> &vertices,
+                      std::vector<Edge> &edges,
+                      std::vector<Triangle> &triangles)
 {
     int numVertices = vertices.size();
     int numTriangles = triangles.size();

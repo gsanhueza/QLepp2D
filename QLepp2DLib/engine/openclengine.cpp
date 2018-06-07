@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QFile>
+
 #include <engine/openclengine.h>
 #include <engine/cpuengine.h>
 
@@ -29,8 +30,8 @@ OpenCLEngine::OpenCLEngine()
 }
 
 bool OpenCLEngine::detectBadTriangles(double angle,
-                                      std::vector<Triangle> &triangles,
-                                      std::vector<Vertex> &vertices)
+                                      std::vector<Vertex> &vertices,
+                                      std::vector<Triangle> &triangles)
 {
     qDebug() << "OpenCLEngine::detectBadTriangles - angle =" << angle;
 
@@ -77,15 +78,15 @@ bool OpenCLEngine::detectBadTriangles(double angle,
     catch (cl::Error &err)
     {
         qDebug() << err.err();
-        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices.at(0)).c_str();
         return false;
     }
     return true;
 }
 
-bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
-                                        std::vector<Vertex> &vertices,
-                                        std::vector<Edge> &edges)
+bool OpenCLEngine::improveTriangulation(std::vector<Vertex> &vertices,
+                                        std::vector<Edge> &edges,
+                                        std::vector<Triangle> &triangles)
 {
     /* We'll do this in 3 phases:
      * Phase 1: Detect the terminal edges for each bad triangle.
@@ -96,7 +97,7 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     {
         // Phase 1
         bool nonBTERemaining = false; // Flag that shows if we still have Non-border Terminal Edges.
-        detectTerminalEdges(triangles, vertices, edges, nonBTERemaining);
+        detectTerminalEdges(vertices, edges, triangles, nonBTERemaining);
 
         if (not nonBTERemaining)
         {
@@ -104,10 +105,10 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
         }
 
         // Phase 2
-        insertCentroids(triangles, vertices, edges);
+        insertCentroids(vertices, edges, triangles);
 
         // Phase 3
-        detectBadTriangles(m_angle, triangles, vertices);
+        detectBadTriangles(m_angle, vertices, triangles);
 
         // Copy the output data back to the host
         /* FIXME Each helper function should do this automatically
@@ -133,9 +134,9 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
     return true;
 }
 
-void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
-                                       std::vector<Vertex> &vertices,
+void OpenCLEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
                                        std::vector<Edge> &edges,
+                                       std::vector<Triangle> &triangles,
                                        bool &flag)
 {
     /* As we're using GPU, we can use CRCW in this particular situation,
@@ -164,8 +165,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     unsigned long globalSize(triangles.size());
 
     // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
-//    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
-//    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
+    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
     m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 
     // Hack to allow flag to be modified by kernel
@@ -198,15 +199,15 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Triangle> &triangles,
     qDebug() << "+ OpenCL: Terminal edges detected in" << elapsed << "nanoseconds.";
 }
 
-void OpenCLEngine::insertCentroids(std::vector<Triangle> &triangles,
-                                   std::vector<Vertex> &vertices,
-                                   std::vector<Edge> &edges)
+void OpenCLEngine::insertCentroids(std::vector<Vertex> &vertices,
+                                   std::vector<Edge> &edges,
+                                   std::vector<Triangle> &triangles)
 {
     /* At the moment we'll use a mixed approach.
      * Timing will be done in CPUEngine.
      */
-    CPUEngine cpuengine; // FIXME Temporarily we'll use this for centroid insertion
-    cpuengine.insertCentroids(triangles, vertices, edges);
+    CPUEngine cpuengine; // Temporarily we'll use this for centroid insertion
+    cpuengine.insertCentroids(vertices, edges, triangles);
 }
 
 void OpenCLEngine::setup()

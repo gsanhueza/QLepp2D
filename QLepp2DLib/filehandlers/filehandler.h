@@ -17,26 +17,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OFFHANDLER_H
-#define OFFHANDLER_H
+#ifndef FILEHANDLER_H
+#define FILEHANDLER_H
 
 #include <string>
 #include <vector>
 
-#include <filehandlers/filehandler.h>
+#include <structs/triangle.h>
+#include <structs/vertex.h>
+#include <structs/edge.h>
+#include <structs/edgedata.h>
 
 /**
-* @brief OFF files handling module.
+* @brief Interface for files handling module.
+* (Strategy Pattern)
 *
 */
-class OFFHandler : public FileHandler
+class FileHandler
 {
 public:
     /**
     * @brief Constructor of OFFHandler.
     *
     */
-    OFFHandler() = default;
+    FileHandler() = default;
+
+    /**
+    * @brief Virtual destructor.
+    *
+    */
+    virtual ~FileHandler() = default;
 
     /**
     * @brief Method that loads an OFF file and modifies the parameters according to the loaded triangulation.
@@ -47,10 +57,10 @@ public:
     * @param triangles p_triangles: Vector of triangles.
     * @return True if correctly loaded.
     */
-    bool load(std::string filepath,
-              std::vector<Vertex> &vertices,
-              std::vector<Edge> &edges,
-              std::vector<Triangle> &triangles) override;
+    virtual bool load(std::string filepath,
+                      std::vector<Vertex> &vertices,
+                      std::vector<Edge> &edges,
+                      std::vector<Triangle> &triangles) = 0;
 
     /**
     * @brief Method that saves an OFF file according to the actual parameters.
@@ -61,10 +71,10 @@ public:
     * @param indices p_triangles: Vector of triangles.
     * @return True if correctly saved.
     */
-    bool save(std::string filepath,
-              std::vector<Vertex> &vertices,
-              std::vector<Edge> &edges,
-              std::vector<Triangle> &triangles) override;
+    virtual bool save(std::string filepath,
+                      std::vector<Vertex> &vertices,
+                      std::vector<Edge> &edges,
+                      std::vector<Triangle> &triangles) = 0;
 };
 
-#endif // OFFHANDLER_H
+#endif // FILEHANDLER_H

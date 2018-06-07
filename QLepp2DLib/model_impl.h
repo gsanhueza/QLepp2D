@@ -21,7 +21,7 @@
 #define MODELIMPL_H
 
 #include <string>
-#include <filehandlers/offhandler.h>
+#include <filehandlers/filemanager.h>
 
 #include <structs/vertex.h>
 #include <structs/triangle.h>
@@ -103,7 +103,8 @@ public:
     std::vector<Triangle>& getTriangles();
 
     /**
-    * @brief Detects every triangle in the vector of triangles whose minimum angle is lesser than the provided angle.
+    * @brief Detects every triangle in the vector of triangles whose minimum
+    * angle is lesser than the provided angle.
     *
     * @param angle p_angle: Provided angle.
     * @return True if method has run without issues.
@@ -131,7 +132,7 @@ private:
     */
     ModelImpl(Engine *engine);
 
-    OFFHandler *m_fileHandler = nullptr;
+    FileManager m_fileManager;
     Engine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
