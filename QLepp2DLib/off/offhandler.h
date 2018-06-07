@@ -22,7 +22,6 @@
 
 #include <string>
 #include <vector>
-#include "off/offmetadata.h"
 #include "structs/triangle.h"
 #include "structs/vertex.h"
 #include "structs/edge.h"
@@ -52,7 +51,6 @@ public:
     * @return True if correctly loaded.
     */
     bool loadOffFile(std::string filepath,
-                     OFFMetadata &metadata,
                      std::vector<Vertex> &vertices,
                      std::vector<Edge> &edges,
                      std::vector<Triangle> &triangles);
@@ -67,8 +65,8 @@ public:
     * @return True if correctly saved.
     */
     bool saveOffFile(std::string filepath,
-                     OFFMetadata &metadata,
                      std::vector<Vertex> &vertices,
+                     std::vector<Edge> &edges,
                      std::vector<Triangle> &triangles) const;
 
 private:

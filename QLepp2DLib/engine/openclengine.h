@@ -66,8 +66,7 @@ public:
      */
     virtual bool improveTriangulation(std::vector<Triangle> &triangles,
                                       std::vector<Vertex> &vertices,
-                                      std::vector<Edge> &edges,
-                                      OFFMetadata &metadata) override;
+                                      std::vector<Edge> &edges) override;
 
     /**
      * @brief Detects terminal edges for each bad triangle in the "triangles"

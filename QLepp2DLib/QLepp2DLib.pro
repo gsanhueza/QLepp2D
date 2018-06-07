@@ -35,7 +35,6 @@ HEADERS += \
         engine/cpuengine.h \
         engine/openclengine.h \
         off/offhandler.h \
-        off/offmetadata.h \
         model.h \
         model_impl.h
 

@@ -25,7 +25,6 @@
 OFFHandler::OFFHandler() = default;
 
 bool OFFHandler::loadOffFile(std::string filepath,
-                             OFFMetadata &metadata,
                              std::vector<Vertex> &vertices,
                              std::vector<Edge> &edges,
                              std::vector<Triangle> &triangles)
@@ -61,16 +60,16 @@ bool OFFHandler::loadOffFile(std::string filepath,
         // Read file metadata (vertices, faces, edges)
         QStringList parsedmetadata = line.split(" ");
 
-        metadata.vertices = parsedmetadata.at(0).toInt();
-        metadata.triangles = parsedmetadata.at(1).toInt();
-        metadata.edges = parsedmetadata.at(2).toInt();
+        int numVertices = parsedmetadata.at(0).toInt();
+        int numTriangles = parsedmetadata.at(1).toInt();
+        int numEdges = parsedmetadata.at(2).toInt();
 
-        qDebug() << "Number of vertices:" << metadata.vertices;
-        qDebug() << "Number of faces:" << metadata.triangles;
-        qDebug() << "Number of edges:" << metadata.edges;
+        qDebug() << "Number of vertices:" << numVertices;
+        qDebug() << "Number of faces:" << numTriangles;
+        qDebug() << "Number of edges:" << numEdges;
 
         // Read vertices data
-        for (int i(0); i < metadata.vertices; i++)
+        for (int i(0); i < numVertices; i++)
         {
             line = in.readLine();
             QStringList coordinates = line.split(" ", QString::SkipEmptyParts);
@@ -94,7 +93,7 @@ bool OFFHandler::loadOffFile(std::string filepath,
         QMap<QString, EdgeData> map;
 
         // Read faces data (indices)
-        for (int i(0); i < metadata.triangles; i++)
+        for (int i(0); i < numTriangles; i++)
         {
             line = in.readLine();
             QStringList mappedIndices = line.split(" ", QString::SkipEmptyParts);
@@ -211,13 +210,17 @@ bool OFFHandler::loadOffFile(std::string filepath,
 }
 
 bool OFFHandler::saveOffFile(std::string filepath,
-                             OFFMetadata &metadata,
                              std::vector<Vertex> &vertices,
+                             std::vector<Edge> &edges,
                              std::vector<Triangle> &triangles) const
 {
+    int numVertices = vertices.size();
+    int numTriangles = triangles.size();
+    int numEdges = edges.size();
+
     QString qfilepath = QString::fromStdString(filepath);
     qDebug() << "Saving OFF file to" << qfilepath << endl;
-    qDebug() << "(V, F, E) = " << metadata.vertices << " " << metadata.triangles << " " << metadata.edges;
+    qDebug() << "(V, F, E) = " << numVertices << numTriangles << numEdges;
 
     QFile outputFile(qfilepath);
 
@@ -226,10 +229,11 @@ bool OFFHandler::saveOffFile(std::string filepath,
         QTextStream out(&outputFile);
         out << "OFF" << endl;
         out << "# File created by QLepp2D." << endl;
-        out << metadata.vertices << " " << metadata.triangles << " " << metadata.edges;
+
+        out << numVertices << " " << numTriangles << " " << numEdges;
 
         // Write vertices
-        int coordinatesPerVertex = static_cast<int>(vertices.size()) / metadata.vertices;
+        int coordinatesPerVertex = static_cast<int>(vertices.size()) / numVertices;
         for (int i(0); i < static_cast<int>(vertices.size()); i++)
         {
             if (i % coordinatesPerVertex == 0)

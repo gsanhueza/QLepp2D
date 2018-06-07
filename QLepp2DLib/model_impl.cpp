@@ -75,12 +75,12 @@ bool ModelImpl::setOpenCLEngine()
 
 bool ModelImpl::loadOFF(std::string filepath)
 {
-    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_edges, m_triangles);
+    return m_offhandler->loadOffFile(filepath, m_vertices, m_edges, m_triangles);
 }
 
 bool ModelImpl::saveOFF(std::string filepath)
 {
-    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
+    return m_offhandler->saveOffFile(filepath, m_vertices, m_edges, m_triangles);
 }
 
 std::vector<Vertex>& ModelImpl::getVertices()
@@ -100,5 +100,5 @@ bool ModelImpl::detectBadTriangles(double angle)
 
 bool ModelImpl::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges, m_offmetadata);
+    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges);
 }

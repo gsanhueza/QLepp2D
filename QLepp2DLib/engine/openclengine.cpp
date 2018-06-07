@@ -85,8 +85,7 @@ bool OpenCLEngine::detectBadTriangles(double angle,
 
 bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                         std::vector<Vertex> &vertices,
-                                        std::vector<Edge> &edges,
-                                        OFFMetadata &metadata)
+                                        std::vector<Edge> &edges)
 {
     /* We'll do this in 3 phases:
      * Phase 1: Detect the terminal edges for each bad triangle.
@@ -119,10 +118,6 @@ bool OpenCLEngine::improveTriangulation(std::vector<Triangle> &triangles,
          * cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
          * cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
          */
-
-        metadata.vertices = vertices.size();
-        metadata.triangles = triangles.size();
-        metadata.edges = edges.size();
     }
     catch (cl::Error &err)
     {
@@ -258,7 +253,7 @@ void OpenCLEngine::setup()
     catch (cl::Error &e)
     {
         qDebug() << e.err();
-        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices.at(0).c_str());
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices.at(0)).c_str();
         throw e;
     }
 }

@@ -22,7 +22,6 @@
 
 #include <string>
 #include <off/offhandler.h>
-#include <off/offmetadata.h>
 
 #include <structs/vertex.h>
 #include <structs/triangle.h>
@@ -133,7 +132,6 @@ private:
     ModelImpl(AbstractEngine *engine);
 
     OFFHandler *m_offhandler = nullptr;
-    OFFMetadata m_offmetadata;
     AbstractEngine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
