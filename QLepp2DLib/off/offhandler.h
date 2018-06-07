@@ -50,10 +50,10 @@ public:
     * @param triangles p_triangles: Vector of triangles.
     * @return True if correctly loaded.
     */
-    bool loadOffFile(std::string filepath,
-                     std::vector<Vertex> &vertices,
-                     std::vector<Edge> &edges,
-                     std::vector<Triangle> &triangles);
+    bool load(std::string filepath,
+              std::vector<Vertex> &vertices,
+              std::vector<Edge> &edges,
+              std::vector<Triangle> &triangles);
 
     /**
     * @brief Method that saves an OFF file according to the actual parameters.
@@ -64,10 +64,10 @@ public:
     * @param indices p_triangles: Vector of triangles.
     * @return True if correctly saved.
     */
-    bool saveOffFile(std::string filepath,
-                     std::vector<Vertex> &vertices,
-                     std::vector<Edge> &edges,
-                     std::vector<Triangle> &triangles) const;
+    bool save(std::string filepath,
+              std::vector<Vertex> &vertices,
+              std::vector<Edge> &edges,
+              std::vector<Triangle> &triangles) const;
 
 private:
     int m_numVertices;

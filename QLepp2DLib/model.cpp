@@ -31,14 +31,14 @@ bool Model::setOpenCLEngine()
     return ModelImpl::getInstance().setOpenCLEngine();
 }
 
-bool Model::loadOFF(std::string filepath)
+bool Model::loadFile(std::string filepath)
 {
-    return ModelImpl::getInstance().loadOFF(filepath);
+    return ModelImpl::getInstance().loadFile(filepath);
 }
 
-bool Model::saveOFF(std::string filepath)
+bool Model::saveFile(std::string filepath)
 {
-    return ModelImpl::getInstance().saveOFF(filepath);
+    return ModelImpl::getInstance().saveFile(filepath);
 }
 
 std::vector<Vertex>& Model::getVertices()

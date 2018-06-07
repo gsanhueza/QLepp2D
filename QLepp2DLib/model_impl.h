@@ -71,7 +71,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly loaded.
     */
-    bool loadOFF(std::string filepath);
+    bool loadFile(std::string filepath);
 
     /**
     * @brief Saves an OFF file in the provided filepath.
@@ -79,7 +79,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly saved.
     */
-    bool saveOFF(std::string filepath);
+    bool saveFile(std::string filepath);
 
     /**
     * @brief Gets a vector of Vertex which are being used by the implementation.
@@ -131,7 +131,7 @@ private:
     */
     ModelImpl(AbstractEngine *engine);
 
-    OFFHandler *m_offhandler = nullptr;
+    OFFHandler *m_fileHandler = nullptr;
     AbstractEngine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
