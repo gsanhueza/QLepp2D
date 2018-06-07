@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        off/offhandler.cpp \
+        filehandlers/offhandler.cpp \
         engine/cpuengine.cpp \
         engine/openclengine.cpp \
         model.cpp \
@@ -34,7 +34,7 @@ HEADERS += \
         engine/abstractengine.h \
         engine/cpuengine.h \
         engine/openclengine.h \
-        off/offhandler.h \
+        filehandlers/offhandler.h \
         model.h \
         model_impl.h
 

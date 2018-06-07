@@ -22,10 +22,10 @@
 
 #include <string>
 #include <vector>
-#include "structs/triangle.h"
-#include "structs/vertex.h"
-#include "structs/edge.h"
-#include "structs/edgedata.h"
+#include <structs/triangle.h>
+#include <structs/vertex.h>
+#include <structs/edge.h>
+#include <structs/edgedata.h>
 
 /**
 * @brief OFF files handling module.
@@ -68,11 +68,6 @@ public:
               std::vector<Vertex> &vertices,
               std::vector<Edge> &edges,
               std::vector<Triangle> &triangles) const;
-
-private:
-    int m_numVertices;
-    int m_numFaces;
-    int m_numEdges;
 };
 
 #endif // OFFHANDLER_H

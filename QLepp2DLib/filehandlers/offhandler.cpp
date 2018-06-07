@@ -20,7 +20,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QMap>
-#include "off/offhandler.h"
+#include <filehandlers/offhandler.h>
 
 OFFHandler::OFFHandler() = default;
 

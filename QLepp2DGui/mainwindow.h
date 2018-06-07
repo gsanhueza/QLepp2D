@@ -22,8 +22,9 @@
 
 #include <QMainWindow>
 #include <QSettings>
-#include "tutorial.h"
-#include "about.h"
+
+#include <tutorial.h>
+#include <about.h>
 #include <model_impl.h>
 
 namespace Ui {

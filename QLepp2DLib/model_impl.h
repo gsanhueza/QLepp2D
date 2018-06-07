@@ -21,7 +21,7 @@
 #define MODELIMPL_H
 
 #include <string>
-#include <off/offhandler.h>
+#include <filehandlers/offhandler.h>
 
 #include <structs/vertex.h>
 #include <structs/triangle.h>
@@ -30,7 +30,7 @@
 #include <engine/abstractengine.h>
 
 /**
-* @brief Facade class for GUI/Library interaction.
+* @brief Implementation file of facade class for GUI/Library interaction.
 * Singleton Pattern is used here.
 *
 */
