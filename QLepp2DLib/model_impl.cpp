@@ -20,12 +20,15 @@
 #include <model_impl.h>
 #include <engine/cpuengine.h>
 #include <engine/openclengine.h>
+#include <filehandlers/offhandler.h>
 
 ModelImpl& ModelImpl::getInstance(void)
 {
     static ModelImpl instance;
     return instance;
 }
+
+// TODO Create a FileHandlerFactory
 
 ModelImpl::ModelImpl()
     : m_fileHandler(new OFFHandler)

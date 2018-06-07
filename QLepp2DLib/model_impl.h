@@ -21,7 +21,7 @@
 #define MODELIMPL_H
 
 #include <string>
-#include <filehandlers/offhandler.h>
+#include <filehandlers/filehandler.h>
 
 #include <structs/vertex.h>
 #include <structs/triangle.h>
@@ -131,7 +131,7 @@ private:
     */
     ModelImpl(Engine *engine);
 
-    OFFHandler *m_fileHandler = nullptr;
+    FileHandler *m_fileHandler = nullptr;
     Engine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;

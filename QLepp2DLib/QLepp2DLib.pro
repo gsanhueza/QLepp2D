@@ -33,6 +33,7 @@ HEADERS += \
         structs/edgedata.h \
         engine/cpuengine.h \
         engine/openclengine.h \
+        filehandlers/filehandler.h \
         filehandlers/offhandler.h \
         model.h \
         model_impl.h \
