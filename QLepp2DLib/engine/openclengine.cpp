@@ -110,20 +110,19 @@ bool OpenCLEngine::improveTriangulation(std::vector<Vertex> &vertices,
         // Phase 3
         detectBadTriangles(m_angle, vertices, triangles);
 
-        // Copy the output data back to the host
-        /* FIXME Each helper function should do this automatically
+        /*
          * If we get a correct GPU insertion algorithm, we can do this only once
          * instead of copying back the results for each function.
-
-         * cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
-         * cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
-         * cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
          */
+
+         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
+         cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
+         cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
     }
     catch (cl::Error &err)
     {
         qDebug() << err.err();
-        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices[0]).c_str();
+        qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices.at(0)).c_str();
         return false;
     }
     catch (...)

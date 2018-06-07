@@ -51,7 +51,7 @@ bool FileManager::load(std::string filepath, std::vector<Vertex> &vertices, std:
     QString ext = fileinfo.suffix();
 
     FileHandler *handler = m_handlers.value(ext);
-    return handler->load(filepath, vertices, edges, triangles);
+    return (handler != nullptr and handler->load(filepath, vertices, edges, triangles));
 }
 
 bool FileManager::save(std::string filepath, std::vector<Vertex> &vertices, std::vector<Edge> &edges, std::vector<Triangle> &triangles)

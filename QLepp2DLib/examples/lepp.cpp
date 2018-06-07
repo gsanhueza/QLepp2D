@@ -4,9 +4,9 @@ int main()
 {
     Model model;
     model.setOpenCLEngine();
-    model.loadOFF("A.off");
+    model.loadFile("A.off");
     model.detectBadTriangles(50.0);
     model.improveTriangulation();
-    model.saveOFF("B.off");
+    model.saveFile("B.off");
     return 0;
 }
