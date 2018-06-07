@@ -28,18 +28,18 @@ ModelImpl& ModelImpl::getInstance(void)
 }
 
 ModelImpl::ModelImpl()
-    : m_offhandler(new OFFHandler)
+    : m_fileHandler(new OFFHandler)
 {
     setEngine(new CPUEngine);
 }
 
-ModelImpl::ModelImpl(AbstractEngine *engine)
-    : m_offhandler(new OFFHandler)
+ModelImpl::ModelImpl(Engine *engine)
+    : m_fileHandler(new OFFHandler)
 {
     setEngine(engine);
 }
 
-void ModelImpl::setEngine(AbstractEngine *engine)
+void ModelImpl::setEngine(Engine *engine)
 {
     if (m_engine != nullptr)
     {
@@ -73,14 +73,14 @@ bool ModelImpl::setOpenCLEngine()
     }
 }
 
-bool ModelImpl::loadOFF(std::string filepath)
+bool ModelImpl::loadFile(std::string filepath)
 {
-    return m_offhandler->loadOffFile(filepath, m_offmetadata, m_vertices, m_edges, m_triangles);
+    return m_fileHandler->load(filepath, m_vertices, m_edges, m_triangles);
 }
 
-bool ModelImpl::saveOFF(std::string filepath)
+bool ModelImpl::saveFile(std::string filepath)
 {
-    return m_offhandler->saveOffFile(filepath, m_offmetadata, m_vertices, m_triangles);
+    return m_fileHandler->save(filepath, m_vertices, m_edges, m_triangles);
 }
 
 std::vector<Vertex>& ModelImpl::getVertices()
@@ -100,5 +100,5 @@ bool ModelImpl::detectBadTriangles(double angle)
 
 bool ModelImpl::improveTriangulation()
 {
-    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges, m_offmetadata);
+    return m_engine->improveTriangulation(m_triangles, m_vertices, m_edges);
 }

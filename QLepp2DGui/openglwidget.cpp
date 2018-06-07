@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "openglwidget.h"
+#include <openglwidget.h>
 
 OpenGLWidget::OpenGLWidget(QWidget* parent)
   : QOpenGLWidget(parent),
@@ -48,6 +48,9 @@ void OpenGLWidget::cleanup()
 
 void OpenGLWidget::setupVertexAttribs()
 {
+    // Model is a Singleton, so we don't care about wrongly using another model.
+    Model model;
+
     m_vbo.bind();
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
     f->glEnableVertexAttribArray(0);                        // Vertex
@@ -60,7 +63,7 @@ void OpenGLWidget::setupVertexAttribs()
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * size(vertexArray) = start of color)
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * ModelImpl::getInstance().getTriangles().size()));
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * model.getTriangles().size()));
     m_vbo.release();
 }
 
@@ -107,8 +110,10 @@ void OpenGLWidget::loadData()
     m_data.clear();
 
     // Load vertices
-    std::vector<Vertex> vertices(ModelImpl::getInstance().getVertices());
-    std::vector<Triangle> triangles(ModelImpl::getInstance().getTriangles());
+    // Model is a Singleton, so we don't care about wrongly using another model.
+    Model model;
+    std::vector<Vertex> vertices(model.getVertices());
+    std::vector<Triangle> triangles(model.getTriangles());
 
     for (Triangle &t : triangles)
     {

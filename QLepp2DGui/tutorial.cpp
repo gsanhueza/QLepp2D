@@ -18,8 +18,8 @@
  */
 
 #include <QKeyEvent>
-#include "tutorial.h"
-#include "ui_tutorial.h"
+#include <tutorial.h>
+#include <ui_tutorial.h>
 
 Tutorial::Tutorial(QWidget *parent) :
     QDialog(parent),

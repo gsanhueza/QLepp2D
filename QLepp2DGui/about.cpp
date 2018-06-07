@@ -18,8 +18,8 @@
  */
 
 #include <QKeyEvent>
-#include "about.h"
-#include "ui_about.h"
+#include <about.h>
+#include <ui_about.h>
 
 About::About(QWidget *parent) :
     QDialog(parent),

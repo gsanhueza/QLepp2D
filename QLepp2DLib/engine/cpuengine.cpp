@@ -66,13 +66,12 @@ bool CPUEngine::detectBadTriangles(double angle,
 
 bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
                                      std::vector<Vertex> &vertices,
-                                     std::vector<Edge> &edges,
-                                     OFFMetadata &metadata)
+                                     std::vector<Edge> &edges)
 {
     /* Relevant information: Each insertion does
-     *   +1 to metadata.vertices (vertices.size())
-     *   +2 to metadata.triangles (triangles.size())
-     *   +3 to metadata.edges (edges.size())
+     *   +1 to vertices.size()
+     *   +2 to triangles.size()
+     *   +3 to edges.size()
      */
 
     qDebug() << "CPUEngine::improveTriangulation";
@@ -99,10 +98,6 @@ bool CPUEngine::improveTriangulation(std::vector<Triangle> &triangles,
 
         // Phase 3
         detectBadTriangles(m_angle, triangles, vertices);
-
-        metadata.vertices = vertices.size();
-        metadata.triangles = triangles.size();
-        metadata.edges = edges.size();
 
         return true;
     }

@@ -24,8 +24,8 @@
 #include <QMimeData>
 #include <QMessageBox>
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include <mainwindow.h>
+#include <ui_mainwindow.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -101,7 +101,7 @@ void MainWindow::loadFile(QString path)
 {
     ui->statusBar->showMessage(tr("Loading..."));
     std::string spath = path.toStdString();
-    if (ModelImpl::getInstance().loadOFF(spath))
+    if (m_model.loadFile(spath))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
@@ -145,7 +145,7 @@ void MainWindow::saveTriangulationClicked()
     QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), outpath , tr("OFF Files (*.off)"));
 
     std::string fspath = filepath.toStdString();
-    if (not ModelImpl::getInstance().saveOFF(fspath))
+    if (not m_model.saveFile(fspath))
     {
         qWarning() << "Could not save file" << filepath;
         ui->statusBar->showMessage(tr("Unable to save."));
@@ -180,7 +180,7 @@ void MainWindow::detectClicked()
     qDebug() << "Detect button clicked";
     double angle = ui->angleSpinBox->value();
 
-    if (ModelImpl::getInstance().detectBadTriangles(angle))
+    if (m_model.detectBadTriangles(angle))
     {
         ui->improveButton->setEnabled(true);
         ui->statusBar->showMessage(tr("Bad triangles have been detected. You can now proceed to improve them."));
@@ -198,7 +198,7 @@ void MainWindow::detectClicked()
 void MainWindow::improveClicked()
 {
     qDebug() << "Improve button clicked";
-    if (ModelImpl::getInstance().improveTriangulation())
+    if (m_model.improveTriangulation())
     {
         ui->statusBar->showMessage(tr("Triangulation has been modified."));
         emit emitUpdateData();
@@ -215,7 +215,7 @@ void MainWindow::improveClicked()
 void MainWindow::cpuEngineClicked()
 {
     qDebug() << "CPU Engine button clicked";
-    if (ModelImpl::getInstance().setCPUEngine())
+    if (m_model.setCPUEngine())
     {
         ui->statusBar->showMessage(tr("CPU Engine has been set."));
         setWindowTitle(tr("QLepp2D (CPU)"));
@@ -229,7 +229,7 @@ void MainWindow::cpuEngineClicked()
 void MainWindow::openclEngineClicked()
 {
     qDebug() << "OpenCL Engine button clicked";
-    if (ModelImpl::getInstance().setOpenCLEngine())
+    if (m_model.setOpenCLEngine())
     {
         ui->statusBar->showMessage(tr("OpenCL Engine has been set."));
         setWindowTitle(tr("QLepp2D (OpenCL)"));

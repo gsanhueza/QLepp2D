@@ -22,9 +22,10 @@
 
 #include <QMainWindow>
 #include <QSettings>
-#include "tutorial.h"
-#include "about.h"
-#include <model_impl.h>
+
+#include <tutorial.h>
+#include <about.h>
+#include <model.h>
 
 namespace Ui {
 class MainWindow;
@@ -75,6 +76,8 @@ private:
 
     QString m_currentFileName;
     const int m_recentFilesLimit;
+
+    Model m_model;
 };
 
 #endif // MAINWINDOW_H

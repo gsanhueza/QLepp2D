@@ -22,11 +22,10 @@
 
 #include <string>
 #include <vector>
-#include "off/offmetadata.h"
-#include "structs/triangle.h"
-#include "structs/vertex.h"
-#include "structs/edge.h"
-#include "structs/edgedata.h"
+#include <structs/triangle.h>
+#include <structs/vertex.h>
+#include <structs/edge.h>
+#include <structs/edgedata.h>
 
 /**
 * @brief OFF files handling module.
@@ -51,11 +50,10 @@ public:
     * @param triangles p_triangles: Vector of triangles.
     * @return True if correctly loaded.
     */
-    bool loadOffFile(std::string filepath,
-                     OFFMetadata &metadata,
-                     std::vector<Vertex> &vertices,
-                     std::vector<Edge> &edges,
-                     std::vector<Triangle> &triangles);
+    bool load(std::string filepath,
+              std::vector<Vertex> &vertices,
+              std::vector<Edge> &edges,
+              std::vector<Triangle> &triangles);
 
     /**
     * @brief Method that saves an OFF file according to the actual parameters.
@@ -66,15 +64,10 @@ public:
     * @param indices p_triangles: Vector of triangles.
     * @return True if correctly saved.
     */
-    bool saveOffFile(std::string filepath,
-                     OFFMetadata &metadata,
-                     std::vector<Vertex> &vertices,
-                     std::vector<Triangle> &triangles) const;
-
-private:
-    int m_numVertices;
-    int m_numFaces;
-    int m_numEdges;
+    bool save(std::string filepath,
+              std::vector<Vertex> &vertices,
+              std::vector<Edge> &edges,
+              std::vector<Triangle> &triangles) const;
 };
 
 #endif // OFFHANDLER_H

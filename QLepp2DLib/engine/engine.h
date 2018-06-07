@@ -21,33 +21,33 @@
 #define ABSTRACTENGINE_H
 
 #include <vector>
-#include <off/offmetadata.h>
 #include <structs/triangle.h>
 #include <structs/vertex.h>
 #include <structs/edge.h>
 
 /**
  * @brief Abstract class for engines.
- * Each implementation must override detectBadTriangles and improveTriangulation
- * for GUI usage. Other methods must be overridden for the Library.
+ * Each implementation must override detectBadTriangles and improveTriangulation.
+ * Other methods must be overridden to allow fine-grained control over the
+ * triangulation improvements.
  *
  */
-class AbstractEngine
+class Engine
 {
 public:
     /**
      * @brief Non-abstract Constructor.
      *
      */
-    AbstractEngine() = default;
+    Engine() = default;
 
     /**
      * @brief Virtual destructor.
      *
      */
-    virtual ~AbstractEngine() = default;
+    virtual ~Engine() = default;
 
-    // GUI Section
+    // Minimal library
 
     /**
      * @brief Detects every bad triangle in the vector of triangles.
@@ -74,10 +74,9 @@ public:
      */
     virtual bool improveTriangulation(std::vector<Triangle> &triangles,
                                       std::vector<Vertex> &vertices,
-                                      std::vector<Edge> &edges,
-                                      OFFMetadata &metadata) = 0;
+                                      std::vector<Edge> &edges) = 0;
 
-    // LIB Section
+    // Available for API
 
     /**
      * @brief Detects terminal edges for each bad triangle in the "triangles"

@@ -21,17 +21,16 @@
 #define MODELIMPL_H
 
 #include <string>
-#include <off/offhandler.h>
-#include <off/offmetadata.h>
+#include <filehandlers/offhandler.h>
 
 #include <structs/vertex.h>
 #include <structs/triangle.h>
 #include <structs/edge.h>
 
-#include <engine/abstractengine.h>
+#include <engine/engine.h>
 
 /**
-* @brief Facade class for GUI/Library interaction.
+* @brief Implementation file of facade class for GUI/Library interaction.
 * Singleton Pattern is used here.
 *
 */
@@ -50,7 +49,7 @@ public:
     *
     * @param engine p_engine: Engine.
     */
-    void setEngine(AbstractEngine *engine);
+    void setEngine(Engine *engine);
 
     /**
     * @brief Convenience method that sets the CPU Engine.
@@ -72,7 +71,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly loaded.
     */
-    bool loadOFF(std::string filepath);
+    bool loadFile(std::string filepath);
 
     /**
     * @brief Saves an OFF file in the provided filepath.
@@ -80,7 +79,7 @@ public:
     * @param filepath p_filepath: Path of the file.
     * @return True if correctly saved.
     */
-    bool saveOFF(std::string filepath);
+    bool saveFile(std::string filepath);
 
     /**
     * @brief Gets a vector of Vertex which are being used by the implementation.
@@ -130,11 +129,10 @@ private:
     *
     * @param engine p_engine: Engine used by the Model.
     */
-    ModelImpl(AbstractEngine *engine);
+    ModelImpl(Engine *engine);
 
-    OFFHandler *m_offhandler = nullptr;
-    OFFMetadata m_offmetadata;
-    AbstractEngine *m_engine = nullptr;
+    OFFHandler *m_fileHandler = nullptr;
+    Engine *m_engine = nullptr;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
     std::vector<Triangle> m_triangles;
