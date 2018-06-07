@@ -60,5 +60,5 @@ bool FileManager::save(std::string filepath, std::vector<Vertex> &vertices, std:
     QString ext = fileinfo.suffix();
 
     FileHandler *handler = m_handlers.value(ext);
-    return handler->save(filepath, vertices, edges, triangles);
+    return (handler != nullptr and handler->save(filepath, vertices, edges, triangles));
 }
