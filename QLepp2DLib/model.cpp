@@ -20,43 +20,46 @@
 #include <model.h>
 #include <model_impl.h>
 
-Model::Model() = default;
+Model::Model()
+    : m_impl(&ModelImpl::getInstance())
+{
+}
 
 bool Model::setCPUEngine()
 {
-    return ModelImpl::getInstance().setCPUEngine();
+    return m_impl->setCPUEngine();
 }
 bool Model::setOpenCLEngine()
 {
-    return ModelImpl::getInstance().setOpenCLEngine();
+    return m_impl->setOpenCLEngine();
 }
 
 bool Model::loadFile(std::string filepath)
 {
-    return ModelImpl::getInstance().loadFile(filepath);
+    return m_impl->loadFile(filepath);
 }
 
 bool Model::saveFile(std::string filepath)
 {
-    return ModelImpl::getInstance().saveFile(filepath);
+    return m_impl->saveFile(filepath);
 }
 
 std::vector<Vertex>& Model::getVertices()
 {
-    return ModelImpl::getInstance().getVertices();
+    return m_impl->getVertices();
 }
 
 std::vector<Triangle>& Model::getTriangles()
 {
-    return ModelImpl::getInstance().getTriangles();
+    return m_impl->getTriangles();
 }
 
 bool Model::detectBadTriangles(double angle)
 {
-    return ModelImpl::getInstance().detectBadTriangles(angle);
+    return m_impl->detectBadTriangles(angle);
 }
 
 bool Model::improveTriangulation()
 {
-    return ModelImpl::getInstance().improveTriangulation();
+    return m_impl->improveTriangulation();
 }

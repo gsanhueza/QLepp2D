@@ -109,6 +109,8 @@ public:
     */
     bool improveTriangulation();
 
+private:
+    ModelImpl *m_impl;
 };
 
 #endif // MODEL_H
