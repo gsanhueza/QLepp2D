@@ -24,7 +24,10 @@
 #include <structs/triangle.h>
 #include <structs/edge.h>
 
-CPUEngine::CPUEngine() = default;
+CPUEngine::CPUEngine()
+    : m_angle(0)
+{
+}
 
 bool CPUEngine::detectBadTriangles(double angle,
                                    std::vector<Vertex> &vertices,
