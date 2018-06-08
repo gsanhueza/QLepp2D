@@ -13,6 +13,16 @@ Still, there's a CPU implementation available that can be used to compare the
 
 The GPU implementation has been made using OpenCL for maximum portability.
 
+## Installation
+
+```bash
+$ mkdir build
+$ cd build
+$ qmake ..
+$ make
+$ sudo make install
+```
+
 ## Usage
 
 If you're reading this README.md, it means that you'll use the full GUI+LIB.
@@ -20,7 +30,7 @@ If you're reading this README.md, it means that you'll use the full GUI+LIB.
 * Load a mesh file. (Only OFF files are currently supported at the moment.)
 * Set a desired minimum angle.
 * Check bad triangles (Detect button)
-* Improve bad triangles.
+* Improve bad triangles (Improve button).
 * Save your new mesh.
 
 Check the Help menu for more details.
