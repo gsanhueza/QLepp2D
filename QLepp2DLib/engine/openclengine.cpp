@@ -25,6 +25,7 @@
 #include <engine/cpuengine.h>
 
 OpenCLEngine::OpenCLEngine()
+    : m_angle(0)
 {
     setup();
 }
@@ -46,7 +47,7 @@ bool OpenCLEngine::detectBadTriangles(double angle,
 
         // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
         m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
-        m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+        m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
 
         // Make kernel
         cl::make_kernel<double&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "detectBadTriangles");
@@ -110,14 +111,9 @@ bool OpenCLEngine::improveTriangulation(std::vector<Vertex> &vertices,
         // Phase 3
         detectBadTriangles(m_angle, vertices, triangles);
 
-        /*
-         * If we get a correct GPU insertion algorithm, we can do this only once
-         * instead of copying back the results for each function.
+        /* NOTE: If we get a correct GPU insertion algorithm, we can do this
+         * only once instead of copying back the results for each function.
          */
-
-         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
-         cl::copy(m_queue, m_bufferVertices, vertices.begin(), vertices.end());
-         cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
     }
     catch (cl::Error &err)
     {
@@ -164,8 +160,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
     unsigned long globalSize(triangles.size());
 
     // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
-    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), true, USE_HOST_PTR);
-    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), true, USE_HOST_PTR);
+    m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
+    m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
     m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 
     // Hack to allow flag to be modified by kernel
@@ -184,7 +180,7 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
     // Execute the kernel
     cl::Event event = detect_terminal_edges_kernel(eargs, m_bufferTriangles, m_bufferVertices, m_bufferEdges, bufferFlag);
 
-    // Copy the modified edges and the flag
+    // Copy the modified edges and the flag back to CPU
     cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
     cl::copy(m_queue, bufferFlag, flagVector.begin(), flagVector.end());
     flag = (flagVector.at(0) != 0);
@@ -207,6 +203,10 @@ void OpenCLEngine::insertCentroids(std::vector<Vertex> &vertices,
      */
     CPUEngine cpuengine; // Temporarily we'll use this for centroid insertion
     cpuengine.insertCentroids(vertices, edges, triangles);
+
+    // To avoid inconsistencies, we'll update edge information to buffers in GPU
+    const bool USE_HOST_PTR = true;
+    m_bufferEdges = cl::Buffer(m_context, edges.begin(), edges.end(), false, USE_HOST_PTR);
 }
 
 void OpenCLEngine::setup()
