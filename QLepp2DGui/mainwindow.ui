@@ -340,7 +340,7 @@
    <extends>QOpenGLWidget</extends>
    <header>openglwidget.h</header>
    <slots>
-    <slot>updateData()</slot>
+    <slot>updateData(Model*)</slot>
     <slot>resetView()</slot>
    </slots>
   </customwidget>
@@ -527,9 +527,9 @@
   </connection>
   <connection>
    <sender>MainWindow</sender>
-   <signal>emitUpdateData()</signal>
+   <signal>emitUpdateData(Model*)</signal>
    <receiver>openGLWidget</receiver>
-   <slot>updateData()</slot>
+   <slot>updateData(Model*)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>639</x>
@@ -543,7 +543,7 @@
   </connection>
  </connections>
  <slots>
-  <signal>emitUpdateData()</signal>
+  <signal>emitUpdateData(Model*)</signal>
   <signal>resetView()</signal>
   <slot>loadTriangulationClicked()</slot>
   <slot>saveTriangulationClicked()</slot>

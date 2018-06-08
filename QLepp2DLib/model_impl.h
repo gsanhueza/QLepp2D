@@ -133,7 +133,7 @@ private:
     ModelImpl(Engine *engine);
 
     FileManager m_fileManager;
-    Engine *m_engine = nullptr;
+    Engine *m_engine;
     std::vector<Vertex> m_vertices;
     std::vector<Edge> m_edges;
     std::vector<Triangle> m_triangles;

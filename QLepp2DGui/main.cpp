@@ -31,9 +31,10 @@ int main(int argc, char **argv)
     translator.load(QString("qlepp2d_%1").arg(QLocale::system().name().split("_").at(0)), ":/i18n/");
     app.installTranslator(&translator);
 
-    Model model;
-    model.setCPUEngine();
-    MainWindow window;
+    Model *model(new Model);
+    model->setCPUEngine();
+
+    MainWindow window(model);
 
     window.show();
 

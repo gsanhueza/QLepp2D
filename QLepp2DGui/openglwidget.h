@@ -40,7 +40,7 @@ public:
     ~OpenGLWidget();
 
 public slots:
-    void updateData();
+    void updateData(Model *model);
     void resetView();
     void setXRotation(int angle);
     void setYRotation(int angle);
@@ -83,5 +83,7 @@ private:
 
     QVector<GLfloat> m_data;
     bool m_dataAlreadyLoaded;
+
+    Model *m_model;
 };
 #endif
