@@ -228,6 +228,7 @@ void MainWindow::cpuEngineClicked()
     {
         ui->statusBar->showMessage(tr("Unable to set CPU engine."));
     }
+    ui->improveButton->setDisabled(true);
 }
 
 void MainWindow::openclEngineClicked()
@@ -242,6 +243,7 @@ void MainWindow::openclEngineClicked()
     {
         ui->statusBar->showMessage(tr("Unable to set OpenCL engine."));
     }
+    ui->improveButton->setDisabled(true);
 }
 
 void MainWindow::readSettings()
