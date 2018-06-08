@@ -29,6 +29,7 @@ ModelImpl& ModelImpl::getInstance(void)
 }
 
 ModelImpl::ModelImpl()
+    : m_engine(nullptr)
 {
     setEngine(new CPUEngine);
 }

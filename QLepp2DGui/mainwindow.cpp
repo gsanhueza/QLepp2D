@@ -27,13 +27,14 @@
 #include <mainwindow.h>
 #include <ui_mainwindow.h>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Model *model, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_tutorial(new Tutorial(this)),
     m_about(new About(this)),
     m_settings(new QSettings("QLepp2D", "qlepp2d", this)),
-    m_recentFilesLimit(9)
+    m_recentFilesLimit(9),
+    m_model(model)
 {
     ui->setupUi(this);
 
@@ -74,6 +75,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Update recent files in menu
     updateRecentFiles();
+
+    // Emit data to OpenGLWidget
+    emit emitUpdateData(m_model);
 }
 
 MainWindow::~MainWindow()
@@ -101,7 +105,7 @@ void MainWindow::loadFile(QString path)
 {
     ui->statusBar->showMessage(tr("Loading..."));
     std::string spath = path.toStdString();
-    if (m_model.loadFile(spath))
+    if (m_model->loadFile(spath))
     {
         // Saving current filename so we can use it as a hint for saving the OFF file
         QFileInfo fileinfo(path);
@@ -113,7 +117,7 @@ void MainWindow::loadFile(QString path)
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
 
-        emit emitUpdateData();
+        emit emitUpdateData(m_model);
     }
     else
     {
@@ -145,7 +149,7 @@ void MainWindow::saveTriangulationClicked()
     QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), outpath , tr("OFF Files (*.off)"));
 
     std::string fspath = filepath.toStdString();
-    if (not m_model.saveFile(fspath))
+    if (not m_model->saveFile(fspath))
     {
         qWarning() << "Could not save file" << filepath;
         ui->statusBar->showMessage(tr("Unable to save."));
@@ -180,11 +184,11 @@ void MainWindow::detectClicked()
     qDebug() << "Detect button clicked";
     double angle = ui->angleSpinBox->value();
 
-    if (m_model.detectBadTriangles(angle))
+    if (m_model->detectBadTriangles(angle))
     {
         ui->improveButton->setEnabled(true);
         ui->statusBar->showMessage(tr("Bad triangles have been detected. You can now proceed to improve them."));
-        emit emitUpdateData();
+        emit emitUpdateData(m_model);
     }
     else
     {
@@ -198,10 +202,10 @@ void MainWindow::detectClicked()
 void MainWindow::improveClicked()
 {
     qDebug() << "Improve button clicked";
-    if (m_model.improveTriangulation())
+    if (m_model->improveTriangulation())
     {
         ui->statusBar->showMessage(tr("Triangulation has been modified."));
-        emit emitUpdateData();
+        emit emitUpdateData(m_model);
     }
     else
     {
@@ -215,7 +219,7 @@ void MainWindow::improveClicked()
 void MainWindow::cpuEngineClicked()
 {
     qDebug() << "CPU Engine button clicked";
-    if (m_model.setCPUEngine())
+    if (m_model->setCPUEngine())
     {
         ui->statusBar->showMessage(tr("CPU Engine has been set."));
         setWindowTitle(tr("QLepp2D (CPU)"));
@@ -229,7 +233,7 @@ void MainWindow::cpuEngineClicked()
 void MainWindow::openclEngineClicked()
 {
     qDebug() << "OpenCL Engine button clicked";
-    if (m_model.setOpenCLEngine())
+    if (m_model->setOpenCLEngine())
     {
         ui->statusBar->showMessage(tr("OpenCL Engine has been set."));
         setWindowTitle(tr("QLepp2D (OpenCL)"));

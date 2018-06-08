@@ -28,7 +28,7 @@
 #include <model.h>
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -36,11 +36,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(Model *model, QWidget *parent = nullptr);
     ~MainWindow();
 
 signals:
-    void emitUpdateData();
+    void emitUpdateData(Model *model);
     void resetView();
 
 protected:
@@ -77,7 +77,7 @@ private:
     QString m_currentFileName;
     const int m_recentFilesLimit;
 
-    Model m_model;
+    Model *m_model;
 };
 
 #endif // MAINWINDOW_H
