@@ -39,7 +39,6 @@ typedef struct {
     int ie2;
     int ie3;
     int bad;
-    int valid;
 } Triangle;
 
 typedef struct {

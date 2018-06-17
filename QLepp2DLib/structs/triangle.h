@@ -36,7 +36,6 @@ typedef struct {
     cl_int ie2;
     cl_int ie3;
     cl_int bad;
-    cl_int valid;
 } Triangle;
 
 #endif // TRIANGLE_H

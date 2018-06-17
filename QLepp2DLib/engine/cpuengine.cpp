@@ -369,7 +369,6 @@ void CPUEngine::insertCentroid(int iedge,
         t.iv3 = iCentroid;
         t.ie1 = t.ie2 = t.ie3 = -1;
         t.bad = 0;
-        t.valid = 1;
 
         newTriangles.append(t);
     }

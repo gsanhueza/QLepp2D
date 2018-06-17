@@ -106,7 +106,6 @@ bool OFFHandler::load(std::string filepath,
             t.ie2 = -1;
             t.ie3 = -1;
             t.bad = 0;
-            t.valid = 1;
             triangles.push_back(t);
 
             // Phase 2
