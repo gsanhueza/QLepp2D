@@ -152,7 +152,6 @@ bool OFFHandler::load(std::string filepath,
             e.iv1 = std::min(i.value().iv1, i.value().iv2);
             e.iv2 = std::max(i.value().iv1, i.value().iv2);
             e.isTerminalEdge = 0;
-            e.isBorderEdge = 0;
             edges.push_back(e);
 
             // Phase 4

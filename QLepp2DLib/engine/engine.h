@@ -85,6 +85,8 @@ public:
      * @param vertices p_vertices: Vector of vertices.
      * @param edges p_edges: Vector of edges.
      * @param triangles p_triangles: Vector of triangles.
+     * @param flag p_flag: Flag that marks if a non-border terminal edge still
+     * exists.
      */
     virtual void detectTerminalEdges(std::vector<Vertex> &vertices,
                                      std::vector<Edge> &edges,
@@ -101,6 +103,9 @@ public:
     virtual void insertCentroids(std::vector<Vertex> &vertices,
                                  std::vector<Edge> &edges,
                                  std::vector<Triangle> &triangles) = 0;
+
+protected:
+    float m_angle;
 };
 
 #endif // ENGINE_H

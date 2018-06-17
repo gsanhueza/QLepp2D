@@ -48,7 +48,6 @@ typedef struct {
     int iv1;
     int iv2;
     int isTerminalEdge;
-    int isBorderEdge;
 } Edge;
 
 #if 0
@@ -157,7 +156,6 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             if (neighbourIT < 0)
             {
                 edges[longestIE].isTerminalEdge = 1;
-                edges[longestIE].isBorderEdge = 1;
                 return;
             }
 
@@ -165,7 +163,6 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
                 edges[longestIE].isTerminalEdge = 1;
-                edges[longestIE].isBorderEdge = 0;
                 flag[0] = 1;
                 return;
             }

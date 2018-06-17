@@ -25,8 +25,8 @@
 #include <structs/edge.h>
 
 CPUEngine::CPUEngine()
-    : m_angle(0)
 {
+    m_angle = 0;
 }
 
 bool CPUEngine::detectBadTriangles(double angle,
@@ -155,7 +155,8 @@ void CPUEngine::insertCentroids(std::vector<Vertex> &vertices,
     for (unsigned int ie(0); ie < edges.size(); ie++)
     {
         Edge &e(edges.at(ie));
-        if (e.isTerminalEdge and not e.isBorderEdge)
+        // If e.itb == -1, it's a border edge, so we won't insert a centroid
+        if (e.isTerminalEdge and e.itb != -1)
         {
             insertCentroid(ie, vertices, edges, triangles);
         }
@@ -222,7 +223,6 @@ int CPUEngine::getTerminalIEdge(int it,
         // Border triangle
         if (neighbourIT < 0)
         {
-            edges.at(longestIE).isBorderEdge = 1;
             return longestIE;
         }
 
@@ -352,7 +352,7 @@ void CPUEngine::insertCentroid(int iedge,
     {
         Edge e;
         e.ita = e.itb = e.iv1 = e.iv2 = -1;
-        e.isTerminalEdge = e.isBorderEdge = 0;
+        e.isTerminalEdge = 0;
 
         newEdges.append(e);
     }

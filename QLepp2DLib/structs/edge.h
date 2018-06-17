@@ -34,7 +34,6 @@ typedef struct {
     cl_int iv1;
     cl_int iv2;
     cl_int isTerminalEdge;
-    cl_int isBorderEdge;
 } Edge;
 
 #endif // EDGE_H

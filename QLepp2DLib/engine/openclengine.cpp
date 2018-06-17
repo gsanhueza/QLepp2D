@@ -25,8 +25,8 @@
 #include <engine/cpuengine.h>
 
 OpenCLEngine::OpenCLEngine()
-    : m_angle(0)
 {
+    m_angle = 0;
     setup();
 }
 
