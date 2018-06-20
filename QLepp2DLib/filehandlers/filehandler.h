@@ -26,7 +26,6 @@
 #include <structs/triangle.h>
 #include <structs/vertex.h>
 #include <structs/edge.h>
-#include <structs/edgedata.h>
 
 /**
 * @brief Interface for files handling module.

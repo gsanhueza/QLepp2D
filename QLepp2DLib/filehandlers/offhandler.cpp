@@ -116,10 +116,9 @@ bool OFFHandler::load(std::string filepath,
 
             for (int j(0); j < 3; j++)
             {
-                QString key;
-                key.append(std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
-                key.append("-");
-                key.append(std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
+                QString key = QString("%1-%2")
+                        .arg(std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)))
+                        .arg(std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
                 Edge ed;
 
                 if (map.contains(key))
@@ -197,24 +196,6 @@ bool OFFHandler::load(std::string filepath,
         }
 
         inputFile.close();
-
-        // FIXME Delete this
-        for (int i(0); i < triangles.size(); i++)
-        {
-            if (triangles.at(i).ie1 < 0)
-            {
-                qWarning() << "Triangle" << i << "has ie1 == -1";
-            }
-            if (triangles.at(i).ie2 < 0)
-            {
-                qWarning() << "Triangle" << i << "has ie2 == -1";
-            }
-            if (triangles.at(i).ie3 < 0)
-            {
-                qWarning() << "Triangle" << i << "has ie3 == -1";
-            }
-        }
-
         return true;
     }
     return false;
