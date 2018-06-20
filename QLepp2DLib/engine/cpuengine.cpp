@@ -121,8 +121,6 @@ void CPUEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
                                     std::vector<Triangle> &triangles,
                                     bool &flag)
 {
-    // FIXME Out-of-range when loading a huge file
-
     QElapsedTimer timer;
     timer.start();
 
