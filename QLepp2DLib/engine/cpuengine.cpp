@@ -46,19 +46,19 @@ bool CPUEngine::detectBadTriangles(double angle,
         B = vertices.at(t.iv2);
         C = vertices.at(t.iv3);
 
-        float length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
-        float length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
-        float length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
+        double length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
+        double length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
+        double length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
 
-        float length_a = sqrt(length_a2);
-        float length_b = sqrt(length_b2);
-        float length_c = sqrt(length_c2);
+        double length_a = sqrt(length_a2);
+        double length_b = sqrt(length_b2);
+        double length_c = sqrt(length_c2);
 
-        float angle_opp_a2 = std::acos((length_b2 + length_c2 - length_a2) / (2 * length_b * length_c));
-        float angle_opp_b2 = std::acos((length_a2 + length_c2 - length_b2) / (2 * length_a * length_c));
-        float angle_opp_c2 = std::acos((length_a2 + length_b2 - length_c2) / (2 * length_a * length_b));
+        double angle_opp_a2 = std::acos((length_b2 + length_c2 - length_a2) / (2 * length_b * length_c));
+        double angle_opp_b2 = std::acos((length_a2 + length_c2 - length_b2) / (2 * length_a * length_c));
+        double angle_opp_c2 = std::acos((length_a2 + length_b2 - length_c2) / (2 * length_a * length_b));
 
-        float rad_angle = angle * M_PI / 180.0;
+        double rad_angle = angle * M_PI / 180.0;
 
         t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
     }
@@ -104,6 +104,11 @@ bool CPUEngine::improveTriangulation(std::vector<Vertex> &vertices,
 
         return true;
     }
+    catch (std::exception &e)
+    {
+        qWarning() << e.what();
+        return false;
+    }
     catch (...)
     {
         qWarning() << "Unknown error in CPUEngine::improveTriangulation";
@@ -116,6 +121,8 @@ void CPUEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
                                     std::vector<Triangle> &triangles,
                                     bool &flag)
 {
+    // FIXME Out-of-range when loading a huge file
+
     QElapsedTimer timer;
     timer.start();
 
@@ -193,9 +200,9 @@ int CPUEngine::getTerminalIEdge(int it,
         B = vertices.at(t.iv2);
         C = vertices.at(t.iv3);
 
-        float length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
-        float length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
-        float length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
+        double length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
+        double length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
+        double length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
 
         int neighbourIT;
         int longestIE;

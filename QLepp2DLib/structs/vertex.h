@@ -27,9 +27,9 @@
 # endif
 
 typedef struct {
-    cl_float x;
-    cl_float y;
-    cl_float z;
+    cl_double x;
+    cl_double y;
+    cl_double z;
 } Vertex;
 
 #endif // VERTEX_H

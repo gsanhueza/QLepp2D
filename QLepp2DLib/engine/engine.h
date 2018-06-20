@@ -105,7 +105,7 @@ public:
                                  std::vector<Triangle> &triangles) = 0;
 
 protected:
-    float m_angle;
+    double m_angle;
 };
 
 #endif // ENGINE_H
