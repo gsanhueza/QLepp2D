@@ -31,7 +31,6 @@ HEADERS += \
         structs/triangle.h \
         structs/vertex.h \
         structs/edge.h \
-        structs/edgedata.h \
         engine/cpuengine.h \
         engine/openclengine.h \
         filehandlers/filemanager.h \

@@ -31,7 +31,6 @@
 #include <structs/triangle.h>
 #include <structs/vertex.h>
 #include <structs/edge.h>
-#include <structs/edgedata.h>
 
 /**
 * @brief Factory class for the file managing module.

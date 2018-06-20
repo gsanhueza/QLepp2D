@@ -88,7 +88,7 @@ bool OFFHandler::load(std::string filepath,
          */
 
         // Create QMap.
-        QMap<QString, EdgeData> map;
+        QMap<QString, Edge> map;
 
         // Read faces data (indices)
         for (int i(0); i < numTriangles; i++)
@@ -116,55 +116,51 @@ bool OFFHandler::load(std::string filepath,
 
             for (int j(0); j < 3; j++)
             {
-                QString key;
-                key.append(std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
-                key.append("-");
-                key.append(std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
-                EdgeData ed;
+                QString key = QString("%1-%2")
+                        .arg(std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)))
+                        .arg(std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3)));
+                Edge ed;
 
                 if (map.contains(key))
                 {
                     ed = map.value(key);
-                    ed.ivopb = tmpIV.at((j + 2) % 3); // Index of opposite vertex from neighbour whose edge was already in "map"
                     ed.itb = i; // Index of current triangle, neighbour of earlier triangle in "map"
                 }
                 else
                 {
-                    ed.iv1 = tmpIV.at(j % 3);
-                    ed.iv2 = tmpIV.at((j + 1) % 3);
-                    ed.ivopa = tmpIV.at((j + 2) % 3);
+                    ed.iv1 = std::min(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3));
+                    ed.iv2 = std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3));
                     ed.ita = i; // Index of current triangle
-                    ed.ivopb = -1; // Index of opposite vertex from neighbour not yet found
-                    ed.itb = -1; // Index of neighbour triangle not yet found
+                    ed.itb = -1; // Index of neighbour triangle not (yet) found
+                    ed.isTerminalEdge = 0;
                 }
+
                 map.insert(key, ed);
             }
         }
 
         // Phase 3
-        int k = 0;
-        for (QMap<QString, EdgeData>::iterator i(map.begin()); i != map.end(); i++, k++)
+        int k = 0; // Current pointer of edges
+        for (QMap<QString, Edge>::iterator i(map.begin()); i != map.end(); i++, k++)
         {
-            Edge e;
-            e.ita = i.value().ita;
-            e.itb = i.value().itb;
-            e.iv1 = std::min(i.value().iv1, i.value().iv2);
-            e.iv2 = std::max(i.value().iv1, i.value().iv2);
-            e.isTerminalEdge = 0;
+            Edge e(i.value());
             edges.push_back(e);
 
             // Phase 4
             // Triangle A
             Triangle &ta = triangles.at(e.ita);
-            if (i.value().ivopa == ta.iv1)
+            /* If the Vertex "a" from the triangle is not in e.iv1 or e.iv2,
+             * then this Vertex "a" is the opposite of the current Edge.
+             */
+            if (ta.iv1 != e.iv1 and ta.iv1 != e.iv2)
             {
                 ta.ie1 = k;
             }
-            else if (i.value().ivopa == ta.iv2)
+            else if (ta.iv2 != e.iv1 and ta.iv2 != e.iv2)
             {
                 ta.ie2 = k;
             }
-            else if (i.value().ivopa == ta.iv3)
+            else if (ta.iv3 != e.iv1 and ta.iv3 != e.iv2)
             {
                 ta.ie3 = k;
             }
@@ -181,15 +177,15 @@ bool OFFHandler::load(std::string filepath,
 
             Triangle &tb = triangles.at(e.itb);
 
-            if (i.value().ivopb == tb.iv1)
+            if (tb.iv1 != e.iv1 and tb.iv1 != e.iv2)
             {
                 tb.ie1 = k;
             }
-            else if (i.value().ivopb == tb.iv2)
+            else if (tb.iv2 != e.iv1 and tb.iv2 != e.iv2)
             {
                 tb.ie2 = k;
             }
-            else if (i.value().ivopb == tb.iv3)
+            else if (tb.iv3 != e.iv1 and tb.iv3 != e.iv2)
             {
                 tb.ie3 = k;
             }
