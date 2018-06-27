@@ -53,6 +53,7 @@ private slots:
     void resetViewClicked();
     void loadTutorialClicked();
     void loadAboutClicked();
+    void loadAboutQtClicked();
     void detectClicked();
     void improveClicked();
     void cpuEngineClicked();

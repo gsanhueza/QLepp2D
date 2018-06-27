@@ -173,6 +173,12 @@ void MainWindow::loadAboutClicked()
     m_about->show();
 }
 
+void MainWindow::loadAboutQtClicked()
+{
+    qDebug() << "Load AboutQt button clicked";
+    QApplication::aboutQt();
+}
+
 void MainWindow::resetViewClicked()
 {
     qDebug() << "Reset View button clicked";

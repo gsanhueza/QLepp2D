@@ -154,6 +154,7 @@
     <addaction name="actionTutorial"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="statusTip">
@@ -266,7 +267,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>&amp;About</string>
+    <string>&amp;About...</string>
    </property>
    <property name="statusTip">
     <string>Shows an About window.</string>
@@ -330,6 +331,18 @@
    </property>
    <property name="text">
     <string>&amp;Clear history</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="icon">
+    <iconset theme="qt">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>About &amp;Qt...</string>
+   </property>
+   <property name="statusTip">
+    <string>Shows an About Qt window.</string>
    </property>
   </action>
  </widget>
@@ -541,6 +554,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAboutQt</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>loadAboutQtClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>emitUpdateData(Model*)</signal>
@@ -554,5 +583,6 @@
   <slot>improveClicked()</slot>
   <slot>cpuEngineClicked()</slot>
   <slot>openclEngineClicked()</slot>
+  <slot>loadAboutQtClicked()</slot>
  </slots>
 </ui>
