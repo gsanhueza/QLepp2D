@@ -26,8 +26,6 @@
 #   include <CL/cl.hpp>
 # endif
 
-#include <structs/vertex.h>
-
 typedef struct {
     cl_int iv1;
     cl_int iv2;
