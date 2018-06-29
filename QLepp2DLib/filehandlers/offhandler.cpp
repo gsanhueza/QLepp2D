@@ -225,16 +225,16 @@ bool OFFHandler::save(std::string filepath,
         out << numVertices << " " << numTriangles << " " << numEdges;
 
         // Write vertices
-        int coordinatesPerVertex = static_cast<int>(vertices.size()) / numVertices;
-        for (int i(0); i < static_cast<int>(vertices.size()); i++)
+        unsigned long coordinatesPerVertex = vertices.size() / numVertices;
+        for (unsigned long i(0); i < vertices.size(); i++)
         {
             if (i % coordinatesPerVertex == 0)
             {
                 out << endl;
             }
-            out << vertices.at(static_cast<unsigned long>(i)).x << " ";
-            out << vertices.at(static_cast<unsigned long>(i)).y << " ";
-            out << vertices.at(static_cast<unsigned long>(i)).z;
+            out << vertices.at(i).x << " ";
+            out << vertices.at(i).y << " ";
+            out << vertices.at(i).z;
         }
 
         out << endl;

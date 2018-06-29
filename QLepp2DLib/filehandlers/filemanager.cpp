@@ -45,7 +45,10 @@ bool FileManager::addFileHandler(FileHandler *handler, std::string extension)
     return false;
 }
 
-bool FileManager::load(std::string filepath, std::vector<Vertex> &vertices, std::vector<Edge> &edges, std::vector<Triangle> &triangles)
+bool FileManager::load(std::string filepath,
+                       std::vector<Vertex> &vertices,
+                       std::vector<Edge> &edges,
+                       std::vector<Triangle> &triangles)
 {
     QFileInfo fileinfo(QString::fromStdString(filepath));
     QString ext = fileinfo.suffix();
@@ -54,7 +57,10 @@ bool FileManager::load(std::string filepath, std::vector<Vertex> &vertices, std:
     return (handler != nullptr and handler->load(filepath, vertices, edges, triangles));
 }
 
-bool FileManager::save(std::string filepath, std::vector<Vertex> &vertices, std::vector<Edge> &edges, std::vector<Triangle> &triangles)
+bool FileManager::save(std::string filepath,
+                       std::vector<Vertex> &vertices,
+                       std::vector<Edge> &edges,
+                       std::vector<Triangle> &triangles)
 {
     QFileInfo fileinfo(QString::fromStdString(filepath));
     QString ext = fileinfo.suffix();
