@@ -61,6 +61,7 @@ private slots:
 
 private:
     void loadFile(QString path);
+    void saveFile(QString path);
     void readSettings();
     void writeSettings();
     void addRecentFile(QString path);

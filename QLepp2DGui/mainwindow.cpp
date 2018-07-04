@@ -128,9 +128,27 @@ void MainWindow::loadFile(QString path)
     updateRecentFiles();
 }
 
+void MainWindow::saveFile(QString filepath)
+{
+    std::string fspath = filepath.toStdString();
+    if (not m_model->saveFile(fspath))
+    {
+        qWarning() << "Could not save file" << filepath;
+        ui->statusBar->showMessage(tr("Unable to save."));
+    }
+    else
+    {
+        qDebug() << "Triangulation Saved.";
+        ui->statusBar->showMessage(tr("Saved."));
+    }
+}
+
 void MainWindow::loadTriangulationClicked()
 {
-    QString filepath = QFileDialog::getOpenFileName(this, tr("OFF files"), m_settings->value("lastDir", ".").toString() , tr("OFF Files (*.off)"));
+    QString filepath = QFileDialog::getOpenFileName(this,
+                                                    tr("OFF files"),
+                                                    m_settings->value("lastDir", ".").toString(),
+                                                    tr("OFF Files (*.off)"));
     loadFile(filepath);
 }
 
@@ -144,21 +162,12 @@ void MainWindow::saveTriangulationClicked()
         return;
     }
 
-    ui->actionSaveTriangulation->setEnabled(true);
     QString outpath = QString("%1/%2_mod").arg(m_settings->value("lastDir", ".").toString()).arg(m_currentFileName);
-    QString filepath = QFileDialog::getSaveFileName(this, tr("OFF files"), outpath , tr("OFF Files (*.off)"));
-
-    std::string fspath = filepath.toStdString();
-    if (not m_model->saveFile(fspath))
-    {
-        qWarning() << "Could not save file" << filepath;
-        ui->statusBar->showMessage(tr("Unable to save."));
-    }
-    else
-    {
-        qDebug() << "Triangulation Saved.";
-        ui->statusBar->showMessage(tr("Saved."));
-    }
+    QString filepath = QFileDialog::getSaveFileName(this,
+                                                    tr("OFF files"),
+                                                    outpath,
+                                                    tr("OFF Files (*.off)"));
+    saveFile(filepath);
 }
 
 void MainWindow::loadTutorialClicked()
