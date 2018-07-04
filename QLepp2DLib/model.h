@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <structs/vertex.h>
+#include <structs/edge.h>
 #include <structs/triangle.h>
 
 class ModelImpl;
@@ -81,11 +82,11 @@ public:
     std::vector<Vertex>& getVertices();
 
     /**
-    * @brief Gets a vector of Vertex which are being used by the implementation.
+    * @brief Gets a vector of Edges which are being used by the implementation.
     *
-    * @return std::vector< int >& Reference to the actual vector of indices.
+    * @return std::vector< Edge >& Reference to the actual vector of edges.
     */
-    std::vector<int>& getIndices();
+    std::vector<Edge>& getEdges();
 
     /**
     * @brief Gets a vector of Triangles which are being used by the implementation.

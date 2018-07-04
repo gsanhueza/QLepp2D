@@ -49,6 +49,11 @@ std::vector<Vertex>& Model::getVertices()
     return m_impl->getVertices();
 }
 
+std::vector<Edge>& Model::getEdges()
+{
+    return m_impl->getEdges();
+}
+
 std::vector<Triangle>& Model::getTriangles()
 {
     return m_impl->getTriangles();

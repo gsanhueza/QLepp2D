@@ -88,6 +88,11 @@ std::vector<Vertex>& ModelImpl::getVertices()
     return m_vertices;
 }
 
+std::vector<Edge>& ModelImpl::getEdges()
+{
+    return m_edges;
+}
+
 std::vector<Triangle>& ModelImpl::getTriangles()
 {
     return m_triangles;
