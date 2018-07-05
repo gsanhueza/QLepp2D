@@ -81,7 +81,7 @@ private:
     float m_yCamPos;
     float m_zCamPos;
 
-    QVector<GLdouble> m_data;
+    QVector<GLfloat> m_data;
     bool m_dataAlreadyLoaded;
 
     Model *m_model;

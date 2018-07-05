@@ -56,12 +56,12 @@ void OpenGLWidget::setupVertexAttribs()
     // glVertexAttribPointer(GLuint index​, GLint size​, GLenum type​, GLboolean normalized​, GLsizei stride​, const GLvoid * pointer​);
     // index = Vertex(0) or Color(1), can be more if needed
     // size = Coordinates(x, y, z) => 3
-    // type = GL_DOUBLE, as that's the type of each coordinate
+    // type = GL_FLOAT, as that's the type of each coordinate
     // normalized = false, as there's no need to normalize here
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
-    // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_DOUBLE * sizeof(vertexArray) = start of color)
-    f->glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 0, 0);
-    f->glVertexAttribPointer(1, 3, GL_DOUBLE, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
+    // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * sizeof(vertexArray) = start of color)
+    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
     m_vbo.release();
 }
 
@@ -138,7 +138,7 @@ void OpenGLWidget::loadData()
     }
 
     // Allocate data into VBO
-    m_vbo.allocate(m_data.constData(), m_data.count() * sizeof(GLdouble));
+    m_vbo.allocate(m_data.constData(), m_data.count() * sizeof(GLfloat));
 
     // Store the vertex attribute bindings for the program.
     setupVertexAttribs();
