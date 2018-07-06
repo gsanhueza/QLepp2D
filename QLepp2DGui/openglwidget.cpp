@@ -43,7 +43,6 @@ void OpenGLWidget::cleanup()
     makeCurrent();
     m_vbo.destroy();
     delete m_program;
-    m_program = nullptr;
     doneCurrent();
 }
 
@@ -104,26 +103,26 @@ void OpenGLWidget::loadData()
     m_vbo.create();
     m_vbo.bind();
 
-    // Clear old geometry data from vector.
-    m_data.clear();
+    // Create data vector.
+    QVector<GLfloat> vertexData;
 
     // Load vertices
-    std::vector<Vertex> vertices(m_model->getVertices());
-    std::vector<Triangle> triangles(m_model->getTriangles());
+    std::vector<Vertex> &vertices(m_model->getVertices());
+    std::vector<Triangle> &triangles(m_model->getTriangles());
 
     for (Triangle &t : triangles)
     {
-        m_data.append(vertices.at(t.iv1).x);
-        m_data.append(vertices.at(t.iv1).y);
-        m_data.append(vertices.at(t.iv1).z);
+        vertexData.append(vertices.at(t.iv1).x);
+        vertexData.append(vertices.at(t.iv1).y);
+        vertexData.append(vertices.at(t.iv1).z);
 
-        m_data.append(vertices.at(t.iv2).x);
-        m_data.append(vertices.at(t.iv2).y);
-        m_data.append(vertices.at(t.iv2).z);
+        vertexData.append(vertices.at(t.iv2).x);
+        vertexData.append(vertices.at(t.iv2).y);
+        vertexData.append(vertices.at(t.iv2).z);
 
-        m_data.append(vertices.at(t.iv3).x);
-        m_data.append(vertices.at(t.iv3).y);
-        m_data.append(vertices.at(t.iv3).z);
+        vertexData.append(vertices.at(t.iv3).x);
+        vertexData.append(vertices.at(t.iv3).y);
+        vertexData.append(vertices.at(t.iv3).z);
     }
 
     // Generate color
@@ -131,18 +130,14 @@ void OpenGLWidget::loadData()
     {
         for (int i(1); i <= 3; i++)
         {
-            m_data.append( t.bad * 0.3 * i);
-            m_data.append(!t.bad * 0.3 * i);
-            m_data.append(0.0);
+            vertexData.append( t.bad * 0.3 * i);
+            vertexData.append(!t.bad * 0.3 * i);
+            vertexData.append(0.0);
         }
     }
 
     // Allocate data into VBO
-    m_vbo.allocate(m_data.constData(), m_data.count() * sizeof(GLfloat));
-
-    // Store the vertex attribute bindings for the program.
-    setupVertexAttribs();
-    m_dataAlreadyLoaded = true;
+    m_vbo.allocate(vertexData.constData(), vertexData.count() * sizeof(GLfloat));
 }
 
 void OpenGLWidget::paintGL()
@@ -167,14 +162,21 @@ void OpenGLWidget::paintGL()
     m_program->setUniformValue(m_projMatrixLoc, m_proj);
     m_program->setUniformValue(m_modelViewMatrixLoc, m_camera * m_world);
 
-    // Load new data only on geometry or shader change
+    // Load new data only on model pointer change
     if (not m_dataAlreadyLoaded)
     {
+        // Load data
         loadData();
+
+        // Store the vertex attribute bindings for the program.
+        setupVertexAttribs();
+
+        m_dataAlreadyLoaded = true;
     }
 
     // Draw triangulation
-    glDrawArrays(GL_TRIANGLES, 0, m_data.count() / 6);     // Last argument = Number of vertices
+    // Last argument = Number of vertices in total
+    glDrawArrays(GL_TRIANGLES, 0, 3 * m_model->getTriangles().size());
 
     m_program->release();
 }
