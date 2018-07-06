@@ -40,7 +40,8 @@ public:
     ~MainWindow();
 
 signals:
-    void emitUpdateData(Model *model);
+    void emitUpdateModel(Model *model);
+    void emitUpdateData();
     void resetView();
 
 protected:

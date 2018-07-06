@@ -187,13 +187,13 @@ void OpenGLWidget::resizeGL(int w, int h)
     m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 10000.0f);
 }
 
-void OpenGLWidget::updateData(Model *model)
+void OpenGLWidget::updateModel(Model *model)
 {
-    if (m_model == nullptr)
-    {
-        m_model = model;
-    }
+    m_model = model;
+}
 
+void OpenGLWidget::updateData()
+{
     m_dataAlreadyLoaded = false;
     update();
 }
