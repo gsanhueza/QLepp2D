@@ -26,9 +26,9 @@
 #endif
 
 typedef struct {
-    double x;
-    double y;
-    double z;
+    float x;
+    float y;
+    float z;
 } Vertex;
 
 typedef struct {
@@ -51,9 +51,9 @@ typedef struct {
 
 #if 0
 int get_global_id(int);
-double pown(double, int);
-double sqrt(double);
-double acos(double);
+float pown(float, int);
+float sqrt(float);
+float acos(float);
 #endif
 
 /* Each thread is a Triangle */
@@ -66,20 +66,20 @@ kernel void detectBadTriangles(const double angle, global Triangle *triangles, g
     B = vertices[triangles[idx].iv2];
     C = vertices[triangles[idx].iv3];
 
-    double length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
-    double length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
-    double length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+    float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+    float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+    float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
 
 
-    double length_a = sqrt(length_a2);
-    double length_b = sqrt(length_b2);
-    double length_c = sqrt(length_c2);
+    float length_a = sqrt(length_a2);
+    float length_b = sqrt(length_b2);
+    float length_c = sqrt(length_c2);
 
-    double angle_opp_a2 = acos((length_b2 + length_c2 - length_a2) / (2 * length_b * length_c));
-    double angle_opp_b2 = acos((length_a2 + length_c2 - length_b2) / (2 * length_a * length_c));
-    double angle_opp_c2 = acos((length_a2 + length_b2 - length_c2) / (2 * length_a * length_b));
+    float angle_opp_a2 = acos((length_b2 + length_c2 - length_a2) / (2 * length_b * length_c));
+    float angle_opp_b2 = acos((length_a2 + length_c2 - length_b2) / (2 * length_a * length_c));
+    float angle_opp_c2 = acos((length_a2 + length_b2 - length_c2) / (2 * length_a * length_b));
 
-    double rad_angle = angle * M_PI / 180.0;
+    float rad_angle = angle * M_PI / 180.0;
 
     triangles[idx].bad = (angle_opp_a2 < rad_angle || angle_opp_b2 < rad_angle || angle_opp_c2 < rad_angle);
 }
@@ -124,9 +124,9 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             B = vertices[t.iv2];
             C = vertices[t.iv3];
 
-            double length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
-            double length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
-            double length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+            float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+            float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+            float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
 
             int neighbourIT;
             int longestIE;
