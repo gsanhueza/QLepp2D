@@ -40,7 +40,8 @@ public:
     ~OpenGLWidget();
 
 public slots:
-    void updateData(Model *model);
+    void updateModel(Model *model);
+    void updateData();
     void resetView();
     void setXRotation(int angle);
     void setYRotation(int angle);

@@ -76,8 +76,8 @@ MainWindow::MainWindow(Model *model, QWidget *parent) :
     // Update recent files in menu
     updateRecentFiles();
 
-    // Emit data to OpenGLWidget
-    emit emitUpdateData(m_model);
+    // Update reference to Model in OpenGLWidget
+    emit emitUpdateModel(m_model);
 }
 
 MainWindow::~MainWindow()
@@ -117,7 +117,7 @@ void MainWindow::loadFile(QString path)
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
 
-        emit emitUpdateData(m_model);
+        emit emitUpdateData();
     }
     else
     {
@@ -203,7 +203,7 @@ void MainWindow::detectClicked()
     {
         ui->improveButton->setEnabled(true);
         ui->statusBar->showMessage(tr("Bad triangles have been detected. You can now proceed to improve them."));
-        emit emitUpdateData(m_model);
+        emit emitUpdateData();
     }
     else
     {
@@ -220,7 +220,7 @@ void MainWindow::improveClicked()
     if (m_model->improveTriangulation())
     {
         ui->statusBar->showMessage(tr("Triangulation has been modified."));
-        emit emitUpdateData(m_model);
+        emit emitUpdateData();
     }
     else
     {

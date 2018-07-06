@@ -353,8 +353,9 @@
    <extends>QOpenGLWidget</extends>
    <header>openglwidget.h</header>
    <slots>
-    <slot>updateData(Model*)</slot>
+    <slot>updateData()</slot>
     <slot>resetView()</slot>
+    <slot>updateModel(Model*)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -540,9 +541,9 @@
   </connection>
   <connection>
    <sender>MainWindow</sender>
-   <signal>emitUpdateData(Model*)</signal>
+   <signal>emitUpdateData()</signal>
    <receiver>openGLWidget</receiver>
-   <slot>updateData(Model*)</slot>
+   <slot>updateData()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>639</x>
@@ -570,10 +571,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>emitUpdateModel(Model*)</signal>
+   <receiver>openGLWidget</receiver>
+   <slot>updateModel(Model*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>339</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <signal>emitUpdateData(Model*)</signal>
+  <signal>emitUpdateData()</signal>
   <signal>resetView()</signal>
+  <signal>emitUpdateModel(Model*)</signal>
   <slot>loadTriangulationClicked()</slot>
   <slot>saveTriangulationClicked()</slot>
   <slot>loadTutorialClicked()</slot>
