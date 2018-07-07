@@ -199,7 +199,7 @@ void MainWindow::detectClicked()
     qDebug() << "Detect button clicked";
     double angle = ui->angleSpinBox->value();
 
-    if (m_model->detectBadTriangles(angle))
+    if (m_model->detectBadTriangles(static_cast<float>(angle)))
     {
         ui->improveButton->setEnabled(true);
         ui->statusBar->showMessage(tr("Bad triangles have been detected. You can now proceed to improve them."));
