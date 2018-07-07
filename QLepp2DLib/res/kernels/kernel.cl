@@ -57,7 +57,7 @@ float acos(float);
 #endif
 
 /* Each thread is a Triangle */
-kernel void detectBadTriangles(const double angle, global Triangle *triangles, global Vertex *vertices)
+kernel void detectBadTriangles(const float angle, global Triangle *triangles, global Vertex *vertices)
 {
     int idx = get_global_id(0);
 
