@@ -46,21 +46,26 @@ bool CPUEngine::detectBadTriangles(float angle,
         B = vertices.at(t.iv2);
         C = vertices.at(t.iv3);
 
-        float length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
-        float length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
-        float length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
+        float length_A = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
+        float length_B = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
+        float length_C = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
 
-        float length_a = sqrt(length_a2);
-        float length_b = sqrt(length_b2);
-        float length_c = sqrt(length_c2);
+        float length_a = sqrt(length_A);
+        float length_b = sqrt(length_B);
+        float length_c = sqrt(length_C);
 
-        float angle_opp_a2 = std::acos((length_b2 + length_c2 - length_a2) / (2 * length_b * length_c));
-        float angle_opp_b2 = std::acos((length_a2 + length_c2 - length_b2) / (2 * length_a * length_c));
-        float angle_opp_c2 = std::acos((length_a2 + length_b2 - length_c2) / (2 * length_a * length_b));
+        float angle_opp_A = std::acos((length_B + length_C - length_A)
+                                      / (2 * length_b * length_c));
+        float angle_opp_B = std::acos((length_A + length_C - length_B)
+                                      / (2 * length_a * length_c));
+        float angle_opp_C = std::acos((length_A + length_B - length_C)
+                                      / (2 * length_a * length_b));
 
         float rad_angle = angle * M_PI / 180.0;
 
-        t.bad = (angle_opp_a2 < rad_angle or angle_opp_b2 < rad_angle or angle_opp_c2 < rad_angle);
+        t.bad = (angle_opp_A < rad_angle or
+                 angle_opp_B < rad_angle or
+                 angle_opp_C < rad_angle);
     }
     qint64 elapsed = timer.nsecsElapsed();
     qDebug() << "* CPU: Bad Triangles detected in" << elapsed << "nanoseconds.";
@@ -198,20 +203,20 @@ int CPUEngine::getTerminalIEdge(int it,
         B = vertices.at(t.iv2);
         C = vertices.at(t.iv3);
 
-        float length_a2 = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
-        float length_b2 = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
-        float length_c2 = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
+        float length_A = pow(B.x - C.x, 2) + pow(B.y - C.y, 2) + pow(B.z - C.z, 2);
+        float length_B = pow(A.x - C.x, 2) + pow(A.y - C.y, 2) + pow(A.z - C.z, 2);
+        float length_C = pow(A.x - B.x, 2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2);
 
         int neighbourIT;
         int longestIE;
         Edge longestEdge;
 
-        if (length_a2 > length_b2 and length_a2 > length_c2)
+        if (length_A > length_B and length_A > length_C)
         {
             longestEdge = edges.at(t.ie1);
             longestIE = t.ie1;
         }
-        else if (length_b2 > length_a2 and length_b2 > length_c2)
+        else if (length_B > length_A and length_B > length_C)
         {
             longestEdge = edges.at(t.ie2);
             longestIE = t.ie2;

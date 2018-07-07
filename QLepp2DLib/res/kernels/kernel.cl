@@ -66,22 +66,22 @@ kernel void detectBadTriangles(const float angle, global Triangle *triangles, gl
     B = vertices[triangles[idx].iv2];
     C = vertices[triangles[idx].iv3];
 
-    float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
-    float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
-    float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+    float length_A = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+    float length_B = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+    float length_C = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
 
 
-    float length_a = sqrt(length_a2);
-    float length_b = sqrt(length_b2);
-    float length_c = sqrt(length_c2);
+    float length_a = sqrt(length_A);
+    float length_b = sqrt(length_B);
+    float length_c = sqrt(length_C);
 
-    float angle_opp_a2 = acos((length_b2 + length_c2 - length_a2) / (2 * length_b * length_c));
-    float angle_opp_b2 = acos((length_a2 + length_c2 - length_b2) / (2 * length_a * length_c));
-    float angle_opp_c2 = acos((length_a2 + length_b2 - length_c2) / (2 * length_a * length_b));
+    float angle_opp_A = acos((length_B + length_C - length_A) / (2 * length_b * length_c));
+    float angle_opp_B = acos((length_A + length_C - length_B) / (2 * length_a * length_c));
+    float angle_opp_C = acos((length_A + length_B - length_C) / (2 * length_a * length_b));
 
     float rad_angle = angle * M_PI / 180.0;
 
-    triangles[idx].bad = (angle_opp_a2 < rad_angle || angle_opp_b2 < rad_angle || angle_opp_c2 < rad_angle);
+    triangles[idx].bad = (angle_opp_A < rad_angle || angle_opp_B < rad_angle || angle_opp_C < rad_angle);
 }
 
 /* Each thread is a Triangle */
@@ -124,20 +124,20 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             B = vertices[t.iv2];
             C = vertices[t.iv3];
 
-            float length_a2 = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
-            float length_b2 = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
-            float length_c2 = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
+            float length_A = pown(B.x - C.x, 2) + pown(B.y - C.y, 2) + pown(B.z - C.z, 2);
+            float length_B = pown(A.x - C.x, 2) + pown(A.y - C.y, 2) + pown(A.z - C.z, 2);
+            float length_C = pown(A.x - B.x, 2) + pown(A.y - B.y, 2) + pown(A.z - B.z, 2);
 
             int neighbourIT;
             int longestIE;
             Edge longestEdge;
 
-            if (length_a2 > length_b2 && length_a2 > length_c2)
+            if (length_A > length_B && length_A > length_C)
             {
                 longestEdge = edges[t.ie1];
                 longestIE = t.ie1;
             }
-            else if (length_b2 > length_a2 && length_b2 > length_c2)
+            else if (length_B > length_A && length_B > length_C)
             {
                 longestEdge = edges[t.ie2];
                 longestIE = t.ie2;
