@@ -43,7 +43,7 @@ public:
      * @param triangles p_triangles: Vector of triangles.
      * @return True if detected without issues.
      */
-    virtual bool detectBadTriangles(double angle,
+    virtual bool detectBadTriangles(float angle,
                                     std::vector<Vertex> &vertices,
                                     std::vector<Triangle> &triangles) override;
 

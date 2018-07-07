@@ -59,7 +59,7 @@ public:
      * @param triangles p_triangles: Vector of triangles.
      * @return True if detected without issues.
      */
-    virtual bool detectBadTriangles(double angle,
+    virtual bool detectBadTriangles(float angle,
                                     std::vector<Vertex> &vertices,
                                     std::vector<Triangle> &triangles) = 0;
 
@@ -105,7 +105,7 @@ public:
                                  std::vector<Triangle> &triangles) = 0;
 
 protected:
-    double m_angle;
+    float m_angle;
 };
 
 #endif // ENGINE_H

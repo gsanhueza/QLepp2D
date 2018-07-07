@@ -30,7 +30,7 @@ OpenCLEngine::OpenCLEngine()
     setup();
 }
 
-bool OpenCLEngine::detectBadTriangles(double angle,
+bool OpenCLEngine::detectBadTriangles(float angle,
                                       std::vector<Vertex> &vertices,
                                       std::vector<Triangle> &triangles)
 {
@@ -50,7 +50,7 @@ bool OpenCLEngine::detectBadTriangles(double angle,
         m_bufferVertices = cl::Buffer(m_context, vertices.begin(), vertices.end(), false, USE_HOST_PTR);
 
         // Make kernel
-        cl::make_kernel<double&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "detectBadTriangles");
+        cl::make_kernel<float&, cl::Buffer&, cl::Buffer&> detect_kernel(m_program, "detectBadTriangles");
 
         // Set dimensions
         cl::NDRange global(triangles.size());
