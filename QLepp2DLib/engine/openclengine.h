@@ -99,6 +99,14 @@ protected:
      */
     void setup();
 
+    /**
+     * @brief Retrieves data from the current OpenCL Implementation.
+     * @param plat_id: Platform ID
+     * @param dev_id: Device ID
+     * @return Vector with data from the implementation (vendor, version, etc).
+     */
+    std::vector<std::string> getOpenCLData(int plat_id, int dev_id) const;
+
 private:
     std::vector<cl::Platform> m_platforms;
     std::vector<cl::Device> m_devices;

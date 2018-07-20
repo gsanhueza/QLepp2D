@@ -68,7 +68,7 @@ bool OpenCLEngine::detectBadTriangles(float angle,
         event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
         event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-        qDebug() << (time_end - time_start);
+        qDebug() << "OpenCL Algorithm (DBT): " << (time_end - time_start) << "nanoseconds";
 
         // Copy the output data back to the host
         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
@@ -190,6 +190,8 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
     event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
     event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
+    qDebug() << "OpenCL Algorithm (DTE): " << (time_end - time_start) << "nanoseconds";
+
     qint64 elapsed = timer.nsecsElapsed();
     qDebug() << "+ OpenCL: Terminal edges detected in" << elapsed << "nanoseconds.";
 }
@@ -227,6 +229,12 @@ void OpenCLEngine::setup()
         // Select the platform.
         m_platforms.at(platform_id).getDevices(CL_DEVICE_TYPE_GPU | CL_DEVICE_TYPE_CPU, &m_devices);
 
+        // Print information from the Platform and Device IDs
+        for (std::string s : getOpenCLData(platform_id, device_id))
+        {
+            qDebug() << QString::fromStdString(s);
+        }
+
         // Create a context
         m_context = cl::Context(m_devices);
 
@@ -256,4 +264,94 @@ void OpenCLEngine::setup()
         qDebug() << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_devices.at(0)).c_str();
         throw e;
     }
+}
+
+std::vector<std::string> OpenCLEngine::getOpenCLData(int pl_id, int dev_id) const
+{
+    // Investigate platform
+    std::vector<std::string> vec;
+    std::string ss;
+    std::string s;
+
+    unsigned long platform_id(static_cast<unsigned long>(pl_id));
+    unsigned long device_id(static_cast<unsigned long>(dev_id));
+
+    m_platforms.at(platform_id).getInfo(CL_PLATFORM_NAME, &s);
+    ss.append("Platform: ");
+    ss.append(s.c_str());
+    vec.push_back(ss);
+    ss.clear();
+
+    m_platforms.at(platform_id).getInfo(CL_PLATFORM_VENDOR, &s);
+    ss.append("Vendor: ");
+    ss.append(s.c_str());
+    vec.push_back(ss);
+    ss.clear();
+
+    m_platforms.at(platform_id).getInfo(CL_PLATFORM_VERSION, &s);
+    ss.append("Version: ");
+    ss.append(s.c_str());
+    vec.push_back(ss);
+    ss.clear();
+
+    vec.push_back("---");
+
+    // Investigate device
+    m_devices.at(device_id).getInfo(CL_DEVICE_NAME, &s);
+    ss.append("    Device: ");
+    ss.append(s.c_str());
+    vec.push_back(ss);
+    ss.clear();
+
+    m_devices.at(device_id).getInfo(CL_DEVICE_OPENCL_C_VERSION, &s);
+    ss.append("    Version: ");
+    ss.append(s.c_str());
+    vec.push_back(ss);
+    ss.clear();
+
+    int i;
+    m_devices.at(device_id).getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &i);
+    ss.append("    Max. Compute Units: ");
+    ss += i;
+    vec.push_back(ss);
+    ss.clear();
+
+    size_t size;
+    m_devices.at(device_id).getInfo(CL_DEVICE_LOCAL_MEM_SIZE, &size);
+    ss.append("    Local Memory Size: ");
+    ss += (size/1024);
+    ss.append(" KB");
+
+    m_devices.at(device_id).getInfo(CL_DEVICE_GLOBAL_MEM_SIZE, &size);
+    ss.append("    Global Memory Size: ");
+    ss += size/(1024*1024);
+    ss.append(" MB");
+    vec.push_back(ss);
+    ss.clear();
+
+    m_devices.at(device_id).getInfo(CL_DEVICE_MAX_MEM_ALLOC_SIZE, &size);
+    ss.append("    Max Alloc Size: ");
+    ss += size/(1024*1024);
+    ss.append(" MB");
+    vec.push_back(ss);
+    ss.clear();
+
+    m_devices.at(device_id).getInfo(CL_DEVICE_MAX_WORK_GROUP_SIZE, &size);
+    ss.append("    Max Work-group Total Size: ");
+    ss += size;
+    vec.push_back(ss);
+    ss.clear();
+
+    std::vector<size_t> d;
+    m_devices.at(device_id).getInfo(CL_DEVICE_MAX_WORK_ITEM_SIZES, &d);
+    ss.append("    Max Work-group Dims: (");
+    for (std::vector<size_t>::iterator st = d.begin(); st != d.end(); st++)
+    {
+        ss += *st;
+    }
+    ss.append("\x08)");
+    vec.push_back(ss);
+    ss.clear();
+
+    return vec;
 }
