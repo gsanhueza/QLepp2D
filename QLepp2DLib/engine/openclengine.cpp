@@ -217,10 +217,10 @@ void OpenCLEngine::setup()
     try
     {
         // Platform = Vendor (Intel, Nvidia, AMD, etc).
-        int platform_id = 0;
+        unsigned long platform_id(0);
 
         // Device = Card identifier. If you have only one graphic card from a vendor, leave this at 0.
-        int device_id = 0;
+        unsigned long device_id(0);
 
         // Query for platforms
         cl::Platform::get(&m_platforms);
@@ -266,35 +266,31 @@ void OpenCLEngine::setup()
     }
 }
 
-std::vector<std::string> OpenCLEngine::getOpenCLData(int pl_id, int dev_id) const
+std::vector<std::string> OpenCLEngine::getOpenCLData(unsigned long platform_id,
+                                                     unsigned long device_id) const
 {
     // Investigate platform
     std::vector<std::string> vec;
     std::string ss;
     std::string s;
 
-    unsigned long platform_id(static_cast<unsigned long>(pl_id));
-    unsigned long device_id(static_cast<unsigned long>(dev_id));
-
     m_platforms.at(platform_id).getInfo(CL_PLATFORM_NAME, &s);
-    ss.append("Platform: ");
+    ss.append("  Platform: ");
     ss.append(s.c_str());
     vec.push_back(ss);
     ss.clear();
 
     m_platforms.at(platform_id).getInfo(CL_PLATFORM_VENDOR, &s);
-    ss.append("Vendor: ");
+    ss.append("  Vendor: ");
     ss.append(s.c_str());
     vec.push_back(ss);
     ss.clear();
 
     m_platforms.at(platform_id).getInfo(CL_PLATFORM_VERSION, &s);
-    ss.append("Version: ");
+    ss.append("  Version: ");
     ss.append(s.c_str());
     vec.push_back(ss);
     ss.clear();
-
-    vec.push_back("---");
 
     // Investigate device
     m_devices.at(device_id).getInfo(CL_DEVICE_NAME, &s);
@@ -312,33 +308,35 @@ std::vector<std::string> OpenCLEngine::getOpenCLData(int pl_id, int dev_id) cons
     int i;
     m_devices.at(device_id).getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &i);
     ss.append("    Max. Compute Units: ");
-    ss += i;
+    ss.append(std::to_string(i));
     vec.push_back(ss);
     ss.clear();
 
     size_t size;
     m_devices.at(device_id).getInfo(CL_DEVICE_LOCAL_MEM_SIZE, &size);
     ss.append("    Local Memory Size: ");
-    ss += (size/1024);
+    ss.append(std::to_string(size/1024));
     ss.append(" KB");
+    vec.push_back(ss);
+    ss.clear();
 
     m_devices.at(device_id).getInfo(CL_DEVICE_GLOBAL_MEM_SIZE, &size);
     ss.append("    Global Memory Size: ");
-    ss += size/(1024*1024);
+    ss.append(std::to_string(size/(1024*1024)));
     ss.append(" MB");
     vec.push_back(ss);
     ss.clear();
 
     m_devices.at(device_id).getInfo(CL_DEVICE_MAX_MEM_ALLOC_SIZE, &size);
     ss.append("    Max Alloc Size: ");
-    ss += size/(1024*1024);
+    ss.append(std::to_string(size/(1024*1024)));
     ss.append(" MB");
     vec.push_back(ss);
     ss.clear();
 
     m_devices.at(device_id).getInfo(CL_DEVICE_MAX_WORK_GROUP_SIZE, &size);
     ss.append("    Max Work-group Total Size: ");
-    ss += size;
+    ss.append(std::to_string(size));
     vec.push_back(ss);
     ss.clear();
 
@@ -347,9 +345,13 @@ std::vector<std::string> OpenCLEngine::getOpenCLData(int pl_id, int dev_id) cons
     ss.append("    Max Work-group Dims: (");
     for (std::vector<size_t>::iterator st = d.begin(); st != d.end(); st++)
     {
-        ss += *st;
+        ss.append(std::to_string(*st));
+        ss.append(" x ");
     }
-    ss.append("\x08)");
+    ss.pop_back();
+    ss.pop_back();
+    ss.pop_back();
+    ss.append(")");
     vec.push_back(ss);
     ss.clear();
 

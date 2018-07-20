@@ -105,7 +105,8 @@ protected:
      * @param dev_id: Device ID
      * @return Vector with data from the implementation (vendor, version, etc).
      */
-    std::vector<std::string> getOpenCLData(int plat_id, int dev_id) const;
+    std::vector<std::string> getOpenCLData(unsigned long platform_id,
+                                           unsigned long device_id) const;
 
 private:
     std::vector<cl::Platform> m_platforms;
