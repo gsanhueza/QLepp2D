@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _OGLWIDGET_H_
-#define _OGLWIDGET_H_
+#ifndef OGLWIDGET_H
+#define OGLWIDGET_H
 
 #include <QWidget>
 #include <QOpenGLBuffer>
@@ -86,4 +86,5 @@ private:
 
     Model *m_model;
 };
+
 #endif

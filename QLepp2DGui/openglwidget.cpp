@@ -112,21 +112,21 @@ void OpenGLWidget::loadData()
 
     for (Triangle &t : triangles)
     {
-        unsigned long tiv1(static_cast<unsigned long>(t.iv1));
-        unsigned long tiv2(static_cast<unsigned long>(t.iv2));
-        unsigned long tiv3(static_cast<unsigned long>(t.iv3));
+        unsigned long t_iv1(static_cast<unsigned long>(t.iv1));
+        unsigned long t_iv2(static_cast<unsigned long>(t.iv2));
+        unsigned long t_iv3(static_cast<unsigned long>(t.iv3));
 
-        vertexData.append(vertices.at(tiv1).x);
-        vertexData.append(vertices.at(tiv1).y);
-        vertexData.append(vertices.at(tiv1).z);
+        vertexData.append(vertices.at(t_iv1).x);
+        vertexData.append(vertices.at(t_iv1).y);
+        vertexData.append(vertices.at(t_iv1).z);
 
-        vertexData.append(vertices.at(tiv2).x);
-        vertexData.append(vertices.at(tiv2).y);
-        vertexData.append(vertices.at(tiv2).z);
+        vertexData.append(vertices.at(t_iv2).x);
+        vertexData.append(vertices.at(t_iv2).y);
+        vertexData.append(vertices.at(t_iv2).z);
 
-        vertexData.append(vertices.at(tiv3).x);
-        vertexData.append(vertices.at(tiv3).y);
-        vertexData.append(vertices.at(tiv3).z);
+        vertexData.append(vertices.at(t_iv3).x);
+        vertexData.append(vertices.at(t_iv3).y);
+        vertexData.append(vertices.at(t_iv3).z);
     }
 
     // Generate color
