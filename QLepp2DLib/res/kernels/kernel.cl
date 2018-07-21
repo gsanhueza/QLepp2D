@@ -46,7 +46,7 @@ typedef struct {
     int itb;
     int iv1;
     int iv2;
-    int isTerminalEdge;
+    int isTE;
 } Edge;
 
 #if 0
@@ -154,14 +154,14 @@ kernel void detectTerminalEdges(global Triangle *triangles,
             // Border triangle
             if (neighbourIT < 0)
             {
-                edges[longestIE].isTerminalEdge = 1;
+                edges[longestIE].isTE = 1;
                 return;
             }
 
             // If I was here before, then I found the final edge of Lepp.
             if (it == triangleHistory[(k + 1) % 3])     // Equivalent of (k - 2)
             {
-                edges[longestIE].isTerminalEdge = 1;
+                edges[longestIE].isTE = 1;
                 flag[0] = 1;
                 return;
             }

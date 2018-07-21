@@ -147,7 +147,7 @@ void CPUEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
              * everyone right now.
              */
             int longestIEdge = getTerminalIEdge(i, vertices, edges, triangles, flag);
-            edges.at(longestIEdge).isTerminalEdge = 1;
+            edges.at(longestIEdge).isTE = 1;
         }
     }
 
@@ -166,7 +166,7 @@ void CPUEngine::insertCentroids(std::vector<Vertex> &vertices,
     {
         Edge &e(edges.at(ie));
         // If e.itb == -1, it's a border edge, so we won't insert a centroid
-        if (e.isTerminalEdge and e.itb != -1)
+        if (e.isTE and e.itb != -1)
         {
             insertCentroid(ie, vertices, edges, triangles);
         }
@@ -362,7 +362,7 @@ void CPUEngine::insertCentroid(int iedge,
     {
         Edge e;
         e.ita = e.itb = e.iv1 = e.iv2 = -1;
-        e.isTerminalEdge = 0;
+        e.isTE = 0;
 
         newEdges.append(e);
     }

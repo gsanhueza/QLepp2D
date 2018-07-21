@@ -132,7 +132,7 @@ bool OFFHandler::load(std::string filepath,
                     ed.iv2 = std::max(tmpIV.at(j % 3), tmpIV.at((j + 1) % 3));
                     ed.ita = i; // Index of current triangle
                     ed.itb = -1; // Index of neighbour triangle not (yet) found
-                    ed.isTerminalEdge = 0;
+                    ed.isTE = 0;
                 }
 
                 map.insert(key, ed);
