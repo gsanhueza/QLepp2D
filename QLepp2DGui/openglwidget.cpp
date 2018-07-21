@@ -21,7 +21,7 @@
 
 OpenGLWidget::OpenGLWidget(QWidget* parent)
   : QOpenGLWidget(parent),
-    m_program(0),
+    m_program(nullptr),
     m_xRot(0),
     m_yRot(0),
     m_zRot(0),
@@ -220,8 +220,8 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
     }
     else if (event->buttons() & Qt::MiddleButton)
     {
-        setXMovement(m_xCamPos + dx);
-        setYMovement(m_yCamPos + dy);
+        setXMovement(m_xCamPos + (static_cast<float>(dx) / 10.0f));
+        setYMovement(m_yCamPos + (static_cast<float>(dy) / 10.0f));
     }
     else if (event->buttons() & Qt::RightButton)
     {
@@ -287,10 +287,9 @@ void OpenGLWidget::setZRotation(int angle)
     }
 }
 
-void OpenGLWidget::setXMovement(int position)
+void OpenGLWidget::setXMovement(float position)
 {
-
-    if (position != m_xCamPos)
+    if (qAbs(position - m_xCamPos) > 0.01f)
     {
         m_xCamPos = position;
         m_camera.setToIdentity();
@@ -299,10 +298,9 @@ void OpenGLWidget::setXMovement(int position)
     }
 }
 
-void OpenGLWidget::setYMovement(int position)
+void OpenGLWidget::setYMovement(float position)
 {
-
-    if (position != m_yCamPos)
+    if (qAbs(position - m_yCamPos) > 0.01f)
     {
         m_yCamPos = position;
         m_camera.setToIdentity();
