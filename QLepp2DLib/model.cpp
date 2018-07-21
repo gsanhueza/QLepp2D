@@ -59,7 +59,7 @@ std::vector<Triangle>& Model::getTriangles()
     return m_impl->getTriangles();
 }
 
-bool Model::detectBadTriangles(double angle)
+bool Model::detectBadTriangles(float angle)
 {
     return m_impl->detectBadTriangles(angle);
 }

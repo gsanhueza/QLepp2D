@@ -21,7 +21,7 @@
 
 OpenGLWidget::OpenGLWidget(QWidget* parent)
   : QOpenGLWidget(parent),
-    m_program(0),
+    m_program(nullptr),
     m_xRot(0),
     m_yRot(0),
     m_zRot(0),
@@ -59,7 +59,7 @@ void OpenGLWidget::setupVertexAttribs()
     // normalized = false, as there's no need to normalize here
     // stride = 0, which implies that vertices are side-to-side (VVVCCC)
     // pointer = where is the start of the data (in VVVCCC, 0 = start of vertices and 3 * GL_FLOAT * sizeof(vertexArray) = start of color)
-    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void *>(3 * sizeof(Vertex) * m_model->getTriangles().size()));
     m_vbo.release();
 }
@@ -112,17 +112,21 @@ void OpenGLWidget::loadData()
 
     for (Triangle &t : triangles)
     {
-        vertexData.append(vertices.at(t.iv1).x);
-        vertexData.append(vertices.at(t.iv1).y);
-        vertexData.append(vertices.at(t.iv1).z);
+        unsigned long t_iv1(static_cast<unsigned long>(t.iv1));
+        unsigned long t_iv2(static_cast<unsigned long>(t.iv2));
+        unsigned long t_iv3(static_cast<unsigned long>(t.iv3));
 
-        vertexData.append(vertices.at(t.iv2).x);
-        vertexData.append(vertices.at(t.iv2).y);
-        vertexData.append(vertices.at(t.iv2).z);
+        vertexData.append(vertices.at(t_iv1).x);
+        vertexData.append(vertices.at(t_iv1).y);
+        vertexData.append(vertices.at(t_iv1).z);
 
-        vertexData.append(vertices.at(t.iv3).x);
-        vertexData.append(vertices.at(t.iv3).y);
-        vertexData.append(vertices.at(t.iv3).z);
+        vertexData.append(vertices.at(t_iv2).x);
+        vertexData.append(vertices.at(t_iv2).y);
+        vertexData.append(vertices.at(t_iv2).z);
+
+        vertexData.append(vertices.at(t_iv3).x);
+        vertexData.append(vertices.at(t_iv3).y);
+        vertexData.append(vertices.at(t_iv3).z);
     }
 
     // Generate color
@@ -130,14 +134,15 @@ void OpenGLWidget::loadData()
     {
         for (int i(1); i <= 3; i++)
         {
-            vertexData.append( t.bad * 0.3 * i);
-            vertexData.append(!t.bad * 0.3 * i);
+            vertexData.append( t.bad * 0.3f * i);
+            vertexData.append(!t.bad * 0.3f * i);
             vertexData.append(0.0);
         }
     }
 
     // Allocate data into VBO
-    m_vbo.allocate(vertexData.constData(), vertexData.count() * sizeof(GLfloat));
+    m_vbo.allocate(vertexData.constData(),
+                   static_cast<int>(vertexData.count()) * static_cast<int>(sizeof(GLfloat)));
 }
 
 void OpenGLWidget::paintGL()
@@ -176,7 +181,7 @@ void OpenGLWidget::paintGL()
 
     // Draw triangulation
     // Last argument = Number of vertices in total
-    glDrawArrays(GL_TRIANGLES, 0, 3 * m_model->getTriangles().size());
+    glDrawArrays(GL_TRIANGLES, 0, 3 * static_cast<int>(m_model->getTriangles().size()));
 
     m_program->release();
 }
@@ -215,8 +220,8 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
     }
     else if (event->buttons() & Qt::MiddleButton)
     {
-        setXMovement(m_xCamPos + dx);
-        setYMovement(m_yCamPos + dy);
+        setXMovement(m_xCamPos + (static_cast<float>(dx) / 10.0f));
+        setYMovement(m_yCamPos + (static_cast<float>(dy) / 10.0f));
     }
     else if (event->buttons() & Qt::RightButton)
     {
@@ -282,10 +287,9 @@ void OpenGLWidget::setZRotation(int angle)
     }
 }
 
-void OpenGLWidget::setXMovement(int position)
+void OpenGLWidget::setXMovement(float position)
 {
-
-    if (position != m_xCamPos)
+    if (qAbs(position - m_xCamPos) > 0.01f)
     {
         m_xCamPos = position;
         m_camera.setToIdentity();
@@ -294,10 +298,9 @@ void OpenGLWidget::setXMovement(int position)
     }
 }
 
-void OpenGLWidget::setYMovement(int position)
+void OpenGLWidget::setYMovement(float position)
 {
-
-    if (position != m_yCamPos)
+    if (qAbs(position - m_yCamPos) > 0.01f)
     {
         m_yCamPos = position;
         m_camera.setToIdentity();

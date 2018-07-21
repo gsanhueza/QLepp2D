@@ -98,7 +98,7 @@ std::vector<Triangle>& ModelImpl::getTriangles()
     return m_triangles;
 }
 
-bool ModelImpl::detectBadTriangles(double angle)
+bool ModelImpl::detectBadTriangles(float angle)
 {
     return m_engine->detectBadTriangles(angle, m_vertices, m_triangles);
 }

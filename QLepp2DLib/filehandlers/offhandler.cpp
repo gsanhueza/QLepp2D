@@ -148,7 +148,8 @@ bool OFFHandler::load(std::string filepath,
 
             // Phase 4
             // Triangle A
-            Triangle &ta = triangles.at(e.ita);
+            unsigned long e_ita(static_cast<unsigned long>(e.ita));
+            Triangle &ta = triangles.at(e_ita);
             /* If the Vertex "a" from the triangle is not in e.iv1 or e.iv2,
              * then this Vertex "a" is the opposite of the current Edge.
              */
@@ -175,7 +176,8 @@ bool OFFHandler::load(std::string filepath,
                 continue; // Maybe there isn't a neighbour triangle.
             }
 
-            Triangle &tb = triangles.at(e.itb);
+            unsigned long e_itb(static_cast<unsigned long>(e.itb));
+            Triangle &tb = triangles.at(e_itb);
 
             if (tb.iv1 != e.iv1 and tb.iv1 != e.iv2)
             {
@@ -206,9 +208,9 @@ bool OFFHandler::save(std::string filepath,
                       std::vector<Edge> &edges,
                       std::vector<Triangle> &triangles)
 {
-    int numVertices = vertices.size();
-    int numTriangles = triangles.size();
-    int numEdges = edges.size();
+    unsigned long numVertices(vertices.size());
+    unsigned long numTriangles(triangles.size());
+    unsigned long numEdges(edges.size());
 
     QString qfilepath = QString::fromStdString(filepath);
     qDebug() << "Saving OFF file to" << qfilepath << endl;

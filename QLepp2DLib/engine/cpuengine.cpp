@@ -262,15 +262,15 @@ Vertex CPUEngine::centroidOf(int iva,
     centroid.x = (vertices.at(iva).x +
                   vertices.at(ivb).x +
                   vertices.at(ivc).x +
-                  vertices.at(ivd).x) / 4.0;
+                  vertices.at(ivd).x) / 4.0f;
     centroid.y = (vertices.at(iva).y +
                   vertices.at(ivb).y +
                   vertices.at(ivc).y +
-                  vertices.at(ivd).y) / 4.0;
+                  vertices.at(ivd).y) / 4.0f;
     centroid.z = (vertices.at(iva).z +
                   vertices.at(ivb).z +
                   vertices.at(ivc).z +
-                  vertices.at(ivd).z) / 4.0;
+                  vertices.at(ivd).z) / 4.0f;
 
     return centroid;
 }

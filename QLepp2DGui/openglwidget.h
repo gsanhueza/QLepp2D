@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _OGLWIDGET_H_
-#define _OGLWIDGET_H_
+#ifndef OGLWIDGET_H
+#define OGLWIDGET_H
 
 #include <QWidget>
 #include <QOpenGLBuffer>
@@ -33,11 +33,11 @@
 
 class OpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     OpenGLWidget(QWidget *parent = nullptr);
-    ~OpenGLWidget();
+    ~OpenGLWidget() override;
 
 public slots:
     void updateModel(Model *model);
@@ -46,8 +46,8 @@ public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
-    void setXMovement(int position);
-    void setYMovement(int position);
+    void setXMovement(float position);
+    void setYMovement(float position);
 
 protected:
     void initializeGL() override;
@@ -86,4 +86,5 @@ private:
 
     Model *m_model;
 };
+
 #endif
