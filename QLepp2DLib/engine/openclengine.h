@@ -101,8 +101,8 @@ protected:
 
     /**
      * @brief Retrieves data from the current OpenCL Implementation.
-     * @param plat_id: Platform ID
-     * @param dev_id: Device ID
+     * @param platform_id: Platform ID
+     * @param device_id: Device ID
      * @return Vector with data from the implementation (vendor, version, etc).
      */
     std::vector<std::string> getOpenCLData(unsigned long platform_id,

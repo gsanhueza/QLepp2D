@@ -109,7 +109,7 @@ public:
     * @param angle p_angle: Provided angle.
     * @return True if method has run without issues.
     */
-    bool detectBadTriangles(double angle);
+    bool detectBadTriangles(float angle);
 
     /**
     * @brief Improves the actual triangulation, modifying the vectors in the Model.

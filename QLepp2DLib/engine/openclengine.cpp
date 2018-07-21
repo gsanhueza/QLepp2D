@@ -217,7 +217,7 @@ void OpenCLEngine::setup()
     try
     {
         // Platform = Vendor (Intel, Nvidia, AMD, etc).
-        unsigned long platform_id(0);
+        unsigned long platform_id(1);
 
         // Device = Card identifier. If you have only one graphic card from a vendor, leave this at 0.
         unsigned long device_id(0);
