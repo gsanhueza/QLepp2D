@@ -34,7 +34,7 @@ bool OpenCLEngine::detectBadTriangles(float angle,
                                       std::vector<Vertex> &vertices,
                                       std::vector<Triangle> &triangles)
 {
-    qDebug() << "OpenCLEngine::detectBadTriangles - angle =" << angle;
+    qDebug() << "(OpenCL) Angle :" << angle;
 
     m_angle = angle;
     try
@@ -65,16 +65,17 @@ bool OpenCLEngine::detectBadTriangles(float angle,
         cl::Event event = detect_kernel(eargs, angle, m_bufferTriangles, m_bufferVertices);
         event.wait();
 
-        event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
-        event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
-
-        qDebug() << "OpenCL Algorithm (DBT): " << (time_end - time_start) << "nanoseconds";
-
         // Copy the output data back to the host
         cl::copy(m_queue, m_bufferTriangles, triangles.begin(), triangles.end());
 
+        // Get times
         qint64 elapsed = timer.nsecsElapsed();
-        qDebug() << "+ OpenCL: Bad Triangles detected in" << elapsed << "nanoseconds.";
+        event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
+        event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
+
+        qInfo() << "___";
+        qInfo() << "(OCL) DBT_A :" << (time_end - time_start) << "nanoseconds";
+        qInfo() << "(OCL) DBT_F :" << elapsed << "nanoseconds";
     }
     catch (cl::Error &err)
     {
@@ -179,21 +180,20 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
 
     // Execute the kernel
     cl::Event event = detect_terminal_edges_kernel(eargs, m_bufferTriangles, m_bufferVertices, m_bufferEdges, bufferFlag);
+    event.wait();
 
     // Copy the modified edges and the flag back to CPU
     cl::copy(m_queue, m_bufferEdges, edges.begin(), edges.end());
     cl::copy(m_queue, bufferFlag, flagVector.begin(), flagVector.end());
     flag = (flagVector.at(0) != 0);
 
-    event.wait();
-
+    // Get times
+    qint64 elapsed = timer.nsecsElapsed();
     event.getProfilingInfo(CL_PROFILING_COMMAND_START, &time_start);
     event.getProfilingInfo(CL_PROFILING_COMMAND_END, &time_end);
 
-    qDebug() << "OpenCL Algorithm (DTE): " << (time_end - time_start) << "nanoseconds";
-
-    qint64 elapsed = timer.nsecsElapsed();
-    qDebug() << "+ OpenCL: Terminal edges detected in" << elapsed << "nanoseconds.";
+    qInfo() << "(OCL) DTE_A :" << (time_end - time_start) << "nanoseconds";
+    qInfo() << "(OCL) DTE_F :" << elapsed << "nanoseconds";
 }
 
 void OpenCLEngine::insertCentroids(std::vector<Vertex> &vertices,
