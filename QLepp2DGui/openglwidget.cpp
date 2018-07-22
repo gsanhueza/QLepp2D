@@ -167,7 +167,7 @@ void OpenGLWidget::paintGL()
     m_program->setUniformValue(m_projMatrixLoc, m_proj);
     m_program->setUniformValue(m_modelViewMatrixLoc, m_camera * m_world);
 
-    // Load new data only on model pointer change
+    // Load new data only on model data change
     if (not m_dataAlreadyLoaded)
     {
         // Load data
@@ -220,8 +220,8 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
     }
     else if (event->buttons() & Qt::MiddleButton)
     {
-        setXMovement(m_xCamPos + (static_cast<float>(dx) / 10.0f));
-        setYMovement(m_yCamPos + (static_cast<float>(dy) / 10.0f));
+        setXMovement(m_xCamPos + (static_cast<float>(dx) / 200.0f));
+        setYMovement(m_yCamPos - (static_cast<float>(dy) / 200.0f)); // Inverted axis
     }
     else if (event->buttons() & Qt::RightButton)
     {
@@ -235,7 +235,7 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event)
 {
     m_zCamPos += (event->delta() / 120);
     m_camera.setToIdentity();
-    m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
+    m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
     update();
 }
 
@@ -245,7 +245,7 @@ void OpenGLWidget::resetView()
     m_xCamPos = m_yCamPos = 0;
     m_zCamPos = -5;
     m_camera.setToIdentity();
-    m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
+    m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
     update();
 }
 
@@ -293,7 +293,7 @@ void OpenGLWidget::setXMovement(float position)
     {
         m_xCamPos = position;
         m_camera.setToIdentity();
-        m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
+        m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
         update();
     }
 }
@@ -304,7 +304,7 @@ void OpenGLWidget::setYMovement(float position)
     {
         m_yCamPos = position;
         m_camera.setToIdentity();
-        m_camera.translate(-m_xCamPos, m_yCamPos, m_zCamPos);
+        m_camera.translate(m_xCamPos, m_yCamPos, m_zCamPos);
         update();
     }
 }

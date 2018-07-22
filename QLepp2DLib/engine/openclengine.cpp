@@ -43,7 +43,7 @@ bool OpenCLEngine::detectBadTriangles(float angle,
         timer.start();
 
         // Create the memory buffers (Implicit copy to buffers when using iterators)
-        const bool USE_HOST_PTR = true;
+        const bool USE_HOST_PTR(true);
 
         // true == CL_MEM_READ_ONLY / false == CL_MEM_READ_WRITE
         m_bufferTriangles = cl::Buffer(m_context, triangles.begin(), triangles.end(), false, USE_HOST_PTR);
@@ -56,8 +56,8 @@ bool OpenCLEngine::detectBadTriangles(float angle,
         cl::NDRange global(triangles.size());
         //cl::NDRange local( 256 );
 
-        cl_ulong time_start = 0;
-        cl_ulong time_end = 0;
+        cl_ulong time_start(0);
+        cl_ulong time_end(0);
 
         cl::EnqueueArgs eargs(m_queue, global/*, local*/);
 
@@ -150,11 +150,11 @@ void OpenCLEngine::detectTerminalEdges(std::vector<Vertex> &vertices,
     QElapsedTimer timer;
     timer.start();
 
-    cl_ulong time_start = 0;
-    cl_ulong time_end = 0;
+    cl_ulong time_start(0);
+    cl_ulong time_end(0);
 
     // Create the memory buffers (Implicit copy to buffers when using iterators)
-    const bool USE_HOST_PTR = true;
+    const bool USE_HOST_PTR(true);
 
     // Detect number of threads
     unsigned long globalSize(triangles.size());

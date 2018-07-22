@@ -85,15 +85,6 @@ kernel void detectBadTriangles(const float angle, global Triangle *triangles, gl
 }
 
 /* Each thread is a Triangle */
-kernel void improveTriangulation(global Triangle *triangles, global Vertex *vertices, global int *indices)
-{
-    // TODO Kernel implementation
-    int idx = get_global_id(0);
-
-    triangles[idx].bad = 0;
-}
-
-/* Each thread is a Triangle */
 kernel void detectTerminalEdges(global Triangle *triangles,
                                 global Vertex *vertices,
                                 global Edge *edges,
