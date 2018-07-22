@@ -62,10 +62,6 @@ bool OFFHandler::load(std::string filepath,
         int numTriangles = parsedmetadata.at(1).toInt();
         int numEdges = parsedmetadata.at(2).toInt();
 
-        qDebug() << "Number of vertices:" << numVertices;
-        qDebug() << "Number of faces:" << numTriangles;
-        qDebug() << "Number of edges:" << numEdges;
-
         // Read vertices data
         for (int i(0); i < numVertices; i++)
         {
@@ -167,7 +163,7 @@ bool OFFHandler::load(std::string filepath,
             }
             else
             {
-                qFatal("Inconsistent data (A)!");
+                qCritical("Inconsistent data (A)!");
             }
 
             // Triangle B
@@ -193,11 +189,16 @@ bool OFFHandler::load(std::string filepath,
             }
             else
             {
-                qFatal("Inconsistent data (B)!");
+                qCritical("Inconsistent data (B)!");
             }
         }
 
         inputFile.close();
+
+        qInfo() << "Loaded Vertices  :" << numVertices;
+        qInfo() << "Loaded Edges     :" << numEdges;
+        qInfo() << "Loaded Triangles :" << numTriangles;
+
         return true;
     }
     return false;
@@ -214,7 +215,6 @@ bool OFFHandler::save(std::string filepath,
 
     QString qfilepath = QString::fromStdString(filepath);
     qDebug() << "Saving OFF file to" << qfilepath << endl;
-    qDebug() << "(V, F, E) = " << numVertices << numTriangles << numEdges;
 
     QFile outputFile(qfilepath);
 
@@ -252,6 +252,10 @@ bool OFFHandler::save(std::string filepath,
         }
 
         outputFile.close();
+
+        qInfo() << "Saved Vertices  :" << numVertices;
+        qInfo() << "Saved Edges     :" << numEdges;
+        qInfo() << "Saved Triangles :" << numTriangles;
 
         return true;
     }

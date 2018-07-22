@@ -112,7 +112,7 @@ void MainWindow::loadFile(QString path)
         m_currentFileName = fileinfo.completeBaseName();
         addRecentFile(path);
 
-        qDebug() << m_currentFileName << "triangulation loaded." << endl;
+        qInfo() << m_currentFileName << "triangulation loaded." << endl;
         ui->statusBar->showMessage(tr("Loaded."));
         ui->improveButton->setDisabled(true);
         ui->detectButton->setEnabled(true);
@@ -138,7 +138,7 @@ void MainWindow::saveFile(QString filepath)
     }
     else
     {
-        qDebug() << "Triangulation Saved.";
+        qInfo() << "Triangulation Saved.";
         ui->statusBar->showMessage(tr("Saved."));
     }
 }
