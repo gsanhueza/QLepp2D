@@ -25,8 +25,8 @@ F = size(tri)(1);
 
 printf("%d triangles have been created!\n", F);
 
-# Euler's formula: V + F - E = 2
-E = V + F - 2;
+# Euler's formula: V + F - E = 1
+E = V + F - 1;
 
 printf("Writing file...\n");
 
