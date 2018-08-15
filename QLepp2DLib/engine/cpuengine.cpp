@@ -337,6 +337,34 @@ void CPUEngine::insertCentroid(int iedge,
         }
     }
 
+    // Check if our future triangles will be CCW with the "shoelace formula" (Gauss area).
+    // Invert iVertexPattern[1] and [3] if they're not CCW.
+
+    /* Note: Since we'll create our 4 new triangles in the same order, they will
+     * be all CCW or all CW. If we just invert 2 non-adjacent vertices from
+     * the pattern, the orientation of every triangle will change.
+     */
+    {
+        float area(0.0f);
+        int n(3);
+
+        int j(n - 1);
+        for (int i(0); i < n; i++)
+        {
+            area += (vertices.at(iVertexPattern.at(j)).x + vertices.at(iVertexPattern.at(i)).x) *
+                    (vertices.at(iVertexPattern.at(j)).y - vertices.at(iVertexPattern.at(i)).y);
+            j = i;  // j is previous vertex to i
+        }
+
+        // Area < 0 ==> CCW
+        if (area > 0)
+        {
+            int tmp(iVertexPattern.at(1));
+            iVertexPattern[1] = iVertexPattern.at(3);
+            iVertexPattern[3] = tmp;
+        }
+    }
+
     // Create our centroid
     Vertex centroid = centroidOf(iVertexPattern.at(0),
                                  iVertexPattern.at(1),
@@ -400,7 +428,7 @@ void CPUEngine::insertCentroid(int iedge,
      * of the new edges and assign them to one of our new edges.
      * (If we study how we decided the order of the vertices in "vertexPattern",
      * we'll notice that our new triangles are always neighbours.
-     * We cannot know if they're CCW or CW neighbours, but the triangle n and the
+     * We forced them to be CCW neighbours, so the triangle n and the
      * triangle n + 1 will always share one of the new edges.)
      * We'll update the information of this edge, but the triangles will keep
      * incomplete data at the moment, because we need to insert these new edges first.
