@@ -70,6 +70,15 @@ bool CPUEngine::detectBadTriangles(float angle,
     qint64 elapsed = timer.nsecsElapsed();
     qInfo() << "___";
     qInfo() << "(CPU) DBT_F :" << elapsed << "nanoseconds";
+
+    // Only to check ratio of bad/total triangles (won't be in benchmark!)
+    int badCount{0};
+    for (Triangle &t : triangles)
+    {
+        badCount += t.bad;
+    }
+    qDebug() << "Ratio:" << static_cast<float>(badCount) / triangles.size();
+
     return true;
 }
 
